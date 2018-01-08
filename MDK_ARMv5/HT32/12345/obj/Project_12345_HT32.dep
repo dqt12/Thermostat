@@ -477,9 +477,9 @@ I (..\drv\spi_flash.h)(0x5A530146)
 I (..\iap_crc16.h)(0x5A4E0774)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C245B8)
 F (..\lcd_display.lib)(0x5A3B47BF)()
+F (.\HT32F1xxxx_01_DebugSupport.ini)(0x5A4F3A10)()
 F (..\ht32f1xxxx_conf.h)(0x5A4DFBCE)()
 F (.\ht32_op.s)(0x592508C8)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 515" --pd "USE_HT32F12345 SETA 1" --pd "USE_HT32_CHIP SETA 3"--list .\ht32\12345\list\ht32_op.lst --xref -o .\ht32\12345\obj\ht32_op.o --depend .\ht32\12345\obj\ht32_op.d)
-F (.\HT32F1xxxx_01_DebugSupport.ini)(0x5A4F3A10)()
 F (..\ht32f1xxxx_01_usbdconf.h)(0x5979EB28)()
 F (..\system_ht32f1xxxx_02.c)(0x5A4E0E79)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\system_ht32f1xxxx_02.o --omf_browse .\ht32\12345\obj\system_ht32f1xxxx_02.crf --depend .\ht32\12345\obj\system_ht32f1xxxx_02.d)
 I (..\library\Device\Holtek\HT32F1xxxx\Include\ht32f1xxxx_01.h)(0x5940131E)
@@ -1644,7 +1644,7 @@ I (..\library\HT32F1xxxx_Driver\inc\ht32_retarget_usbdconf.h)(0x5913D46E)
 I (..\library\HT32F1xxxx_Driver\inc\ht32_cm3_misc.h)(0x5913D46E)
 I (..\library\HT32F1xxxx_Driver\inc\ht32_serial.h)(0x59232B2C)
 I (..\library\HT32F1xxxx_Driver\inc\ht32_rand.h)(0x59402DB4)
-F (..\library\HT32F1xxxx_Driver\src\ht32_retarget.c)(0x59CB25B3)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\HT32F12345 -Workshop\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\ht32_retarget.o --omf_browse .\ht32\12345\obj\ht32_retarget.crf --depend .\ht32\12345\obj\ht32_retarget.d)
+F (..\library\HT32F1xxxx_Driver\src\ht32_retarget.c)(0x5A53056A)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\ht32_retarget.o --omf_browse .\ht32\12345\obj\ht32_retarget.crf --depend .\ht32\12345\obj\ht32_retarget.d)
 I (..\library\HT32F1xxxx_Driver\inc\ht32.h)(0x5925C194)
 I (..\library\Device\Holtek\HT32F1xxxx\Include\ht32f1xxxx_01.h)(0x5940131E)
 I (..\library\CMSIS\Include\core_cm3.h)(0x5913D46E)

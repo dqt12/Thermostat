@@ -137,7 +137,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>CMSIS_AGDI</Key>
-          <Name>-X"Holtek CMSIS-DAP" -U060003AC -O2766 -S0 -C0 -P00 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -FO31 -FD20000000 -FC1000 -FN2 -FF0HT32F.FLM -FS00 -FL0FC00 -FP0($$Device:HT32F12345$ARM\Flash\HT32F.FLM) -FF1HT32F_OPT.FLM -FS11FF00000 -FL1400 -FP1($$Device:HT32F12345$ARM\Flash\HT32F_OPT.FLM)</Name>
+          <Name>-X"Holtek CMSIS-DAP" -U060003AC -O1742 -S0 -C0 -P00 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -FO31 -FD20000000 -FC1000 -FN2 -FF0HT32F.FLM -FS00 -FL0FC00 -FP0($$Device:HT32F12345$ARM\Flash\HT32F.FLM) -FF1HT32F_OPT.FLM -FS11FF00000 -FL1400 -FP1($$Device:HT32F12345$ARM\Flash\HT32F_OPT.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -170,9 +170,9 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>463</LineNumber>
+          <LineNumber>464</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>13714</Address>
+          <Address>13678</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -181,14 +181,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../main.c\463</Expression>
+          <Expression>\\HT32\../main.c\464</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>451</LineNumber>
+          <LineNumber>470</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>13628</Address>
+          <Address>13736</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -197,39 +197,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../main.c\451</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>100</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>7816</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\drv\spi_flash_MX66L51235F.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../drv/spi_flash_MX66L51235F.c\100</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>145</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>..\ht32f1xxxx_01_it.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\HT32\../main.c\470</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -242,6 +210,16 @@
           <count>1</count>
           <WinNumber>1</WinNumber>
           <ItemText>TEMP</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>gUI</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>LCD_IData,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -520,6 +498,19 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+      <PathWithFileName>.\HT32F1xxxx_01_DebugSupport.ini</PathWithFileName>
+      <FilenameWithoutPath>HT32F1xxxx_01_DebugSupport.ini</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>15</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
       <PathWithFileName>..\ht32f1xxxx_conf.h</PathWithFileName>
       <FilenameWithoutPath>ht32f1xxxx_conf.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -527,7 +518,7 @@
     </File>
     <File>
       <GroupNumber>2</GroupNumber>
-      <FileNumber>15</FileNumber>
+      <FileNumber>16</FileNumber>
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -535,19 +526,6 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\ht32_op.s</PathWithFileName>
       <FilenameWithoutPath>ht32_op.s</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>16</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <Focus>0</Focus>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\HT32F1xxxx_01_DebugSupport.ini</PathWithFileName>
-      <FilenameWithoutPath>HT32F1xxxx_01_DebugSupport.ini</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

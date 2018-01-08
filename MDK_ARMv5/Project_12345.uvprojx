@@ -312,7 +312,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0xfc00</Size>
+                <Size>0x20000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -337,7 +337,7 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x4000</Size>
+                <Size>0x8000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -483,6 +483,11 @@
           <GroupName>Config</GroupName>
           <Files>
             <File>
+              <FileName>HT32F1xxxx_01_DebugSupport.ini</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\HT32F1xxxx_01_DebugSupport.ini</FilePath>
+            </File>
+            <File>
               <FileName>ht32f1xxxx_conf.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\ht32f1xxxx_conf.h</FilePath>
@@ -491,11 +496,6 @@
               <FileName>ht32_op.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\ht32_op.s</FilePath>
-            </File>
-            <File>
-              <FileName>HT32F1xxxx_01_DebugSupport.ini</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\HT32F1xxxx_01_DebugSupport.ini</FilePath>
             </File>
             <File>
               <FileName>ht32f1xxxx_01_usbdconf.h</FileName>
