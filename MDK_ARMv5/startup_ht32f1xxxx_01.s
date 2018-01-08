@@ -49,7 +49,7 @@ Stack_Mem           SPACE   Stack_Size
 __initial_sp
 
 ;//   <o>  Heap Size (in Bytes) <0-131072:8>
-Heap_Size           EQU     (4096*7)
+Heap_Size           EQU     (1024*7)
 
                     AREA    HEAP, NOINIT, READWRITE, ALIGN = 3
 __heap_base

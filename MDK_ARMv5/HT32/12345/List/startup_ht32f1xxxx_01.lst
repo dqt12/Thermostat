@@ -85,27 +85,27 @@ ARM Macro Assembler    Page 2
    49 00000400         __initial_sp
    50 00000400         
    51 00000400         ;//   <o>  Heap Size (in Bytes) <0-131072:8>
-   52 00000400 00007000 
+   52 00000400 00001C00 
                        Heap_Size
-                               EQU              (4096*7)
+                               EQU              (1024*7)
    53 00000400         
    54 00000400                 AREA             HEAP, NOINIT, READWRITE, ALIGN 
 = 3
    55 00000000         __heap_base
    56 00000000         Heap_Mem
                                SPACE            Heap_Size
-   57 00007000         __heap_limit
-   58 00007000         
-   59 00007000                 PRESERVE8
-   60 00007000                 THUMB
-   61 00007000         
-   62 00007000         ;*******************************************************
+   57 00001C00         __heap_limit
+   58 00001C00         
+   59 00001C00                 PRESERVE8
+   60 00001C00                 THUMB
+   61 00001C00         
+   62 00001C00         ;*******************************************************
                        ************************
-   63 00007000         ; Fill-up the Vector Table entries with the exceptions I
+   63 00001C00         ; Fill-up the Vector Table entries with the exceptions I
                        SR address
-   64 00007000         ;*******************************************************
+   64 00001C00         ;*******************************************************
                        ************************
-   65 00007000                 AREA             RESET, CODE, READONLY
+   65 00001C00                 AREA             RESET, CODE, READONLY
    66 00000000                 EXPORT           __Vectors
    67 00000000 FFFFFFFF 
                        _RESERVED
@@ -644,18 +644,18 @@ ARM Macro Assembler    Page 10
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\ht32\12345\obj\startup_ht32f1xxxx_01.d -o.\ht32\12345\obj\startu
-p_ht32f1xxxx_01.o -I"C:\Users\my asus\Desktop\HT32F12345 -Workshop\MDK_ARMv5\RT
-E" -IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx -IC:\
-Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISIO
-N_VERSION SETA 515" --predefine="USE_HT32F12345 SETA 1" --predefine="USE_HT32_C
+p_ht32f1xxxx_01.o -I"C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\
+RTE" -IC:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx -IC
+:\Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine="__UVIS
+ION_VERSION SETA 515" --predefine="USE_HT32F12345 SETA 1" --predefine="USE_HT32
 
 
 
 ARM Macro Assembler    Page 11 
 
 
-HIP SETA 3" --list=.\ht32\12345\list\startup_ht32f1xxxx_01.lst startup_ht32f1xx
-xx_01.s
+_CHIP SETA 3" --list=.\ht32\12345\list\startup_ht32f1xxxx_01.lst startup_ht32f1
+xxxx_01.s
 
 
 
@@ -718,7 +718,7 @@ Symbol: __heap_base
    Uses
       At line 382 in file startup_ht32f1xxxx_01.s
 Comment: __heap_base used once
-__heap_limit 00007000
+__heap_limit 00001C00
 
 Symbol: __heap_limit
    Definitions
@@ -1528,7 +1528,7 @@ Symbol: HT32F1653_54_55_56
       At line 149 in file startup_ht32f1xxxx_01.s
       At line 162 in file startup_ht32f1xxxx_01.s
 
-Heap_Size 00007000
+Heap_Size 00001C00
 
 Symbol: Heap_Size
    Definitions

@@ -85,7 +85,7 @@ void SPI_FLASH_Init(void)
 
   SPI_FLASH_Wakeup();
 
-  #if 1
+  #if 0
   {
 //    u8 buf1[1024*8];
     u8 buf[1024*2];

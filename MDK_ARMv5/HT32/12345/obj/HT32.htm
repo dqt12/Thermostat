@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\HT32\12345\obj\HT32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\HT32\12345\obj\HT32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Mon Jan 08 10:42:08 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Mon Jan 08 13:32:36 2018
 <BR><P>
-<H3>Maximum Stack Usage =       2176 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        408 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; SPI_FLASH_Init &rArr; SPI_FLASH_BufferRead &rArr; SPI_FLASH_SendByte
+main &rArr; IAP_Handler &rArr; IAP_Download &rArr; xmodem &rArr; SPI_FLASH_BufferWrite &rArr; SPI_FLASH_PageWrite &rArr; SPI_FLASH_WriteEnable &rArr; SPI_FLASH_SendByte
 <P>
 <H3>
 Mutually Recursive functions
@@ -680,7 +680,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_ht32f1xxxx_01.o(RESET)
 </UL>
 <P><STRONG><a name="[89]"></a>IAP_Handler</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, iap_handler.o(i.IAP_Handler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 2160<LI>Call Chain = IAP_Handler &rArr; SPI_FLASH_Init &rArr; SPI_FLASH_BufferRead &rArr; SPI_FLASH_SendByte
+<BR><BR>[Stack]<UL><LI>Max Depth = 392<LI>Call Chain = IAP_Handler &rArr; IAP_Download &rArr; xmodem &rArr; SPI_FLASH_BufferWrite &rArr; SPI_FLASH_PageWrite &rArr; SPI_FLASH_WriteEnable &rArr; SPI_FLASH_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_WriteStatus
@@ -1093,8 +1093,7 @@ Global Symbols
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ClearOutBits
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_SendByte
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DISPLAY_GetImageInfo
+<BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DISPLAY_GetImageInfo
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xmodem
 </UL>
 
@@ -1106,8 +1105,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xmodem
 </UL>
 
-<P><STRONG><a name="[8b]"></a>SPI_FLASH_Init</STRONG> (Thumb, 188 bytes, Stack size 2112 bytes, spi_flash_mx66l51235f.o(i.SPI_FLASH_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 2160<LI>Call Chain = SPI_FLASH_Init &rArr; SPI_FLASH_BufferRead &rArr; SPI_FLASH_SendByte
+<P><STRONG><a name="[8b]"></a>SPI_FLASH_Init</STRONG> (Thumb, 146 bytes, Stack size 56 bytes, spi_flash_mx66l51235f.o(i.SPI_FLASH_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = SPI_FLASH_Init &rArr; AFIO_GPxConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
@@ -1116,7 +1115,6 @@ Global Symbols
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Cmd
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetOutBits
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Wakeup
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_BufferRead
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Handler
@@ -1733,7 +1731,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 206 bytes, Stack size 16 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 2176<LI>Call Chain = main &rArr; SPI_FLASH_Init &rArr; SPI_FLASH_BufferRead &rArr; SPI_FLASH_SendByte
+<BR><BR>[Stack]<UL><LI>Max Depth = 408<LI>Call Chain = main &rArr; IAP_Handler &rArr; IAP_Download &rArr; xmodem &rArr; SPI_FLASH_BufferWrite &rArr; SPI_FLASH_PageWrite &rArr; SPI_FLASH_WriteEnable &rArr; SPI_FLASH_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TextColorSet

@@ -893,25 +893,25 @@ void LCD_DrawCircle(u8 X_Location, u16 Y_Location, u16 Radius,ColorType Color)
 
 void TFT_DrawPicDMA(u16 X,u16 Y,u16 Height,u16 Width ,u8 ptr_num)
 {
-	u32 i;
-	u32 picsize;
-	u32 pic_addr;
-	u8 data[200];
+//	u32 i;
+//	u32 picsize;
+//	u32 pic_addr;
+//	u8 data[200];
 
-	pic_addr = 0;
-	LCD_SetDisplayArea(X,Y,Height,Width);
-	
-	LCD_WriteRAMPrior(); // Get ready to write GRAM
-  picsize = (Height) * (Width) * 3;//byte
+//	pic_addr = 0;
+//	LCD_SetDisplayArea(X,Y,Height,Width);
+//	
+//	LCD_WriteRAMPrior(); // Get ready to write GRAM
+//  picsize = (Height) * (Width) * 3;//byte
 
-	
-	for(pic_addr=0;pic_addr < picsize; pic_addr +=200 )
-	{
-		SPI_FLASH_BufferRead(data,pic_addr,200);
+//	
+//	for(pic_addr=0;pic_addr < picsize; pic_addr +=200 )
+//	{
+//		SPI_FLASH_BufferRead(data,pic_addr,200);
 
-		for(i=0;i < 200;i++)
-		   EBI_LCD->EBI_LCD_RAM = data[i];
-}
+//		for(i=0;i < 200;i++)
+//		   EBI_LCD->EBI_LCD_RAM = data[i];
+//}
 
 //	SPI_FLASH_ReadDMA(pic_addr,(u32)&EBI_LCD->EBI_LCD_RAM ,picsize,SPI_FLASH_DMA_ADR_FIX_MODE);
 }

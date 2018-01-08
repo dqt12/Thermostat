@@ -435,11 +435,11 @@ ARM Macro Assembler    Page 7
   236 00000000                 END
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\ht32\12345\obj\ht32_op.d -o.\ht32\12345\obj\ht32_op.o -I"C:\User
-s\my asus\Desktop\HT32F12345 -Workshop\MDK_ARMv5\RTE" -IC:\Keil_v5\ARM\PACK\Hol
-tek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx -IC:\Keil_v5\ARM\CMSIS\Include --
-predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 515" --predef
-ine="USE_HT32F12345 SETA 1" --predefine="USE_HT32_CHIP SETA 3" --list=.\ht32\12
-345\list\ht32_op.lst ht32_op.s
+s\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE" -IC:\Keil_v5\ARM\PACK\H
+oltek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx -IC:\Keil_v5\ARM\CMSIS\Include 
+--predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 515" --pred
+efine="USE_HT32F12345 SETA 1" --predefine="USE_HT32_CHIP SETA 3" --list=.\ht32\
+12345\list\ht32_op.lst ht32_op.s
 
 
 

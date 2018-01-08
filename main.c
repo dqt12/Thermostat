@@ -8,7 +8,7 @@
 #include "spi_flash.h"
 #include "ESP8266.h"
 #include "main.h"
-#include "picture.h"
+//#include "picture.h"
 
 // FOR USB VCP
 #include "ht32_usbd_core.h"
