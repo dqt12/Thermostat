@@ -92,8 +92,19 @@ typedef struct
   u16 Know;
 }KeyCmd_TypeDef;
 
+typedef enum
+{
+	READ_X,
+	READ_Y,
+} Touch_Screen_Enum;
+
+
 extern KeyCmd_TypeDef KeyCmd;
 
+void Read_X(void);
+void Read_Y(void);
+
+extern Touch_Screen_Enum Flag_LINE;
 /* Exported variables --------------------------------------------------------------------------------------*/
 extern UI_T gUI;
 

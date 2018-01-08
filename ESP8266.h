@@ -10,9 +10,9 @@
 #endif
 
 
-
-#define WIFI_RST_PORT   HT_GPIOD
-#define WIFI_RST_PIN    GPIO_PIN_2
+//USE PC12
+#define WIFI_RST_PORT   HT_GPIOC
+#define WIFI_RST_PIN    GPIO_PIN_12
 
 
 #define USE_WIFI_AUTOLINK

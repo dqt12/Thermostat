@@ -245,7 +245,7 @@ void BFTM0_IRQHandler(void)
 	else CNT_20mS++;
 
 
-	if(CNT_500mS >= 500)//100ms
+	if(CNT_500mS >= 100)//100ms
 	{
 		CNT_500mS = 0;
 		FLAG_500mS = 1; 		
@@ -329,17 +329,55 @@ void USART0_IRQHandler(void)
  * @retval  None
  ************************************************************************************************************/
 extern vu32 ADC_DATA[5];
+
+extern Touch_Screen_Enum Flag_LINE;
+
 void ADC_IRQHandler(void)
 {
-	
+	u16 buf;	
+	static u8 cont = 0;
 	ADC_ClearIntPendingBit(HT_ADC,ADC_INT_CYCLE_EOC);
 
 	ADC_DATA[0] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA0);
 	ADC_DATA[1] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA1);
 	ADC_DATA[2] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA2);
-	ADC_DATA[3] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA3);
-	ADC_DATA[4] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA4);
-
+	
+	
+	if(Flag_LINE == READ_X)
+	{
+		
+	  buf = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA4);
+		buf = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA3);
+		if(buf<1000)
+			ADC_DATA[3] = buf;
+		
+		
+		cont++;
+		if(cont >= 10)
+		{
+			Read_Y();
+			cont = 0;
+			Flag_LINE = READ_Y;
+		}
+			
+	}else if(Flag_LINE == READ_Y)
+	{
+		buf = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA3);
+		
+		buf = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA4);
+		
+		if(buf<1000)
+			ADC_DATA[4] = buf;
+		
+		cont++;
+		if(cont >= 10)
+		{
+			Read_X();
+			cont = 0;
+			Flag_LINE = READ_X;
+		}
+	}	
+	
 
 }
 

@@ -156,7 +156,7 @@
           <Type>0</Type>
           <LineNumber>140</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>2624</Address>
+          <Address>3060</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -170,9 +170,9 @@
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>464</LineNumber>
+          <LineNumber>495</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>13678</Address>
+          <Address>12154</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -181,14 +181,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../main.c\464</Expression>
+          <Expression>\\HT32\../main.c\495</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>470</LineNumber>
+          <LineNumber>200</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>13736</Address>
+          <Address>3436</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -197,7 +197,23 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../main.c\470</Expression>
+          <Expression>\\HT32\../main.c\200</Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>200</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>3466</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\HT32\../main.c\200</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -220,6 +236,21 @@
           <count>3</count>
           <WinNumber>1</WinNumber>
           <ItemText>LCD_IData,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>TEMP</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>KEY_STATE</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>ADC_DATA</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

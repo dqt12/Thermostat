@@ -18,7 +18,7 @@
 #include "_ht32_project_source.h"
 
 //USE FOR LCD DISPLAY
-#include "lcd_display.h"
+//#include "lcd_display.h"
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 __ALIGN4 USBDCore_TypeDef gUSBCore;
@@ -431,10 +431,98 @@ void Demo_full(void)
 }
 
 
+//void 
+
+#define PIN_XL_PORT		HT_GPIOD
+#define PIN_XL_PIN		GPIO_PIN_1
+
+#define PIN_XR_PORT		HT_GPIOA
+#define PIN_XR_PIN		GPIO_PIN_0
+
+#define PIN_YT_PORT		HT_GPIOA
+#define PIN_YT_PIN		GPIO_PIN_1
+	
+#define PIN_YB_PORT		HT_GPIOD
+#define PIN_YB_PIN		GPIO_PIN_2
+
+
+#define READ_XR_PORT		GPIO_PA
+#define READ_XR_PIN			AFIO_PIN_0
+
+#define READ_YT_PORT		GPIO_PA
+#define READ_YT_PIN		  AFIO_PIN_1
+
+
+
+
+
+Touch_Screen_Enum Flag_LINE;
+
+void Read_X(void)
+{	
+	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_GPIO);//Y+
+  GPIO_DriveConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DV_16MA); //Y+ HIGH
+  GPIO_DirectionConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DIR_OUT);
+	GPIO_WriteOutBits(PIN_YT_PORT, PIN_YT_PIN, SET); 
+	
+  GPIO_DriveConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DV_16MA); //Y- LOW
+  GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_OUT);
+	GPIO_WriteOutBits(PIN_YB_PORT, PIN_YB_PIN, RESET); 	
+	
+  GPIO_PullResistorConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_PR_DISABLE);	//X- FLOT
+  GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_IN);
+
+
+	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_ADC);//X+
+
+}
+
+
+void Read_Y(void)
+{	
+	
+	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_GPIO);//X+
+
+  GPIO_DriveConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DV_16MA); //X+ HIGH
+  GPIO_DirectionConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DIR_OUT);
+	GPIO_WriteOutBits(PIN_XR_PORT, PIN_XR_PIN, SET); 
+	
+  GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_16MA); //X- LOW
+  GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
+	GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
+	
+  GPIO_PullResistorConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_PR_DISABLE);	//Y- FLOT
+  GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_IN);
+
+	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_ADC);//Y+
+	
+
+}
+
+
+void Touch_Screen(Touch_Screen_Enum flag)
+{
+
+	
+	if(flag == READ_X)
+	{
+		Read_X();
+	}
+	else if(flag == READ_Y)
+	{
+		Read_Y();	
+	}
+	
+
+
+
+}
+
+
 int main(void)
 {
   CKCU_Configuration();               /* System Related configuration       */ 	
-	GPIO_Configuration();
+//	GPIO_Configuration();
 	NVIC_Configuration();
 	SYSTICK_configuration();
 	BFTM_Configuration();
@@ -465,91 +553,89 @@ int main(void)
 //	WIFI_INIT();
 
 // TFT_DrawPicDMA(0, 0, 272, 480,0);
-	 LCD_DISPLAY_GetImageInfo();
+//	 LCD_DISPLAY_GetImageInfo();
 
-					 while(1)
-					{
-						u8 i;
-						for(i=0; i<170; i++)
-						{
-							gUI.Demo1_ShowPicID = i;
-							Demo_full();
-						}
-						for(i=1; i<19; i++)
-						{
-							Delay(300);
-							gUI.Demo1_ShowPicID = i;
-							Demo_full();
-						}
-						
-							Delay(300);
-					}
+//					 while(1)
+//					{
+//						u8 i;
+//						for(i=0; i<170; i++)
+//						{
+//							gUI.Demo1_ShowPicID = i;
+//							Demo_full();
+//						}
+//						for(i=1; i<19; i++)
+//						{
+//							Delay(300);
+//							gUI.Demo1_ShowPicID = i;
+//							Demo_full();
+//						}
+//						
+//							Delay(300);
+//					}
 
+
+	KEY_STATE = 0;
+	TEMP.En = 0;
+	TEMP.SetEn = 0;
+	TEMP.Now = 260;
+	TEMP.Set = 260;
+	Flag_LINE = READ_Y;
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	while(1);
-	
-	
-//	TEMP.En = 0;
-//	TEMP.SetEn = 0;
-//	TEMP.Now = 260;
-//	TEMP.Set = 260;
-//	
-//	LCD_DrawFillRect(250,0,271,230,White);
-////	TFT_DrawPicture(20, 220, 48, 100, HT32_Table);
-//	
-//	while(1)
-//	{
-//		
-//		if(FLAG_10mS)
-//		{
-//			FLAG_10mS = 0;
-////			WIFI_CAP();
-//		}		 
-//		 	
-//		if(FLAG_20mS)
-//		{
-//			FLAG_20mS = 0;
-//			ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);		
-//			KEY_Scan();
-//		}
-//		
-//		if(FLAG_500mS)
-//		{
-//			FLAG_500mS = 0;
-////			WIFI_Control();
-////			UPDATA();
-//			
-//				
-//		}
-//		
-//		if(FLAG_1S) //1s
-//		{
-//			FLAG_1S = 0;
-//			TEMP.Time++;
-//			HT32F_DVB_LEDToggle(HT_LED1);
-//			TEMP.Now = ADC_to_TEMP(ADC_DATA[0]);			
-//			
-//			Display_Temp();
-//			
-//			if(FLAG_DISPLAY == SET) 
-//			{
-//			;
-//			}
-//			else 
-//			{
-//				Display_Temp();
-//			}
-//		}
-//	}	
+	LCD_Clear(Red);
+	LCD_DrawFillRect(250,0,271,230,White);
+//	TFT_DrawPicture(20, 220, 48, 100, HT32_Table);
+
+
+
+	while(1)
+	{
+		
+		if(FLAG_10mS)
+		{
+			FLAG_10mS = 0;
+//			WIFI_CAP();
+		}		 
+		 	
+		if(FLAG_20mS)
+		{
+			FLAG_20mS = 0;
+				
+//			Touch_Screen(Flag_LINE);
+			ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
+			KEY_Scan();
+		}
+		
+		if(FLAG_500mS)
+		{
+			FLAG_500mS = 0;
+			
+			Display_Temp();
+			
+//			WIFI_Control();
+//			UPDATA();
+			
+				
+		}
+		
+		if(FLAG_1S) //1s
+		{
+			FLAG_1S = 0;
+			TEMP.Time++;
+	//		HT32F_DVB_LEDToggle(HT_LED1);
+			TEMP.Now = ADC_to_TEMP(ADC_DATA[0]);			
+			
+			
+			
+			if(FLAG_DISPLAY == SET) 
+			{
+			;
+			}
+			else 
+			{
+				Display_Temp();
+			}
+		}
+	}	
 
 }	
 
