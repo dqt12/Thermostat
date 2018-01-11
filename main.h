@@ -96,6 +96,7 @@ typedef enum
 {
 	READ_X,
 	READ_Y,
+	READ_FINE,
 } Touch_Screen_Enum;
 
 

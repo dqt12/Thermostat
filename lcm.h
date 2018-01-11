@@ -206,11 +206,11 @@ void LCD_TextColorSet(ColorType Color);//OK
 
 
 void LCD_DrawPoint(u16 Xpos, u16 Ypos, ColorType Color);//OK
-void LCD_DrawLine(u8 X_Location, u16 Y_Location, u16 Length,u8 Direction, ColorType Color);//OK
-void LCD_DrawRect(u8 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color);//OK
-void LCD_DrawFillRect(u8 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color);//OK
-void LCD_DrawCircle(u8 X_Location, u16 Y_Location, u16 Radius,ColorType Color);//null
-void LCD_DrawFillCircle(u8 X_Location, u16 Y_Location, u16 Radius,ColorType Color);//null
+void LCD_DrawLine(u16 X_Location, u16 Y_Location, u16 Length,u8 Direction, ColorType Color);//OK
+void LCD_DrawRect(u16 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color);//OK
+void LCD_DrawFillRect(u16 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color);//OK
+void LCD_DrawCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color);//null
+void LCD_DrawFillCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color);//null
 
 void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii);//OK
 void LCD_DrawString(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, char *Sptr);//OK

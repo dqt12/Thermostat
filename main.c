@@ -70,8 +70,16 @@ void Delay(u32 nTime);
 void TimingDelay(void);
 
 
+
 /* Global functions ----------------------------------------------------------------------------------------*/
-vu32 ADC_DATA[5];
+vu16 ADC_DATA[3];
+vu16 ADC_Touch_X[10];
+vu16 ADC_Touch_Y[10];
+vu16 ADC_TFiler_X;
+vu16 ADC_TFiler_Y;
+vu16 Touch_X;
+vu16 Touch_Y;
+
 
 //0~50Ce
 const u16 NTC_10K_MAP[]={
@@ -111,6 +119,18 @@ u8 FLAG_DISPLAY ;
 
 void Display_Temp(void)
 {
+
+		LCD_DrawString(10,180, 16, 8, 0,"ADCT X~Y:");
+		LCD_ShowNum(80,180,16,0,ADC_TFiler_X);
+		LCD_ShowNum(80,180+16*1,16,0,Touch_X);
+
+	  LCD_ShowNum(120,180,16,0,ADC_TFiler_Y);
+		LCD_ShowNum(120,180+16*1,16,0,Touch_Y);
+}
+
+
+void Display_Temp_1(void)
+{
 		if(TEMP.SetEn)
 		{
 			LCD_BackColorSet(Yellow);                                                
@@ -143,9 +163,20 @@ void Display_Temp(void)
 		LCD_ShowNum(120,160,16,0,ADC_DATA[1]);
 		LCD_ShowNum(160,160,16,0,ADC_DATA[2]);
 
-		LCD_DrawString(10,180, 16, 8, 0,"ADC3~4:");
-		LCD_ShowNum(80,180,16,0,ADC_DATA[3]);
-		LCD_ShowNum(120,180,16,0,ADC_DATA[4]);
+		LCD_DrawString(10,180, 16, 8, 0,"ADCT X~Y:");
+		LCD_ShowNum(80,180,16,0,ADC_TFiler_X);
+		LCD_ShowNum(80,180+16*1,16,0,Touch_X);
+//		LCD_ShowNum(80,180+16*2,16,0,ADC_Touch[0][2]);
+//		LCD_ShowNum(80,180+16*3,16,0,ADC_Touch[0][3]);
+//		LCD_ShowNum(80,180+16*4,16,0,ADC_Touch[0][4]);
+//		
+		
+		
+	  LCD_ShowNum(120,180,16,0,ADC_TFiler_Y);
+		LCD_ShowNum(120,180+16*1,16,0,Touch_Y);
+//		LCD_ShowNum(120,180+16*2,16,0,ADC_Touch[1][2]);
+//		LCD_ShowNum(120,180+16*3,16,0,ADC_Touch[1][3]);
+//		LCD_ShowNum(120,180+16*4,16,0,ADC_Touch[1][4]);
 }
 
 
@@ -437,20 +468,20 @@ void Demo_full(void)
 #define PIN_XL_PIN		GPIO_PIN_1
 
 #define PIN_XR_PORT		HT_GPIOA
-#define PIN_XR_PIN		GPIO_PIN_0
+#define PIN_XR_PIN		GPIO_PIN_1
 
 #define PIN_YT_PORT		HT_GPIOA
-#define PIN_YT_PIN		GPIO_PIN_1
+#define PIN_YT_PIN		GPIO_PIN_0
 	
 #define PIN_YB_PORT		HT_GPIOD
 #define PIN_YB_PIN		GPIO_PIN_2
 
 
 #define READ_XR_PORT		GPIO_PA
-#define READ_XR_PIN			AFIO_PIN_0
+#define READ_XR_PIN			AFIO_PIN_1
 
 #define READ_YT_PORT		GPIO_PA
-#define READ_YT_PIN		  AFIO_PIN_1
+#define READ_YT_PIN		  AFIO_PIN_0
 
 
 
@@ -461,17 +492,16 @@ Touch_Screen_Enum Flag_LINE;
 void Read_X(void)
 {	
 	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_GPIO);//Y+
-  GPIO_DriveConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DV_16MA); //Y+ HIGH
+  GPIO_DriveConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DV_8MA); //Y+ HIGH
   GPIO_DirectionConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DIR_OUT);
 	GPIO_WriteOutBits(PIN_YT_PORT, PIN_YT_PIN, SET); 
 	
-  GPIO_DriveConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DV_16MA); //Y- LOW
+  GPIO_DriveConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DV_8MA); //Y- LOW
   GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_OUT);
 	GPIO_WriteOutBits(PIN_YB_PORT, PIN_YB_PIN, RESET); 	
 	
   GPIO_PullResistorConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_PR_DISABLE);	//X- FLOT
   GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_IN);
-
 
 	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_ADC);//X+
 
@@ -482,42 +512,100 @@ void Read_Y(void)
 {	
 	
 	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_GPIO);//X+
-
-  GPIO_DriveConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DV_16MA); //X+ HIGH
+  GPIO_DriveConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DV_8MA); //X+ HIGH
   GPIO_DirectionConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DIR_OUT);
 	GPIO_WriteOutBits(PIN_XR_PORT, PIN_XR_PIN, SET); 
 	
-  GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_16MA); //X- LOW
+  GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_8MA); //X- LOW
   GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
 	GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
 	
   GPIO_PullResistorConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_PR_DISABLE);	//Y- FLOT
   GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_IN);
-
+	
 	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_ADC);//Y+
 	
+}
 
+u16 ADC_Filer(vu16 *data,u8 num)
+{
+	u8 i,j;
+	u32 sum = 0;
+	
+	for(i=0;i<num;i++)
+	{
+			for(j=i;j<num;j++)
+			{
+				if(data[i] > data[j])
+				{
+					sum = data[i];
+					data[i] = data[j];
+					data[j] = sum;
+				
+				}
+			}	
+	}
+	
+	
+	sum = 0;
+	
+	for(i=5;i<num;i++)
+	{
+		sum += data[i];
+	
+	}
+	
+	sum = sum/(num-5);
+	
+	return (u16)sum;
 }
 
 
+
+u16 Touch_X_F;
+u16 Touch_Y_F;
 void Touch_Screen(Touch_Screen_Enum flag)
 {
 
-	
-	if(flag == READ_X)
+	if(flag == READ_FINE)
 	{
+		
+		ADC_TFiler_X = ADC_Filer(&ADC_Touch_X[0],10);
+		ADC_TFiler_Y = ADC_Filer(&ADC_Touch_Y[0],10);
+		
+		
+		Touch_X = (ADC_TFiler_Y * 480 /4096);
+		Touch_Y = 272 - (ADC_TFiler_X * 272 /4096);
+		
+		//LCD_DrawPoint(Touch_X,Touch_Y,Blue);
+		LCD_DrawFillRect(Touch_X,Touch_Y,5,5,Blue);
 		Read_X();
+		Flag_LINE = READ_X;
+		
+		
+		//if(Touch_X < 480 && Touch_Y < 272)
+			
+		
+		
 	}
-	else if(flag == READ_Y)
-	{
-		Read_Y();	
-	}
+}
+
+void Touch_Screen_calibration()
+{
 	
 
 
 
 }
 
+
+void  ADC_Touch_Screen_Init(void)
+{
+
+	Read_X();
+	Flag_LINE = READ_X;
+
+}
 
 int main(void)
 {
@@ -550,6 +638,8 @@ int main(void)
 	
 	KEY_Configuration();
 	ADC_Configuration();
+	
+	ADC_Touch_Screen_Init();
 //	WIFI_INIT();
 
 // TFT_DrawPicDMA(0, 0, 272, 480,0);
@@ -579,10 +669,10 @@ int main(void)
 	TEMP.SetEn = 0;
 	TEMP.Now = 260;
 	TEMP.Set = 260;
-	Flag_LINE = READ_Y;
+
 	
 	LCD_Clear(Red);
-	LCD_DrawFillRect(250,0,271,230,White);
+//	LCD_DrawFillRect(250,0,271,230,White);
 //	TFT_DrawPicture(20, 220, 48, 100, HT32_Table);
 
 
@@ -600,7 +690,7 @@ int main(void)
 		{
 			FLAG_20mS = 0;
 				
-//			Touch_Screen(Flag_LINE);
+			Touch_Screen(Flag_LINE);
 			ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
 			KEY_Scan();
 		}
