@@ -766,7 +766,7 @@ void LCD_DrawPoint(u16 Xpos, u16 Ypos, ColorType Color)
   * @param  Color: line color.
   * @retval None
   ***********************************************************************************************************/
-void LCD_DrawLine(u8 X_Location, u16 Y_Location, u16 Length, u8 Direction, ColorType Color)
+void LCD_DrawLine(u16 X_Location, u16 Y_Location, u16 Length, u8 Direction, ColorType Color)
 {
   u32 i = 0;
 
@@ -800,7 +800,7 @@ void LCD_DrawLine(u8 X_Location, u16 Y_Location, u16 Length, u8 Direction, Color
   * @param  Color: line color.
   * @retval None
   ***********************************************************************************************************/
-void LCD_DrawRect(u8 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color)
+void LCD_DrawRect(u16 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color)
 {
   LCD_DrawLine(X_Location, Y_Location, Width, Horizontal,Color);
   LCD_DrawLine(X_Location, (Y_Location + Height), Width, Horizontal,Color);
@@ -818,7 +818,7 @@ void LCD_DrawRect(u8 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType
   * @param  Color: fill color.
   * @retval None
   ***********************************************************************************************************/
-void LCD_DrawFillRect(u8 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color)
+void LCD_DrawFillRect(u16 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color)
 {
 	
 	u32 i = (Height) * (Width);
@@ -841,7 +841,7 @@ void LCD_DrawFillRect(u8 X_Location, u16 Y_Location, u16 Height, u16 Width,Color
   * @param  Color: line color.
   * @retval None
   ***********************************************************************************************************/
-void LCD_DrawCircle(u8 X_Location, u16 Y_Location, u16 Radius,ColorType Color)
+void LCD_DrawCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color)
 {
 //	s32  DV;  // Decision Variable
 //  u32  X_Value;  // Current X Value
@@ -925,7 +925,7 @@ void TFT_DrawPicDMA(u16 X,u16 Y,u16 Height,u16 Width ,u8 ptr_num)
   * @param  Color: fill color.
   * @retval None
   ***********************************************************************************************************/
-void LCD_DrawFillCircle(u8 X_Location, u16 Y_Location, u16 Radius,ColorType Color)
+void LCD_DrawFillCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color)
 {
 	;
 }
