@@ -16,9 +16,9 @@
 #ifdef __cplusplus
  extern "C" {
 #endif
-#include "ht32.h" 
-//#include "board.h"
 
+//#include "board.h"
+#include "ht32.h"
 /* Image information related typedef */
 typedef __PACKED_H struct
 {

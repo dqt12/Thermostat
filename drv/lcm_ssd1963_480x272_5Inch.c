@@ -407,9 +407,10 @@ void LCD_WriteRAMPrior(void)
 
 /*********************************************************************************************************//**
   * @brief  Writes to the LCD RAM.
-  * @param  RGB_Code: the pixel color in RGB mode (5-6-5).
+  * @param  RGB_Code: the pixel color in RGB mode (5-6-5) and (8-8-8)
   * @retval None
   ***********************************************************************************************************/
+
 void LCD_WriteRAM(ColorType Color)
 {
 		#ifdef LCD_RGBMODE_RGB565

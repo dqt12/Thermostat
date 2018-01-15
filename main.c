@@ -433,6 +433,8 @@ void Demo_full(void)
 
 int main(void)
 {
+	u8 i ;
+	
   CKCU_Configuration();               /* System Related configuration       */ 	
 	GPIO_Configuration();
 	NVIC_Configuration();
@@ -464,45 +466,28 @@ int main(void)
 	ADC_Configuration();
 //	WIFI_INIT();
 
-// TFT_DrawPicDMA(0, 0, 272, 480,0);
 	 LCD_DISPLAY_GetImageInfo();
 
-					 while(1)
-					{
-						u8 i;
-						for(i=0; i<170; i++)
-						{
-							gUI.Demo1_ShowPicID = i;
-							Demo_full();
-						}
-						for(i=1; i<19; i++)
-						{
-							Delay(300);
-							gUI.Demo1_ShowPicID = i;
-							Demo_full();
-						}
-						
-							Delay(300);
-					}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	while(1);
-	
+	while(1)
+	{
+				for(i=0; i<150; i++)
+			{
+				gUI.Demo1_ShowPicID = i;
+				Demo_full();
+				Delay(15);
+			}
+	}		
+			
+			
+			
+			
 	
 //	TEMP.En = 0;
 //	TEMP.SetEn = 0;
 //	TEMP.Now = 260;
 //	TEMP.Set = 260;
 //	
+//	LCD_Clear(Red);
 //	LCD_DrawFillRect(250,0,271,230,White);
 ////	TFT_DrawPicture(20, 220, 48, 100, HT32_Table);
 //	
@@ -540,14 +525,18 @@ int main(void)
 //			
 //			Display_Temp();
 //			
-//			if(FLAG_DISPLAY == SET) 
-//			{
-//			;
-//			}
-//			else 
-//			{
-//				Display_Temp();
-//			}
+
+
+//			
+//			
+////			if(FLAG_DISPLAY == SET) 
+////			{
+////			;
+////			}
+////			else 
+////			{
+////				Display_Temp();
+////			}
 //		}
 //	}	
 

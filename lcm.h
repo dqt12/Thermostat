@@ -122,6 +122,7 @@ typedef struct
 #define LCM_RST_ACTIVE()          GPIO_ClearOutBits(GPIO_PORT[LCD_EBI_RST_GPIO_ID], LCD_EBI_RST_GPIO_PIN);
 #define LCM_RST_INACTIVE()        GPIO_SetOutBits(GPIO_PORT[LCD_EBI_RST_GPIO_ID], LCD_EBI_RST_GPIO_PIN);
 
+
 #ifdef LCD_RGBMODE_RGB565
 /* LCD 16bit color RGB565         */
 typedef u16		ColorType ;
@@ -137,6 +138,7 @@ typedef u16		ColorType ;
 #define Cyan           0x7FFF
 #define Yellow         0xFFE0
 #endif
+
 
 #ifdef LCD_RGBMODE_RGB888
 /* LCD 24bit color RGB888         */
