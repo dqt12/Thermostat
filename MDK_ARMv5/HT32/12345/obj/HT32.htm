@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\HT32\12345\obj\HT32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\HT32\12345\obj\HT32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Fri Jan 12 14:34:53 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Fri Jan 12 16:50:35 2018
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -518,8 +518,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[71]"></a>Display_Temp</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, main.o(i.Display_Temp))
-<BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = Display_Temp &rArr; LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
+<P><STRONG><a name="[71]"></a>Display_Temp</STRONG> (Thumb, 154 bytes, Stack size 24 bytes, main.o(i.Display_Temp))
+<BR><BR>[Stack]<UL><LI>Max Depth = 116<LI>Call Chain = Display_Temp &rArr; LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
 </UL>
 <BR>[Calls]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_ShowNum
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawString
@@ -751,7 +751,6 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_ShowNum
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawString
-<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
@@ -1267,7 +1266,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
-<P><STRONG><a name="[cf]"></a>Touch_Screen</STRONG> (Thumb, 98 bytes, Stack size 16 bytes, main.o(i.Touch_Screen))
+<P><STRONG><a name="[cf]"></a>Touch_Screen</STRONG> (Thumb, 118 bytes, Stack size 16 bytes, main.o(i.Touch_Screen))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = Touch_Screen &rArr; Read_X &rArr; AFIO_GPxConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillRect
@@ -1656,14 +1655,13 @@ Global Symbols
 
 <P><STRONG><a name="[11a]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 330 bytes, Stack size 16 bytes, main.o(i.main))
+<P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 246 bytes, Stack size 16 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 408<LI>Call Chain = main &rArr; IAP_Handler &rArr; IAP_Download &rArr; xmodem &rArr; SPI_FLASH_BufferWrite &rArr; SPI_FLASH_PageWrite &rArr; SPI_FLASH_WriteEnable &rArr; SPI_FLASH_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TextColorSet
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawString
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Config
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_BackColorSet

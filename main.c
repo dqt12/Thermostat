@@ -141,7 +141,8 @@ void Display_Temp(void)
 		LCD_ShowNum(80,180+16*1,16,0,Touch_Y);
 		
 		LCD_ShowNum(120,180,16,0,ADC_TFiler_Z);
-		LCD_ShowNum(120,180+16*1,16,0,Touch_Z);
+		LCD_ShowNum(120,180+16*1,16,0,Touch_Z/10000);
+		LCD_ShowNum(120+8*4,180+16*1,16,0,Touch_Z%10000);
 }
 
 
@@ -647,7 +648,7 @@ void Touch_Screen(Touch_Screen_Enum flag)
 		
 		
 		
-	//	Touch_Z =  (4096*ADC_TFiler_X) / ADC_TFiler_Z - ADC_TFiler_X - ADC_TFiler_Y;
+		Touch_Z =  (4096*ADC_TFiler_X) / ADC_TFiler_Z - ADC_TFiler_X - ADC_TFiler_Y;
 		Touch_X = (ADC_TFiler_Y * 480 /4096);
 		Touch_Y = 272 - (ADC_TFiler_X * 272 /4096);
 		
