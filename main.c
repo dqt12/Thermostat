@@ -51,7 +51,7 @@ const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
 UI_T gUI;
 LCD_DrawSize LCD_IData;
 u16 RemapTable[178];
-
+LCD_DISPLAY_FlagTypedef FLAG_IMG;
 
 
 /* Private function prototypes -----------------------------------------------------------------------------*/
@@ -423,7 +423,8 @@ void Demo_full(void)
   init.ImageLength      = 1;
   init.FrameRate        = 0;
   LCD_DISPLAY_Init(&init);
-
+	//LCD_StarterSet(u16 X_Location, u16 Y_Location);
+	//void LCD_SetDisplayArea(u16 Column, u16 Page, u16 Height, u16 Width);//OK
 	while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
   {
     LCD_DISPLAY_Process();
@@ -466,15 +467,15 @@ int main(void)
 	ADC_Configuration();
 //	WIFI_INIT();
 
-	 LCD_DISPLAY_GetImageInfo();
+	 FLAG_IMG = LCD_DISPLAY_GetImageInfo();
 
 	while(1)
 	{
-				for(i=0; i<150; i++)
+				for(i=0; i<12; i++)
 			{
 				gUI.Demo1_ShowPicID = i;
 				Demo_full();
-				Delay(15);
+				Delay(300);
 			}
 	}		
 			

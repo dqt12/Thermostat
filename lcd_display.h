@@ -64,6 +64,14 @@ typedef __PACKED_H struct
   u32 ImageCounter;
 } __PACKED_F LCD_DISPLAY_InfoTypedef;
 
+typedef enum 
+{
+		PICOK = 1,
+    NOPIC,
+    NODATA,//Picture memory alloc error!
+	
+}LCD_DISPLAY_FlagTypedef;
+
 #define LCD_DISPLAY_MODE_NORMAL           0
 #define LCD_DISPLAY_MODE_TRANSPARENT_1    1
 #define LCD_DISPLAY_MODE_TRANSPARENT_2    2
@@ -73,7 +81,7 @@ extern LCD_DISPLAY_InfoTypedef gLCD_DISPLAY;
 void LCD_DISPLAY_Init(LCD_DISPLAY_InitTypedef* pDisplay);
 void LCD_DISPLAY_Process(void);
 void LCD_DISPLAY_TimebaseHandler(void);
-void LCD_DISPLAY_GetImageInfo(void);
+LCD_DISPLAY_FlagTypedef  LCD_DISPLAY_GetImageInfo(void);
 
 #ifdef __cplusplus
 }
