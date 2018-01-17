@@ -86,12 +86,13 @@ typedef struct
 
 } UI_T;
 
-typedef struct
-{
-  u16 Kold;
-  u16 Know;
-}KeyCmd_TypeDef;
+//typedef struct
+//{
+//  u16 Kold;
+//  u16 Know;
+//}KeyCmd_TypeDef;
 
+<<<<<<< HEAD
 typedef enum
 {
 	READ_X,
@@ -102,6 +103,9 @@ typedef enum
 
 
 extern KeyCmd_TypeDef KeyCmd;
+=======
+//extern KeyCmd_TypeDef KeyCmd;
+>>>>>>> master
 
 void Read_X(void);
 void Read_Y(void);
@@ -119,7 +123,7 @@ extern UI_T gUI;
 //void TempertureInit(void);
 //void TempertureHandler(u16 adr);
 //void TouchKeyHandler(void);
-void Demo_part(LCD_DISPLAY_FrameInfoTypeDef* qq);
+//void Demo_part(LCD_DISPLAY_FrameInfoTypeDef* qq);
 //void Demo_full(void);
 //void Demo0(void);
 //void Demo1(void);

@@ -150,6 +150,7 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN2 -FF0HT32F -FS00 -FL0FC00 -FF1HT32F_OPT -FS11FF00000 -FL1400 -FP0($$Device:HT32F12345$ARM\Flash\HT32F.FLM) -FP1($$Device:HT32F12345$ARM\Flash\HT32F_OPT.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
+<<<<<<< HEAD
       <Breakpoint>
         <Bp>
           <Number>0</Number>
@@ -246,53 +247,41 @@
           <ItemText>Touch_Z,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
+=======
+      <Breakpoint/>
+>>>>>>> master
       <WatchWindow2>
         <Ww>
           <count>0</count>
           <WinNumber>2</WinNumber>
-          <ItemText>CMD_Cont,0x0A</ItemText>
+          <ItemText>gLCD_Display_ImageInfo,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>2</WinNumber>
-          <ItemText>CMD_Cont_Trg,0x0A</ItemText>
+          <ItemText>gLCD_Display,0x10</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>2</WinNumber>
-          <ItemText>FLAG_CMDSET</ItemText>
+          <ItemText>FLAG_IMG</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>2</WinNumber>
-          <ItemText>WIFI_REC</ItemText>
+          <ItemText>init</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>2</WinNumber>
-          <ItemText>URRxBuf,0x10</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>URRxFin</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>Thermostat_DATA</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>WIFI_FRAM</ItemText>
+          <ItemText>TableSize,0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>buf</ItemText>
+          <ItemText>pBuf</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -301,8 +290,13 @@
       </Tracepoint>
       <DebugFlag>
         <trace>0</trace>
+<<<<<<< HEAD
         <periodic>1</periodic>
         <aLwin>0</aLwin>
+=======
+        <periodic>0</periodic>
+        <aLwin>1</aLwin>
+>>>>>>> master
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>
@@ -496,13 +490,13 @@
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>13</FileNumber>
-      <FileType>4</FileType>
+      <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\lcd_display.lib</PathWithFileName>
-      <FilenameWithoutPath>lcd_display.lib</FilenameWithoutPath>
+      <PathWithFileName>..\lcd_display.c</PathWithFileName>
+      <FilenameWithoutPath>lcd_display.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

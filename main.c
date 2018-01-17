@@ -35,13 +35,13 @@ const LCD_DISPLAY_PositionTypeDef PositionTable_Full[] = {
 const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_Full = {
   1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_Full
 };
+
 const LCD_DISPLAY_PositionTypeDef PositionTable_pp[] = {
-  {0,222}
+  {0,190}
 };
 const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
   1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_pp
 };
-
 
 //extern u16 Demo_N;
 //KeyCmd_TypeDef KeyCmd;
@@ -51,7 +51,7 @@ const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
 UI_T gUI;
 LCD_DrawSize LCD_IData;
 u16 RemapTable[178];
-
+LCD_DISPLAY_FlagTypedef FLAG_IMG;
 
 
 /* Private function prototypes -----------------------------------------------------------------------------*/
@@ -462,9 +462,11 @@ void Demo_full(void)
 {
 	LCD_DISPLAY_InitTypedef init;
   //gUI.IsDemo1Update = FALSE;
-   
+ // init.
+	
   init.Mode             = LCD_DISPLAY_MODE_NORMAL;
-  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_Full;
+ // init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_Full;
+  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_pp;	
   init.pImageRemapTable = NULL;
   init.ImageStartIndex  = gUI.Demo1_ShowPicID;
   init.ImageLength      = 1;
@@ -692,6 +694,8 @@ void  ADC_Touch_Screen_Init(void)
 
 int main(void)
 {
+	u8 i ;
+	
   CKCU_Configuration();               /* System Related configuration       */ 	
 //	GPIO_Configuration();
 	NVIC_Configuration();
@@ -725,6 +729,7 @@ int main(void)
 	ADC_Touch_Screen_Init();
 //	WIFI_INIT();
 
+<<<<<<< HEAD
 // TFT_DrawPicDMA(0, 0, 272, 480,0);
 //	 LCD_DISPLAY_GetImageInfo();
 
@@ -810,6 +815,84 @@ int main(void)
 //			}
 		}
 	}	
+=======
+	 FLAG_IMG = LCD_DISPLAY_GetImageInfo();
+
+	LCD_Clear(Black);
+	
+	while(1)
+	{
+			for(i=0; i< gLCD_Display_ImageInfo.Count; i++)
+			{
+				gUI.Demo1_ShowPicID = i;
+				Demo_full();
+				Delay(15);
+			}
+			Delay(500);
+	}		
+			
+			
+			
+			
+	
+//	TEMP.En = 0;
+//	TEMP.SetEn = 0;
+//	TEMP.Now = 260;
+//	TEMP.Set = 260;
+//	
+//	LCD_Clear(Red);
+//	LCD_DrawFillRect(250,0,271,230,White);
+////	TFT_DrawPicture(20, 220, 48, 100, HT32_Table);
+//	
+//	while(1)
+//	{
+//		
+//		if(FLAG_10mS)
+//		{
+//			FLAG_10mS = 0;
+////			WIFI_CAP();
+//		}		 
+//		 	
+//		if(FLAG_20mS)
+//		{
+//			FLAG_20mS = 0;
+//			ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);		
+//			KEY_Scan();
+//		}
+//		
+//		if(FLAG_500mS)
+//		{
+//			FLAG_500mS = 0;
+////			WIFI_Control();
+////			UPDATA();
+//			
+//				
+//		}
+//		
+//		if(FLAG_1S) //1s
+//		{
+//			FLAG_1S = 0;
+//			TEMP.Time++;
+//			HT32F_DVB_LEDToggle(HT_LED1);
+//			TEMP.Now = ADC_to_TEMP(ADC_DATA[0]);			
+//			
+//			Display_Temp();
+//			
+
+
+//			
+//			
+////			if(FLAG_DISPLAY == SET) 
+////			{
+////			;
+////			}
+////			else 
+////			{
+////				Display_Temp();
+////			}
+//		}
+//	}	
+>>>>>>> master
 
 }	
 

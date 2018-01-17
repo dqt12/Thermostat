@@ -152,7 +152,7 @@ void LCD_Init(void)
 	AFIO_GPxConfig(LCD_EBI_AD6_GPIO_ID, LCD_EBI_AD6_AFIO_PIN, LCD_EBI_AD6_AFIO_MODE);
 	AFIO_GPxConfig(LCD_EBI_AD7_GPIO_ID, LCD_EBI_AD7_AFIO_PIN, LCD_EBI_AD7_AFIO_MODE);
 	
-#ifdef LCD_RGBMODE_RGB565
+#if  (LCD_CONTROL_MODE == RGB565_EBI16)
 	AFIO_GPxConfig(LCD_EBI_AD8_GPIO_ID, LCD_EBI_AD8_AFIO_PIN, LCD_EBI_AD8_AFIO_MODE);
 	AFIO_GPxConfig(LCD_EBI_AD9_GPIO_ID, LCD_EBI_AD9_AFIO_PIN, LCD_EBI_AD9_AFIO_MODE);
 	AFIO_GPxConfig(LCD_EBI_AD10_GPIO_ID, LCD_EBI_AD10_AFIO_PIN, LCD_EBI_AD10_AFIO_MODE);
@@ -340,15 +340,16 @@ void LCD_Config(void)
 //  EBI_LCD->EBI_LCD_RAM = 0x0000;			//Set the minimum brightness level.  Dimmest
 //  EBI_LCD->EBI_LCD_RAM = 0x0000;			//Divcode off
 	
-	#ifdef LCD_RGBMODE_RGB565
-  EBI_LCD->EBI_LCD_REG = 0x00F0;			//pixel data interface
-	EBI_LCD->EBI_LCD_RAM = 0x0003;			// 16-bit (565 format) 
-	#endif
-	
-	#ifdef LCD_RGBMODE_RGB888
+
+#if  (LCD_CONTROL_MODE == RGB888_EBI8)
 	EBI_LCD->EBI_LCD_REG = 0x00F0;			//pixel data interface
 	EBI_LCD->EBI_LCD_RAM = 0x0000;			// 8-bit (RGB format)  
-	#endif
+	
+#elif  (LCD_CONTROL_MODE == RGB565_EBI16)	
+  EBI_LCD->EBI_LCD_REG = 0x00F0;			//pixel data interface
+	EBI_LCD->EBI_LCD_RAM = 0x0003;			// 16-bit (565 format) 	
+	
+#endif
 	
   delay_ms(5);
 	
@@ -407,20 +408,29 @@ void LCD_WriteRAMPrior(void)
 
 /*********************************************************************************************************//**
   * @brief  Writes to the LCD RAM.
-  * @param  RGB_Code: the pixel color in RGB mode (5-6-5).
+  * @param  RGB_Code: the data for RAM
   * @retval None
   ***********************************************************************************************************/
-void LCD_WriteRAM(ColorType Color)
+void LCD_WriteRAM(u16 Data)
 {
-		#ifdef LCD_RGBMODE_RGB565
-		EBI_LCD->EBI_LCD_RAM = Color;
-		#endif
-		
-		#ifdef LCD_RGBMODE_RGB888
+		EBI_LCD->EBI_LCD_RAM = Data;
+}
+
+/*********************************************************************************************************//**
+  * @brief  Writes to the LCD RAM for a Pixel.
+  * @param  RGB_Code: the pixel color in RGB mode (5-6-5) and (8-8-8)
+  * @retval None
+  ***********************************************************************************************************/
+
+void LCD_WritePixel(ColorType Color)
+{
+#if  (LCD_CONTROL_MODE == RGB888_EBI8)
 		EBI_LCD->EBI_LCD_RAM = (Color>>16)&0xFF;
 		EBI_LCD->EBI_LCD_RAM = (Color>>8)&0xFF;
 		EBI_LCD->EBI_LCD_RAM = Color&0xFF;
-    #endif
+#elif (LCD_CONTROL_MODE == RGB565_EBI16)
+		EBI_LCD->EBI_LCD_RAM = Color;
+#endif
 }
 
 /*********************************************************************************************************//**
@@ -521,7 +531,7 @@ void LCD_Clear(ColorType Color)
   LCD_WriteRAMPrior();
    while(i--)
   {	
-		LCD_WriteRAM(Color);
+		LCD_WritePixel(Color);
   } 
 	
 }
@@ -608,12 +618,12 @@ void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii)
 		{                 
 			if(temp & 0x01)
 			{
-				LCD_WriteRAM(Color_Text);
+				LCD_WritePixel(Color_Text);
 			}
 			else
 			{
 				if(!Mode)//非叠加方式				
-					LCD_WriteRAM(Color_Back);
+					LCD_WritePixel(Color_Back);
 			}					
 			temp >>= 1; 
 		}
@@ -658,12 +668,12 @@ void LCD_DrawBigChar(u16 Xpos, u16 Ypos, u8 Mode, u8 Num)
 			{
 				if(temp&0x80) 
 				{
-					 LCD_WriteRAM(Color_Text);
+					 LCD_WritePixel(Color_Text);
 				}
 				else 
 				{
 					if(!Mode)
-						LCD_WriteRAM(Color_Back);
+						LCD_WritePixel(Color_Back);
 				}
 				temp <<= 1;
 				if(((y%4)==3)&&x==5)break;
@@ -738,7 +748,7 @@ void LCD_IData_ALL(u16 Xpos, u16 Ypos, u16 XposEnd, u16 YposEnd, u16 Height, u16
 void LCD_WriteRAMWord(ColorType RGB_Set)
 {
   LCD_WriteRAMPrior();
-  LCD_WriteRAM(RGB_Set);
+  LCD_WritePixel(RGB_Set);
 }
 
 
@@ -751,7 +761,7 @@ void LCD_DrawPoint(u16 Xpos, u16 Ypos, ColorType Color)
 {
   LCD_StarterSet(Xpos, Ypos); 
 	LCD_WriteRAMPrior();
-  LCD_WriteRAM(Color);
+  LCD_WritePixel(Color);
 }  
 
 /*********************************************************************************************************//**
@@ -777,7 +787,7 @@ void LCD_DrawLine(u16 X_Location, u16 Y_Location, u16 Length, u8 Direction, Colo
     LCD_WriteRAMPrior();  // Get ready to write GRAM
     for (i = 0; i < Length; i ++)
     {
-      LCD_WriteRAM(Color);
+      LCD_WritePixel(Color);
     }
   }
   else
@@ -828,7 +838,7 @@ void LCD_DrawFillRect(u16 X_Location, u16 Y_Location, u16 Height, u16 Width,Colo
 	
   while(i--)
   {	
-		LCD_WriteRAM(Color);
+		LCD_WritePixel(Color);
   } 
 
 }

@@ -473,9 +473,9 @@
               <FilePath>..\iap_xmodem.c</FilePath>
             </File>
             <File>
-              <FileName>lcd_display.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\lcd_display.lib</FilePath>
+              <FileName>lcd_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lcd_display.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -71,9 +71,6 @@
 //#define LCM_BL_DUTY_SET(duty) (HT_GPTM1->CH0CCR = duty)
 //#define LCM_BL_DUTY_SET(duty) (HT_MCTM1->CH2CCR = duty)
 
-#define LCD_RGBMODE_RGB888
-//#define LCD_RGBMODE_RGB565
-
 
 
 /* Exported types ------------------------------------------------------------------------------------------*/
@@ -122,32 +119,38 @@ typedef struct
 #define LCM_RST_ACTIVE()          GPIO_ClearOutBits(GPIO_PORT[LCD_EBI_RST_GPIO_ID], LCD_EBI_RST_GPIO_PIN);
 #define LCM_RST_INACTIVE()        GPIO_SetOutBits(GPIO_PORT[LCD_EBI_RST_GPIO_ID], LCD_EBI_RST_GPIO_PIN);
 
-#ifdef LCD_RGBMODE_RGB565
-/* LCD 16bit color RGB565         */
-typedef u16		ColorType ;
-#define White          0xFFFF
-#define Black          0x0000
-#define Grey           0xF7DE
-#define Blue           0x001F
-#define Blue2          0x051F
-#define Red            0xF800
-#define Magenta        0xF81F
-#define Green          0x07E0
-#define Green2         0x4593
-#define Cyan           0x7FFF
-#define Yellow         0xFFE0
-#endif
 
-#ifdef LCD_RGBMODE_RGB888
-/* LCD 24bit color RGB888         */
-typedef u32		ColorType ;
-#define White          0xFFFFFF
-#define Black          0x000000
-#define Grey           0x808080
-#define Blue           0x0000FF
-#define Red            0xFF0000
-#define Green          0x00FF00
-#define Yellow         0xFFFF00
+
+
+#define RGB888_EBI8 				(1)
+#define RGB565_EBI16				(2)
+
+#define LCD_CONTROL_MODE     2
+
+#if  (LCD_CONTROL_MODE == RGB888_EBI8)
+	typedef u32		ColorType ;
+	#define White          0xFFFFFF
+	#define Black          0x000000
+	#define Grey           0x808080
+	#define Blue           0x0000FF
+	#define Red            0xFF0000
+	#define Green          0x00FF00
+	#define Yellow         0xFFFF00
+#elif (LCD_CONTROL_MODE == RGB565_EBI16)
+	typedef u16		ColorType ;
+	#define White          0xFFFF
+	#define Black          0x0000
+	#define Grey           0xF7DE
+	#define Blue           0x001F
+	#define Blue2          0x051F
+	#define Red            0xF800
+	#define Magenta        0xF81F
+	#define Green          0x07E0
+	#define Green2         0x4593
+	#define Cyan           0x7FFF
+	#define Yellow         0xFFE0
+#else
+  #error "Erro LCD RGB MODE !!! " 
 #endif
 
 
@@ -197,7 +200,8 @@ void LCD_StarterSet(u16 X_Location, u16 Y_Location);//OK
 void LCD_SetDisplayArea(u16 Column, u16 Page, u16 Height, u16 Width);//OK
 
 void LCD_WriteRAMPrior(void);//OK
-void LCD_WriteRAM(ColorType Color);//OK
+void LCD_WriteRAM(u16 Data);//OK
+void LCD_WritePixel(ColorType Color);
 void LCD_WriteRAMWord(ColorType RGB_Set);//OK
 
 void LCD_Clear(ColorType Color);//OK
