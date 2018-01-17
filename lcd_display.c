@@ -329,7 +329,7 @@ void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
 {
   u32 picsize;
   u8* pBuf = (u8*)&LCD_Display_PinponBuffer[pDisplay->AltBufferIndex][0];
-	static u16 color; 
+	u16 color; 
   /* Getting the next SPI Flash Address and Length and the next AltBufferIndex */
   LCD_DISPLAY_GetNextDisplayInfo(pDisplay);
 
@@ -362,6 +362,7 @@ void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
 		}
 	
 #elif (LCD_CONTROL_MODE == RGB565_EBI16)
+		
 		picsize = pDisplay->NextDataLength /2;//a Pixel use a 8bit * 2 =14bit 
 		while(picsize--)
 		{

@@ -77,7 +77,7 @@ typedef enum
 #define LCD_DISPLAY_MODE_TRANSPARENT_2    2
 
 extern LCD_DISPLAY_InfoTypedef gLCD_DISPLAY;
-
+extern LCD_DISPLAY_ImageInfoTypeDef gLCD_Display_ImageInfo;
 void LCD_DISPLAY_Init(LCD_DISPLAY_InitTypedef* pDisplay);
 void LCD_DISPLAY_Process(void);
 void LCD_DISPLAY_TimebaseHandler(void);

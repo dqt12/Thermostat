@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\HT32\12345\obj\HT32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\HT32\12345\obj\HT32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Jan 17 14:30:22 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Jan 17 15:09:07 2018
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -724,7 +724,7 @@ Global Symbols
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DISPLAY_Process_Transparent
 </UL>
 
-<P><STRONG><a name="[6e]"></a>LCD_DISPLAY_Init</STRONG> (Thumb, 298 bytes, Stack size 24 bytes, lcd_display.o(i.LCD_DISPLAY_Init))
+<P><STRONG><a name="[6e]"></a>LCD_DISPLAY_Init</STRONG> (Thumb, 296 bytes, Stack size 24 bytes, lcd_display.o(i.LCD_DISPLAY_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = LCD_DISPLAY_Init &rArr; SPI_FLASH_ReadDMA
 </UL>
 <BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_WaitDMA_Finished
@@ -739,7 +739,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Demo_full
 </UL>
 
-<P><STRONG><a name="[4a]"></a>LCD_DISPLAY_Process_Normal</STRONG> (Thumb, 94 bytes, Stack size 16 bytes, lcd_display.o(i.LCD_DISPLAY_Process_Normal))
+<P><STRONG><a name="[4a]"></a>LCD_DISPLAY_Process_Normal</STRONG> (Thumb, 90 bytes, Stack size 16 bytes, lcd_display.o(i.LCD_DISPLAY_Process_Normal))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = LCD_DISPLAY_Process_Normal &rArr; SPI_FLASH_ReadDMA
 </UL>
 <BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_WaitDMA_Finished
@@ -1669,7 +1669,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DISPLAY_GetImageInfo
 </UL>
 
-<P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 186 bytes, Stack size 16 bytes, main.o(i.main))
+<P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 204 bytes, Stack size 16 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 408<LI>Call Chain = main &rArr; IAP_Handler &rArr; IAP_Download &rArr; xmodem &rArr; SPI_FLASH_BufferWrite &rArr; SPI_FLASH_PageWrite &rArr; SPI_FLASH_WriteEnable &rArr; SPI_FLASH_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init

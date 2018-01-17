@@ -35,13 +35,13 @@ const LCD_DISPLAY_PositionTypeDef PositionTable_Full[] = {
 const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_Full = {
   1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_Full
 };
+
 const LCD_DISPLAY_PositionTypeDef PositionTable_pp[] = {
-  {0,222}
+  {0,190}
 };
 const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
   1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_pp
 };
-
 
 //extern u16 Demo_N;
 //KeyCmd_TypeDef KeyCmd;
@@ -415,16 +415,17 @@ void Demo_full(void)
 {
 	LCD_DISPLAY_InitTypedef init;
   //gUI.IsDemo1Update = FALSE;
-   
+ // init.
+	
   init.Mode             = LCD_DISPLAY_MODE_NORMAL;
-  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_Full;
+ // init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_Full;
+  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_pp;	
   init.pImageRemapTable = NULL;
   init.ImageStartIndex  = gUI.Demo1_ShowPicID;
   init.ImageLength      = 1;
   init.FrameRate        = 0;
   LCD_DISPLAY_Init(&init);
-	//LCD_StarterSet(u16 X_Location, u16 Y_Location);
-	//void LCD_SetDisplayArea(u16 Column, u16 Page, u16 Height, u16 Width);//OK
+
 	while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
   {
     LCD_DISPLAY_Process();
@@ -469,14 +470,17 @@ int main(void)
 
 	 FLAG_IMG = LCD_DISPLAY_GetImageInfo();
 
+	LCD_Clear(Black);
+	
 	while(1)
 	{
-				for(i=0; i<12; i++)
+			for(i=0; i< gLCD_Display_ImageInfo.Count; i++)
 			{
 				gUI.Demo1_ShowPicID = i;
 				Demo_full();
-				Delay(300);
+				Delay(15);
 			}
+			Delay(500);
 	}		
 			
 			
