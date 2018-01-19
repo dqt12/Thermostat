@@ -488,7 +488,6 @@ void Demo_full(void)
 vu16 ADC_T;
 vu8 FLAG_ADC_END;
 
-
 Touch_Screen_Enum Tocuh_Sreen_ADC_CH;
 u8 flag_Read_pin = 0;//1 : X   ;  2 : Y
 void Read_X_PIN(void)//ADCy
@@ -609,55 +608,18 @@ u16 ADC_Filer(vu16 *data,u8 num)
 			}	
 	}
 	
-	
 	sum = 0;
 	
-	for(i=5;i<num;i++)
+	for(i=num/2;i<num;i++)
 	{
 		sum += data[i];
-	
 	}
-	
-	sum = sum/(num-5);
+	sum = sum/(num-num/2);
 	
 	return (u16)sum;
 }
 
 
-
-//u16 Touch_X_F;
-//u16 Touch_Y_F;
-//void Touch_Screen(Touch_Screen_Enum flag)
-//{
-
-//	if(flag == READ_FINE)
-//	{
-//		
-//		ADC_TFiler_X = ADC_Filer(&ADC_Touch_X[0],10);
-//		ADC_TFiler_Y = ADC_Filer(&ADC_Touch_Y[0],10);
-//		ADC_TFiler_Z = ADC_Filer(&ADC_Touch_Z[0],10);
-//		
-//		
-//		
-//		Touch_Z =  (4096*ADC_TFiler_X) / ADC_TFiler_Z - ADC_TFiler_X - ADC_TFiler_Y;
-//		Touch_X = (ADC_TFiler_Y * 480 /4096);
-//		Touch_Y = 272 - (ADC_TFiler_X * 272 /4096);
-//		
-////	if(Touch_Z < 9000)
-//	{
-//		//LCD_DrawPoint(Touch_X,Touch_Y,Blue);
-//		LCD_DrawFillRect(Touch_X,Touch_Y,5,5,Blue);
-//	}
-////		Read_X();
-//		Tocuh_Sreen_ADC_CH = READ_X;
-//		
-//		
-//		//if(Touch_X < 480 && Touch_Y < 272)
-//			
-//		
-//		
-//	}
-//}
 
 void Touch_Screen_calibration(void)
 {
@@ -673,55 +635,30 @@ void Touch_Screen_calibration(void)
 }
 
 
-void  ADC_Touch_Screen_Init(void)
-{
-
-//	Read_X();
-//	Tocuh_Sreen_ADC_CH = READ_X;
-
-}
-
-
-//u16 ADC_READ_X(void)
-//{
-//	u16 data = 0;
-//	
-//	Read_X_PIN();
-//	FLAG_ADC_END = RESET;
-//	ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
-//	Tocuh_Sreen_ADC_CH = READ_X;
-//	while(FLAG_ADC_END == RESET);
-//	
-//	data = ADC_T;
-//	
-
-//	return data;
-//}
 u16 ADC_READ_X(void)
 {
-	u16 data[10] ;
+	u16 data[6] ;
 	u16 dataf = 0;
 	u8 i;
 	
 	Read_X_PIN();
 	
 	Tocuh_Sreen_ADC_CH = READ_X;
-	for(i=0;i<10;i++)
+	for(i=0;i<6;i++)
 	{
 		FLAG_ADC_END = RESET;
-		//ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
 		while(FLAG_ADC_END == RESET);
 		data[i] = ADC_T;
 	}
 
-	dataf = ADC_Filer(&data[0],10);
+	dataf = ADC_Filer(&data[0],6);
 	
 	return dataf;
 }
 
 u16 ADC_READ_Y(void)
 {
-	u16 data[10] ;
+	u16 data[6] ;
 	u16 dataf = 0;
 	u8 i;
 	
@@ -729,15 +666,14 @@ u16 ADC_READ_Y(void)
 	
 	Tocuh_Sreen_ADC_CH = READ_Y;
 	
-	for(i=0;i<5;i++)
+	for(i=0;i<6;i++)
 	{
 		FLAG_ADC_END = RESET;
-		//ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
 		while(FLAG_ADC_END == RESET);
 		data[i] = ADC_T;
 	}
 
-	dataf = ADC_Filer(&data[0],10);
+	dataf = ADC_Filer(&data[0],6);
 	
 	return dataf;
 }
@@ -816,16 +752,16 @@ int main(void)
 		{
 			FLAG_10mS = 0;
 		//	WIFI_CAP();
-
+		TOUCH_Exec(&Tocuh);
+			LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Blue);
 		}		 
 		 	
 		if(FLAG_20mS)
 		{
 			FLAG_20mS = 0;
 				
-//		Touch_Screen(Tocuh_Sreen_ADC_CH);
-			TOUCH_Exec(&Tocuh);
-			LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Blue);
+			
+			
 //			KEY_Scan();
 		}
 		
@@ -965,15 +901,6 @@ void USB_GPIO_Configuration(void)
 }
 
 
-
-//u16 ADC_READ_Y(void)
-//{
-//	ADC_RegularChannelConfig(HT_ADC, ADC_CH_0, 0, 1); //for LCD-Touch
-
-//}
-
-
-
 void ADC_Configuration(void)
 {
   /* ADCLK frequency is set to 96/64 MHz = 1.125MHz                                                         */
@@ -991,14 +918,14 @@ void ADC_Configuration(void)
   /* Continuous Mode, Length 5, SubLength 1                                                                 */
   ADC_RegularGroupConfig(HT_ADC, CONTINUOUS_MODE, 5, 1);
 
-  /* ADC Channel n, Rank 0, Sampling clock is (1.5 + 0) ADCLK
+  /* ADC Channel n, Rank 0, Sampling clock is (1.5 + n) ADCLK
      Conversion time = (sampling clock + 12.5) / ADCLK = 12.4 uS */
 	
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_8, 0, 1);//for NTC1
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_9, 1, 1);//for for NTC2
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_10, 2, 1);//for for NTC3
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_0, 3, 1); //for LCD-Touch
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_1, 4, 1); //for LCD-Touch
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_8, 0, 2);//for NTC1
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_9, 1, 2);//for for NTC2
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_10, 2, 2);//for for NTC3
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_0, 3, 3); //for LCD-Touch
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_1, 4, 3); //for LCD-Touch
 			
   /* Use Software Trigger as ADC trigger source                                                             */
   ADC_RegularTrigConfig(HT_ADC, ADC_TRIG_SOFTWARE);

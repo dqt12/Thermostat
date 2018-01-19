@@ -125,7 +125,7 @@ bool TOUCH_MeasureXY(u16 *x, u16 *y)
     x1 = TOUCH_X_MeasureX();
     y1 = TOUCH_X_MeasureY();
 
-  //  for (i = 0; i < 1000; i++);
+    for (i = 0; i < 1000; i++);
 
     x2 = TOUCH_X_MeasureX();
     y2 = TOUCH_X_MeasureY();
@@ -235,10 +235,6 @@ bool ExecCalibration(TOUCH_CALIBRATION_TypeDef *pcal)
     u16 xPhys,yPhys;
         
     /* _Calibrate upper left */
-//    GUI_SetBkColor(GUI_RED);
-//    GUI_Clear();
-//    GUI_SetFont(&GUI_FontHZ_SimSun_16);
-		
 		LCD_TextColorSet(Red);
 		LCD_Clear(White);
 	
@@ -274,7 +270,7 @@ bool ExecCalibration(TOUCH_CALIBRATION_TypeDef *pcal)
 		
 			LCD_DrawString(80, 30, 16, 8, 0,"MSG_PRESS_TOUCH_TO_CONTINUE");
 
-			DelayT(200);
+		DelayT(200);
     // Wait the touch to continue
     while (1)
     {
@@ -331,7 +327,7 @@ void TOUCH_Exec(TOUCH_XY_TypeDef *tocuh)
 
     if (TOUCH_MeasureXY(&tocuh->xPhys, &tocuh->yPhys))
     {
-		 if (check_touch_pressed(tocuh->xPhys, tocuh->yPhys))
+//		 if (check_touch_pressed(tocuh->xPhys, tocuh->yPhys))
      {       
 			
         /* Convert values into logical values */
