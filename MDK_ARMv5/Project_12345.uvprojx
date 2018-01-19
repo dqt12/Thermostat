@@ -423,11 +423,6 @@
               <FilePath>..\ht32f1xxxx_01_it.c</FilePath>
             </File>
             <File>
-              <FileName>main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\main.h</FilePath>
-            </File>
-            <File>
               <FileName>ESP8266.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\ESP8266.c</FilePath>
@@ -436,11 +431,6 @@
               <FileName>queue.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\queue.c</FilePath>
-            </File>
-            <File>
-              <FileName>picture.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\picture.h</FilePath>
             </File>
             <File>
               <FileName>ht32_usbd_descriptor.c</FileName>
@@ -476,6 +466,11 @@
               <FileName>lcd_display.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\lcd_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>tslib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\tslib.c</FilePath>
             </File>
           </Files>
         </Group>

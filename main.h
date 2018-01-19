@@ -86,13 +86,13 @@ typedef struct
 
 } UI_T;
 
-//typedef struct
-//{
-//  u16 Kold;
-//  u16 Know;
-//}KeyCmd_TypeDef;
+typedef struct
+{
+  u16 Kold;
+  u16 Know;
+}KeyCmd_TypeDef;
+//extern KeyCmd_TypeDef KeyCmd;
 
-<<<<<<< HEAD
 typedef enum
 {
 	READ_X,
@@ -102,15 +102,12 @@ typedef enum
 } Touch_Screen_Enum;
 
 
-extern KeyCmd_TypeDef KeyCmd;
-=======
-//extern KeyCmd_TypeDef KeyCmd;
->>>>>>> master
 
-void Read_X(void);
-void Read_Y(void);
-void Read_Z(void);
-extern Touch_Screen_Enum Flag_LINE;
+
+u16 ADC_READ_X(void);
+u16 ADC_READ_Y(void);
+
+extern Touch_Screen_Enum Tocuh_Sreen_ADC_CH;
 /* Exported variables --------------------------------------------------------------------------------------*/
 extern UI_T gUI;
 

@@ -4,11 +4,14 @@
 
 #include <string.h>
 #include "lcm.h"
-
 #include "spi_flash.h"
 #include "ESP8266.h"
 #include "main.h"
-//#include "picture.h"
+
+#include "tslib.h"
+
+
+
 
 // FOR USB VCP
 #include "ht32_usbd_core.h"
@@ -46,8 +49,6 @@ const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
 //extern u16 Demo_N;
 //KeyCmd_TypeDef KeyCmd;
 //vu32 gTimebaseDelayCounter;
-
-
 UI_T gUI;
 LCD_DrawSize LCD_IData;
 u16 RemapTable[178];
@@ -62,6 +63,7 @@ void GPIO_Configuration(void);
 void KEY_Configuration(void);
 void RTC_Configuration(void);
 void ADC_Configuration(void);
+void ADC_POLL_Configuration(void);
 void ADC_PDMA_Configuration(void);
 void BFTM_Configuration(void);
 void SYSTICK_configuration(void);
@@ -71,17 +73,12 @@ void TimingDelay(void);
 
 
 
+
 /* Global functions ----------------------------------------------------------------------------------------*/
 vu16 ADC_DATA[3];
-vu16 ADC_Touch_X[10];
-vu16 ADC_Touch_Y[10];
-vu16 ADC_Touch_Z[10];
-vu16 ADC_TFiler_X;
-vu16 ADC_TFiler_Y;
-vu16 ADC_TFiler_Z;
 vu16 Touch_X;
 vu16 Touch_Y;
-vu16 Touch_Z;
+
 
 //0~50Ce
 const u16 NTC_10K_MAP[]={
@@ -132,17 +129,17 @@ void Display_Temp(void)
 	
 	
 	
-		LCD_DrawString(40,160, 16, 8, 0,"X  ~  Y  ~  Z:");
+		LCD_DrawString(40,160, 16, 8, 0,"X  ~  Y:");
 		
-		LCD_ShowNum(40,180,16,0,ADC_TFiler_X);
-		LCD_ShowNum(40,180+16*1,16,0,Touch_X);
+		LCD_ShowNum(40,180,16,0,Tocuh.xPhys);
+		LCD_ShowNum(40,180+16*1,16,0,Tocuh.x);
 
-	  LCD_ShowNum(80,180,16,0,ADC_TFiler_Y);
-		LCD_ShowNum(80,180+16*1,16,0,Touch_Y);
+	  LCD_ShowNum(80,180,16,0,Tocuh.yPhys);
+		LCD_ShowNum(80,180+16*1,16,0,Tocuh.y);
 		
-		LCD_ShowNum(120,180,16,0,ADC_TFiler_Z);
-		LCD_ShowNum(120,180+16*1,16,0,Touch_Z/10000);
-		LCD_ShowNum(120+8*4,180+16*1,16,0,Touch_Z%10000);
+//		LCD_ShowNum(120,180,16,0,ADC_TFiler_Z);
+//		LCD_ShowNum(120,180+16*1,16,0,Touch_Z/10000);
+//		LCD_ShowNum(120+8*4,180+16*1,16,0,Touch_Z%10000);
 }
 
 
@@ -179,20 +176,6 @@ void Display_Temp_1(void)
 		LCD_ShowNum(80,160,16,0,ADC_DATA[0]);
 		LCD_ShowNum(120,160,16,0,ADC_DATA[1]);
 		LCD_ShowNum(160,160,16,0,ADC_DATA[2]);
-
-
-
-		LCD_DrawString(50,180, 16, 8, 0,"X ~ Y ~ Z:");
-		
-		LCD_ShowNum(80,180,16,0,ADC_TFiler_X);
-		LCD_ShowNum(80,180+16*1,16,0,Touch_X);
-
-	  LCD_ShowNum(120,180,16,0,ADC_TFiler_Y);
-		LCD_ShowNum(120,180+16*1,16,0,Touch_Y);
-		
-		LCD_ShowNum(160,180,16,0,ADC_TFiler_Z);
-		LCD_ShowNum(160,180+16*1,16,0,Touch_Z);
-
 }
 
 
@@ -502,47 +485,53 @@ void Demo_full(void)
 #define READ_YT_PIN		  AFIO_PIN_0
 
 
+vu16 ADC_T;
+vu8 FLAG_ADC_END;
 
 
-
-Touch_Screen_Enum Flag_LINE;
-
-void Read_X(void)//ADCy
+Touch_Screen_Enum Tocuh_Sreen_ADC_CH;
+u8 flag_Read_pin = 0;//1 : X   ;  2 : Y
+void Read_X_PIN(void)//ADCy
 {	
-	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_GPIO);//Y+
-  GPIO_DriveConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DV_8MA); //Y+ HIGH
-  GPIO_DirectionConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DIR_OUT);
-	GPIO_WriteOutBits(PIN_YT_PORT, PIN_YT_PIN, SET); 
-	
-  GPIO_DriveConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DV_8MA); //Y- LOW
-  GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_OUT);
-	GPIO_WriteOutBits(PIN_YB_PORT, PIN_YB_PIN, RESET); 	
-	
-  GPIO_PullResistorConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_PR_DISABLE);	//X- FLOT
-  GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_IN);
+	if(flag_Read_pin != 1)
+	{
+		flag_Read_pin = 1;
+		AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_GPIO);//Y+
+		GPIO_DriveConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DV_8MA); //Y+ HIGH
+		GPIO_DirectionConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DIR_OUT);
+		GPIO_WriteOutBits(PIN_YT_PORT, PIN_YT_PIN, SET); 
+		
+		GPIO_DriveConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DV_8MA); //Y- LOW
+		GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_OUT);
+		GPIO_WriteOutBits(PIN_YB_PORT, PIN_YB_PIN, RESET); 	
+		
+		GPIO_PullResistorConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_PR_DISABLE);	//X- FLOT
+		GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_IN);
 
-	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_ADC);//X+ ADC
-
+		AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_ADC);//X+ ADC
+	}
 }
 
 
-void Read_Y(void)//ADCx
+void Read_Y_PIN(void)//ADCx
 {	
-	
-	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_GPIO);//X+
-  GPIO_DriveConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DV_8MA); //X+ HIGH
-  GPIO_DirectionConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DIR_OUT);
-	GPIO_WriteOutBits(PIN_XR_PORT, PIN_XR_PIN, SET); 
-	
-  GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_8MA); //X- LOW
-  GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
-	GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
-	
-  GPIO_PullResistorConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_PR_DISABLE);	//Y- FLOT
-  GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_IN);
-	
-	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_ADC);//Y+ ADC
-	
+	if(flag_Read_pin != 2)
+	{
+		flag_Read_pin = 2;
+		AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_GPIO);//X+
+		GPIO_DriveConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DV_8MA); //X+ HIGH
+		GPIO_DirectionConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DIR_OUT);
+		GPIO_WriteOutBits(PIN_XR_PORT, PIN_XR_PIN, SET); 
+		
+		GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_8MA); //X- LOW
+		GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
+		GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
+		
+		GPIO_PullResistorConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_PR_DISABLE);	//Y- FLOT
+		GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_IN);
+		
+		AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_ADC);//Y+ ADC
+	}
 }
 
 void Read_Z(void)
@@ -636,39 +625,39 @@ u16 ADC_Filer(vu16 *data,u8 num)
 
 
 
-u16 Touch_X_F;
-u16 Touch_Y_F;
-void Touch_Screen(Touch_Screen_Enum flag)
-{
+//u16 Touch_X_F;
+//u16 Touch_Y_F;
+//void Touch_Screen(Touch_Screen_Enum flag)
+//{
 
-	if(flag == READ_FINE)
-	{
-		
-		ADC_TFiler_X = ADC_Filer(&ADC_Touch_X[0],10);
-		ADC_TFiler_Y = ADC_Filer(&ADC_Touch_Y[0],10);
-		ADC_TFiler_Z = ADC_Filer(&ADC_Touch_Z[0],10);
-		
-		
-		
-		Touch_Z =  (4096*ADC_TFiler_X) / ADC_TFiler_Z - ADC_TFiler_X - ADC_TFiler_Y;
-		Touch_X = (ADC_TFiler_Y * 480 /4096);
-		Touch_Y = 272 - (ADC_TFiler_X * 272 /4096);
-		
-//	if(Touch_Z < 9000)
-	{
-		//LCD_DrawPoint(Touch_X,Touch_Y,Blue);
-		LCD_DrawFillRect(Touch_X,Touch_Y,5,5,Blue);
-	}
-		Read_X();
-		Flag_LINE = READ_X;
-		
-		
-		//if(Touch_X < 480 && Touch_Y < 272)
-			
-		
-		
-	}
-}
+//	if(flag == READ_FINE)
+//	{
+//		
+//		ADC_TFiler_X = ADC_Filer(&ADC_Touch_X[0],10);
+//		ADC_TFiler_Y = ADC_Filer(&ADC_Touch_Y[0],10);
+//		ADC_TFiler_Z = ADC_Filer(&ADC_Touch_Z[0],10);
+//		
+//		
+//		
+//		Touch_Z =  (4096*ADC_TFiler_X) / ADC_TFiler_Z - ADC_TFiler_X - ADC_TFiler_Y;
+//		Touch_X = (ADC_TFiler_Y * 480 /4096);
+//		Touch_Y = 272 - (ADC_TFiler_X * 272 /4096);
+//		
+////	if(Touch_Z < 9000)
+//	{
+//		//LCD_DrawPoint(Touch_X,Touch_Y,Blue);
+//		LCD_DrawFillRect(Touch_X,Touch_Y,5,5,Blue);
+//	}
+////		Read_X();
+//		Tocuh_Sreen_ADC_CH = READ_X;
+//		
+//		
+//		//if(Touch_X < 480 && Touch_Y < 272)
+//			
+//		
+//		
+//	}
+//}
 
 void Touch_Screen_calibration(void)
 {
@@ -687,21 +676,85 @@ void Touch_Screen_calibration(void)
 void  ADC_Touch_Screen_Init(void)
 {
 
-	Read_X();
-	Flag_LINE = READ_X;
+//	Read_X();
+//	Tocuh_Sreen_ADC_CH = READ_X;
 
 }
 
+
+//u16 ADC_READ_X(void)
+//{
+//	u16 data = 0;
+//	
+//	Read_X_PIN();
+//	FLAG_ADC_END = RESET;
+//	ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
+//	Tocuh_Sreen_ADC_CH = READ_X;
+//	while(FLAG_ADC_END == RESET);
+//	
+//	data = ADC_T;
+//	
+
+//	return data;
+//}
+u16 ADC_READ_X(void)
+{
+	u16 data[10] ;
+	u16 dataf = 0;
+	u8 i;
+	
+	Read_X_PIN();
+	
+	Tocuh_Sreen_ADC_CH = READ_X;
+	for(i=0;i<10;i++)
+	{
+		FLAG_ADC_END = RESET;
+		//ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
+		while(FLAG_ADC_END == RESET);
+		data[i] = ADC_T;
+	}
+
+	dataf = ADC_Filer(&data[0],10);
+	
+	return dataf;
+}
+
+u16 ADC_READ_Y(void)
+{
+	u16 data[10] ;
+	u16 dataf = 0;
+	u8 i;
+	
+	Read_Y_PIN();
+	
+	Tocuh_Sreen_ADC_CH = READ_Y;
+	
+	for(i=0;i<5;i++)
+	{
+		FLAG_ADC_END = RESET;
+		//ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
+		while(FLAG_ADC_END == RESET);
+		data[i] = ADC_T;
+	}
+
+	dataf = ADC_Filer(&data[0],10);
+	
+	return dataf;
+}
+
+
 int main(void)
 {
-	u8 i ;
+
+	u8 j;
+	int checksum = 0;
 	
   CKCU_Configuration();               /* System Related configuration       */ 	
-//	GPIO_Configuration();
+	GPIO_Configuration();
 	NVIC_Configuration();
 	SYSTICK_configuration();
 	BFTM_Configuration();
-	RTC_Configuration();
+//	RTC_Configuration();
 	SPI_FLASH_Init();
 // Initialize LCD related peripheral
   LCD_Init();
@@ -723,33 +776,9 @@ int main(void)
 		IAP_Handler();	
 	}	
 	
-	KEY_Configuration();
+//	KEY_Configuration();
 	ADC_Configuration();
-	
-	ADC_Touch_Screen_Init();
 //	WIFI_INIT();
-
-<<<<<<< HEAD
-// TFT_DrawPicDMA(0, 0, 272, 480,0);
-//	 LCD_DISPLAY_GetImageInfo();
-
-//					 while(1)
-//					{
-//						u8 i;
-//						for(i=0; i<170; i++)
-//						{
-//							gUI.Demo1_ShowPicID = i;
-//							Demo_full();
-//						}
-//						for(i=1; i<19; i++)
-//						{
-//							Delay(300);
-//							gUI.Demo1_ShowPicID = i;
-//							Demo_full();
-//						}
-//						
-//							Delay(300);
-//					}
 
 
 	KEY_STATE = 0;
@@ -759,29 +788,45 @@ int main(void)
 	TEMP.Set = 260;
 
 	
-	LCD_Clear(Red);
-//	LCD_DrawFillRect(250,0,271,230,White);
-//	TFT_DrawPicture(20, 220, 48, 100, HT32_Table);
+	LCD_Clear(Black);
+	
+	SPI_FLASH_BufferRead((u8*)&mCurrentSettings.cal[0], 0X3FFF000, sizeof(mCurrentSettings.cal));//Read cal
+	
+	for (j = 0; j < 7; j++)
+		checksum += mCurrentSettings.cal[j];
 
-//LCD_DrawChar(50, 100, 16, 8, 0,'+');
+	if(mCurrentSettings.cal[7] != checksum)
+	{
+	
+		ExecCalibration(&mCurrentSettings);
 
+		SPI_FLASH_SectorErase(0X3FFF000);
+		SPI_FLASH_BufferWrite((u8*)&mCurrentSettings.cal[0], 0X3FFF000, sizeof(mCurrentSettings.cal));//Read cal
+	}
+
+	
+	LCD_Clear(Black);
+	
+
+	
 	while(1)
 	{
-		
+
 		if(FLAG_10mS)
 		{
 			FLAG_10mS = 0;
-//			WIFI_CAP();
-			ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);	
+		//	WIFI_CAP();
+
 		}		 
 		 	
 		if(FLAG_20mS)
 		{
 			FLAG_20mS = 0;
 				
-			Touch_Screen(Flag_LINE);
-			
-			KEY_Scan();
+//		Touch_Screen(Tocuh_Sreen_ADC_CH);
+			TOUCH_Exec(&Tocuh);
+			LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Blue);
+//			KEY_Scan();
 		}
 		
 		if(FLAG_500mS)
@@ -796,103 +841,30 @@ int main(void)
 				
 		}
 		
-		if(FLAG_1S) //1s
-		{
-			FLAG_1S = 0;
-			TEMP.Time++;
-	//		HT32F_DVB_LEDToggle(HT_LED1);
-			TEMP.Now = ADC_to_TEMP(ADC_DATA[0]);			
-			
-			
-			
-//			if(FLAG_DISPLAY == SET) 
-//			{
-//			;
-//			}
-//			else 
-//			{
-//				Display_Temp();
-//			}
-		}
-	}	
-=======
-	 FLAG_IMG = LCD_DISPLAY_GetImageInfo();
-
-	LCD_Clear(Black);
-	
-	while(1)
-	{
-			for(i=0; i< gLCD_Display_ImageInfo.Count; i++)
-			{
-				gUI.Demo1_ShowPicID = i;
-				Demo_full();
-				Delay(15);
-			}
-			Delay(500);
-	}		
-			
-			
-			
-			
-	
-//	TEMP.En = 0;
-//	TEMP.SetEn = 0;
-//	TEMP.Now = 260;
-//	TEMP.Set = 260;
-//	
-//	LCD_Clear(Red);
-//	LCD_DrawFillRect(250,0,271,230,White);
-////	TFT_DrawPicture(20, 220, 48, 100, HT32_Table);
-//	
-//	while(1)
-//	{
-//		
-//		if(FLAG_10mS)
-//		{
-//			FLAG_10mS = 0;
-////			WIFI_CAP();
-//		}		 
-//		 	
-//		if(FLAG_20mS)
-//		{
-//			FLAG_20mS = 0;
-//			ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);		
-//			KEY_Scan();
-//		}
-//		
-//		if(FLAG_500mS)
-//		{
-//			FLAG_500mS = 0;
-////			WIFI_Control();
-////			UPDATA();
-//			
-//				
-//		}
-//		
 //		if(FLAG_1S) //1s
 //		{
 //			FLAG_1S = 0;
 //			TEMP.Time++;
-//			HT32F_DVB_LEDToggle(HT_LED1);
-//			TEMP.Now = ADC_to_TEMP(ADC_DATA[0]);			
-//			
-//			Display_Temp();
-//			
 
-
-//			
-//			
-////			if(FLAG_DISPLAY == SET) 
-////			{
-////			;
-////			}
-////			else 
-////			{
-////				Display_Temp();
-////			}
 //		}
-//	}	
->>>>>>> master
+	}	
+//=======
+//	 FLAG_IMG = LCD_DISPLAY_GetImageInfo();
+
+//	LCD_Clear(Black);
+//	
+//	while(1)
+//	{
+//			for(i=0; i< gLCD_Display_ImageInfo.Count; i++)
+//			{
+//				gUI.Demo1_ShowPicID = i;
+//				Demo_full();
+//				Delay(15);
+//			}
+//			Delay(500);
+//	}		
+
+//>>>>>>> master
 
 }	
 
@@ -902,18 +874,6 @@ int main(void)
   ***********************************************************************************************************/
 void CKCU_Configuration(void)
 {
-//  CKCU_PeripClockConfig_TypeDef CKCUClock = {{ 0 }};
-//  CKCUClock.Bit.USBD       = 1;
-//  CKCUClock.Bit.USART0     = 1;
-//  CKCUClock.Bit.USART1     = 1;
-//  CKCUClock.Bit.UART0      = 1;
-//  CKCUClock.Bit.UART1      = 1;
-//  CKCUClock.Bit.AFIO       = 1;
-//  CKCUClock.Bit.BKP        = 1;
-//  CKCU_PeripClockConfig(CKCUClock, ENABLE);
-	
-	
-	
   CKCU_PeripClockConfig_TypeDef CKCUClock = {{ 0 }};
   CKCUClock.Bit.PDMA       = 1;
   CKCUClock.Bit.USBD       = 1;
@@ -981,8 +941,7 @@ void USB_Configuration(void)
 void GPIO_Configuration(void)
 {
 	
-	HT32F_DVB_LEDInit(HT_LED1);
-	HT32F_DVB_LEDToggle(HT_LED1);
+
 
 }
 
@@ -1004,6 +963,14 @@ void USB_GPIO_Configuration(void)
 	HT32F_DVB_LEDInit(HT_LED1);
 	HT32F_DVB_LEDOff(HT_LED1);
 }
+
+
+
+//u16 ADC_READ_Y(void)
+//{
+//	ADC_RegularChannelConfig(HT_ADC, ADC_CH_0, 0, 1); //for LCD-Touch
+
+//}
 
 
 
@@ -1044,7 +1011,7 @@ void ADC_Configuration(void)
 	ADC_Cmd(HT_ADC, ENABLE); 
 	
   /* Software trigger to start continuous mode                                                              */
-//  ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);
+  ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);
 
 	
 }
@@ -1209,8 +1176,8 @@ void NVIC_Configuration(void)
   /* Configure the Exception Handler Interrupts Priority                                                    */
 //  NVIC_SetPriority(SPI0_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 1, 0));
 //	NVIC_SetPriority(USB_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 0, 0));
-  NVIC_SetPriority(PDMACH0_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 1, 0));
-	NVIC_SetPriority(ADC_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 2, 2));
+  NVIC_SetPriority(PDMACH0_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 0, 0));
+	NVIC_SetPriority(ADC_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 0, 0));
   /* Set pending bits at the same time                                                                      */
   NVIC_SetPendingSystemHandler(SYSTEMHANDLER_NMI | SYSTEMHANDLER_PSV | SYSTEMHANDLER_SYSTICK);
 	

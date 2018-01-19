@@ -89,18 +89,29 @@ void SPI_FLASH_Init(void)
   {
 //    u8 buf1[1024*8];
     u8 buf[1024*2];
-//    int i;
-//    for(i=0; i < 8192; i++)
-//    {
-//      buf1[i] = i + 1;
-//    }
-//    SPI_FLASH_SectorErase(0);  
-//    SPI_FLASH_SectorErase(1024*64);  
-    
-    SPI_FLASH_BufferRead(buf, 0, 2048);  
+    int i;
+
+		SPI_FLASH_BufferRead(buf, 0, 1024*2); 
+		SPI_FLASH_BufferRead(buf, 1024*2, 1024*2); 
+		SPI_FLASH_SectorErase(0);  
+    SPI_FLASH_BufferRead(buf, 0, 2048); 
+		SPI_FLASH_BufferRead(buf, 1024*2, 1024*2); 
 		
-    SPI_FLASH_BufferRead(buf, 2048, 1024);
-//    
+    for(i=0; i < 1024*2; i++)
+    {
+      buf[i] = 0x55;
+    }
+		SPI_FLASH_BufferWrite(buf, 0, 2048); 
+		SPI_FLASH_BufferWrite(buf, 1024*2, 2048); 
+		
+    for(i=0; i < 1024*2; i++)
+    {
+      buf[i] = 0;
+    }		
+    SPI_FLASH_BufferRead(buf, 0, 2048);
+		SPI_FLASH_BufferRead(buf, 1024*2, 2048);   
+		SPI_FLASH_BufferRead(buf, 1024*4, 2048);   
+		
 //    SPI_FLASH_BufferWrite(buf1, 0, 8192);
 //    SPI_FLASH_BufferWrite(buf1, 64512, 1024);
 //    SPI_FLASH_BufferRead(buf, 0, 8192);  
@@ -110,7 +121,7 @@ void SPI_FLASH_Init(void)
 //    SPI_FLASH_BufferRead(buf, 0, 8192);  
 //    SPI_FLASH_BufferRead(buf, 64512, 8192);
     
-//    while(1);
+    while(1);
   }
   #endif
 }

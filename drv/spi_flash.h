@@ -32,7 +32,7 @@
 //#define SPI_FLASH_CH                    0
 //#define SPI_FLASH_SEL_CH                0
 #define SPI_FLASH_PAGESIZE              (256)
-#define SPI_FLASH_SECTOR_SIZE           (65536)
+#define SPI_FLASH_SECTOR_SIZE           (1024*4)
 #define SPI_FLASH_JEDECID_B3            (0xC2)
 #define SPI_FLASH_JEDECID_B2            (0x20)
 #define SPI_FLASH_JEDECID_B1            (0x18)
