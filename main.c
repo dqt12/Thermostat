@@ -10,9 +10,6 @@
 
 #include "touch_screen.h"
 
-
-
-
 // FOR USB VCP
 #include "ht32_usbd_core.h"
 #include "ht32_usbd_class.h"
@@ -126,9 +123,7 @@ void Display_Temp(void)
 //	  LCD_ShowNum(120,180,16,0,ADC_TFiler_Y);
 //		LCD_ShowNum(120,180+16*1,16,0,Touch_Y);
 	
-	
-	
-	
+
 		LCD_DrawString(40,160, 16, 8, 0,"X  ~  Y:");
 		
 		LCD_ShowNum(40,180,16,0,Tocuh.xPhys);

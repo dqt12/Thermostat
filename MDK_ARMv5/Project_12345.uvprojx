@@ -467,6 +467,11 @@
               <FileType>1</FileType>
               <FilePath>..\lcd_display.c</FilePath>
             </File>
+            <File>
+              <FileName>touch_screen.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\touch_screen.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
