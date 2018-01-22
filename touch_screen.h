@@ -5,8 +5,8 @@
  * Basic program for touchscreen library.
  */
  
-#ifndef __TSLIB_H_  
-#define __TSLIB_H_  
+#ifndef __TOUCH_SCREEN_H_  
+#define __TOUCH_SCREEN_H_  
 
 #include "ht32.h"
 #include "lcm.h"
@@ -34,7 +34,8 @@ extern "C" {
 #define Touch_Cal_Var_Read(X)		SPI_FLASH_BufferRead((u8*)&X, Cal_Var_address, sizeof(X));
 #define	Touch_Cal_Var_Erase()		SPI_FLASH_SectorErase(Cal_Var_address);
 	
-//Setting the touch screen interrupt ,if no use the interrupt flag , lib use for measure data;	
+//Setting the touch screen interrupt 
+//if no use the interrupt flag , lib use for measure data;	
 #define USE_TOUCH_PRESS_INT			(TOUCH_NOUSE)
 #define	TOUCH_PRESS							(1)
 #define	TOUCH_NOPRESS						(0)
@@ -46,7 +47,7 @@ extern "C" {
 #define MIN_AD_Y  40
 #define MAX_AD_Y  4080
 
-#define TOUCH_X_MeasureX   	ADC_READ_X
+#define TOUCH_X_MeasureX   	ADC_READ_X	//return u16 type adc data
 #define TOUCH_X_MeasureY		ADC_READ_Y	
 
 //Setting the Display functions 
@@ -90,18 +91,9 @@ extern	TOUCH_XY_TypeDef  Tocuh;
 bool TOUCH_SCREEN_INIT(ControlStatus force_cal);
 bool TOUCH_Calibration(TOUCH_Calibration_TypeDef *pcal);
 bool Calculation_calibration(TOUCH_Calibration_TypeDef *pcal);
-
-
 bool TOUCH_MeasureXY(u16 *x, u16 *y);
-//bool TOUCH_CheckPressed(u16 xPhys,u16 yPhys);
 bool TOUCH_CheckPressed(void);
-
 void TOUCH_Logical_Coor_Get(TOUCH_XY_TypeDef *tocuh);
-
-void DelayT(u32 count);
-
-
-
 
 #ifdef __cplusplus
 }

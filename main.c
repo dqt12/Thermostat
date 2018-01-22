@@ -8,7 +8,7 @@
 #include "ESP8266.h"
 #include "main.h"
 
-#include "tslib.h"
+#include "touch_screen.h"
 
 
 
