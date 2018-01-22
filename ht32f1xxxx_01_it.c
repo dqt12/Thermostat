@@ -219,51 +219,42 @@ void EXTI8_IRQHandler(void)
  * @brief   This function handles BFTM0 interrupt.
  * @retval  None
  ************************************************************************************************************/
-extern vu8 FLAG_10mS ;
-extern vu8 FLAG_20mS ;
-extern vu8 FLAG_500mS ;
-vu8 CNT_10mS ;
-vu8 CNT_20mS ;
-vu16 CNT_500mS ;
+
+void TIME_SLICE_CHECK(Time_Slice_TypeDef *p,u16 cnt)
+{
+	if(p->cnt >= cnt) 
+	{
+		p->cnt  = 0;	
+		p->flag = TRUE;
+	}
+	else p->cnt ++;
+	
+}
+
+
+
 void BFTM0_IRQHandler(void)
 {
 
   BFTM_ClearFlag(HT_BFTM0);
+
+	TIME_SLICE_CHECK(&TimeSlice._10ms,10);
+	TIME_SLICE_CHECK(&TimeSlice._20ms,20);
+	TIME_SLICE_CHECK(&TimeSlice._100ms,200);
+	TIME_SLICE_CHECK(&TimeSlice._500ms,500);
 	
-	if(CNT_10mS >= 10) //10ms
-	{
-		CNT_10mS = 0;	
-		FLAG_10mS = 1;
-	}
-	else CNT_10mS++;
-			
-	if(CNT_20mS >= 20) //20ms
-	{
-		CNT_20mS = 0;	
-		FLAG_20mS = 1;
-	}
-	else CNT_20mS++;
 
-
-	if(CNT_500mS >= 100)//100ms
-	{
-		CNT_500mS = 0;
-		FLAG_500mS = 1; 		
-	}
-	else CNT_500mS++;
-
-	
 }
 /*********************************************************************************************************//**
  * @brief   This function handles RTC interrupt.
  * @retval  None
  ************************************************************************************************************/
-extern vu8 FLAG_1S;
+//extern vu8 FLAG_1S;
 void RTC_IRQHandler(void)
 {
 	
   RTC_GetFlagStatus();
-	FLAG_1S = 1;	
+//	FLAG_1S = 1;	
 	
 	
 	if(WIFI_REC.WAIT_EN == SET)

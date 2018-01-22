@@ -103,10 +103,9 @@ struct
 
 
 
-vu8 FLAG_10mS ;
-vu8 FLAG_20mS ;
-vu8 FLAG_500mS ;
-vu8 FLAG_1S ;
+
+struct TIME_SLICE TimeSlice;
+
 
 u8 KEY_STATE;
 
@@ -628,6 +627,8 @@ u16 ADC_READ_Y(void)
 }
 
 
+
+
 int main(void)
 {
 	
@@ -662,6 +663,7 @@ int main(void)
 	ADC_Configuration();
 //	WIFI_INIT();
 
+	
 
 	KEY_STATE = 0;
 	TEMP.En = 0;
@@ -679,27 +681,37 @@ int main(void)
 	while(1)
 	{
 
-		if(FLAG_10mS)
+		if(TimeSlice._10ms.flag)
 		{
-			FLAG_10mS = 0;
+			TimeSlice._10ms.flag = FALSE;
 		//	WIFI_CAP();
+
+			
+		}		 
+		 	
+		if(TimeSlice._20ms.flag)
+		{
+			TimeSlice._20ms.flag = FALSE;
+//			KEY_Scan();
+			
 			TOUCH_Logical_Coor_Get(&Tocuh);
 			if(Tocuh.isPress == TRUE)
 			{
 				LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Blue);
 			}
 			
-		}		 
-		 	
-		if(FLAG_20mS)
+		}
+		
+		if(TimeSlice._100ms.flag)
 		{
-			FLAG_20mS = 0;
+			TimeSlice._100ms.flag = FALSE;
 //			KEY_Scan();
 		}
 		
-		if(FLAG_500mS)
+		
+		if(TimeSlice._500ms.flag)
 		{
-			FLAG_500mS = 0;
+			TimeSlice._500ms.flag = FALSE;
 			
 			Display_Temp();
 			
@@ -992,6 +1004,8 @@ void BFTM_Configuration(void)
   BFTM_IntConfig(HT_BFTM0, ENABLE);
   BFTM_EnaCmd(HT_BFTM0, ENABLE);
 	NVIC_EnableIRQ(BFTM0_IRQn);
+	
+	
 }
 
 

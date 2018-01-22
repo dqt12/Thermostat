@@ -102,12 +102,27 @@ typedef enum
 } Touch_Screen_Enum;
 
 
-
-
 u16 ADC_READ_X(void);
 u16 ADC_READ_Y(void);
 u8 ADC_READ_INT(void);
 extern Touch_Screen_Enum Tocuh_Sreen_ADC_CH;
+
+//---------------------------------------------------------------------
+typedef struct 
+{
+	bool flag;
+	u16 cnt;
+}Time_Slice_TypeDef;
+
+struct TIME_SLICE
+{
+	Time_Slice_TypeDef _10ms;
+	Time_Slice_TypeDef _20ms;
+	Time_Slice_TypeDef _100ms;
+	Time_Slice_TypeDef _500ms;
+};
+extern struct TIME_SLICE TimeSlice;
+
 /* Exported variables --------------------------------------------------------------------------------------*/
 extern UI_T gUI;
 
