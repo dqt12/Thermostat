@@ -11,6 +11,7 @@
 ".\ht32\12345\obj\iap_xmodem.o"
 ".\ht32\12345\obj\lcd_display.o"
 ".\ht32\12345\obj\touch_screen.o"
+".\ht32\12345\obj\touch_screen_adc.o"
 ".\ht32\12345\obj\ht32_op.o"
 ".\ht32\12345\obj\system_ht32f1xxxx_02.o"
 ".\ht32\12345\obj\startup_ht32f1xxxx_01.o"

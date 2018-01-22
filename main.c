@@ -72,9 +72,6 @@ void TimingDelay(void);
 
 
 /* Global functions ----------------------------------------------------------------------------------------*/
-vu16 ADC_DATA[3];
-vu16 Touch_X;
-vu16 Touch_Y;
 
 
 //0~50Ce
@@ -101,14 +98,10 @@ struct
 	u16 Time;
 }TEMP;
 
-
-
-
 struct TIME_SLICE TimeSlice;
 
 
 u8 KEY_STATE;
-
 u8 FLAG_DISPLAY ;
 
 
@@ -136,7 +129,7 @@ void Display_Temp(void)
 //		LCD_ShowNum(120+8*4,180+16*1,16,0,Touch_Z%10000);
 }
 
-
+vu16 ADC_DATA[3];
 void Display_Temp_1(void)
 {
 		if(TEMP.SetEn)
@@ -456,175 +449,6 @@ void Demo_full(void)
   }
 }
 
-
-//void 
-
-#define PIN_XL_PORT		HT_GPIOD
-#define PIN_XL_PIN		GPIO_PIN_1
-
-#define PIN_XR_PORT		HT_GPIOA
-#define PIN_XR_PIN		GPIO_PIN_1
-
-#define PIN_YT_PORT		HT_GPIOA
-#define PIN_YT_PIN		GPIO_PIN_0
-	
-#define PIN_YB_PORT		HT_GPIOD
-#define PIN_YB_PIN		GPIO_PIN_2
-
-
-#define READ_XR_PORT		GPIO_PA
-#define READ_XR_PIN			AFIO_PIN_1
-
-#define READ_YT_PORT		GPIO_PA
-#define READ_YT_PIN		  AFIO_PIN_0
-
-
-vu16 ADC_T;
-vu8 FLAG_ADC_END;
-
-Touch_Screen_Enum Tocuh_Sreen_ADC_CH;
-u8 flag_Read_pin = 0;//1 : X   ;  2 : Y
-void Read_X_PIN(void)//ADCy
-{	
-	if(flag_Read_pin != 1)
-	{
-		flag_Read_pin = 1;
-		AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_GPIO);//Y+
-		GPIO_DriveConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DV_8MA); //Y+ HIGH
-		GPIO_DirectionConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DIR_OUT);
-		GPIO_WriteOutBits(PIN_YT_PORT, PIN_YT_PIN, SET); 
-		
-		GPIO_DriveConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DV_8MA); //Y- LOW
-		GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_OUT);
-		GPIO_WriteOutBits(PIN_YB_PORT, PIN_YB_PIN, RESET); 	
-		
-		GPIO_PullResistorConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_PR_DISABLE);	//X- FLOT
-		GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_IN);
-
-		AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_ADC);//X+ ADC
-	}
-}
-
-
-void Read_Y_PIN(void)//ADCx
-{	
-	if(flag_Read_pin != 2)
-	{
-		flag_Read_pin = 2;
-		AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_GPIO);//X+
-		GPIO_DriveConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DV_8MA); //X+ HIGH
-		GPIO_DirectionConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DIR_OUT);
-		GPIO_WriteOutBits(PIN_XR_PORT, PIN_XR_PIN, SET); 
-		
-		GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_8MA); //X- LOW
-		GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
-		GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
-		
-		GPIO_PullResistorConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_PR_DISABLE);	//Y- FLOT
-		GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_IN);
-		
-		AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_ADC);//Y+ ADC
-	}
-}
-
-
-u16 ADC_Filer(vu16 *data,u8 num)
-{
-	u8 i,j;
-	u32 sum = 0;
-	
-	for(i=0;i<num;i++)
-	{
-			for(j=i;j<num;j++)
-			{
-				if(data[i] > data[j])
-				{
-					sum = data[i];
-					data[i] = data[j];
-					data[j] = sum;
-				
-				}
-			}	
-	}
-	
-	sum = 0;
-	
-	for(i=(num>>1);i<num;i++)
-	{
-		sum += data[i];
-	}
-	sum = sum/(num-(num>>1));
-	
-	return (u16)sum;
-}
-
-u8 ADC_READ_INT(void)
-{
-	u16 dataf = 0;
-	
-	Read_X_PIN();
-	
-	Tocuh_Sreen_ADC_CH = READ_X;
-
-		FLAG_ADC_END = RESET;
-		while(FLAG_ADC_END == RESET);
-		dataf = ADC_T;
-
-
-	if(dataf <= 4000 )
-		dataf = 1;
-	else 
-		dataf = 0;
-	
-	return dataf;
-}
-
-
-
-u16 ADC_READ_X(void)
-{
-	u16 data[6] ;
-	u16 dataf = 0;
-	u8 i;
-	
-	Read_X_PIN();
-	
-	Tocuh_Sreen_ADC_CH = READ_X;
-	for(i=0;i<6;i++)
-	{
-		FLAG_ADC_END = RESET;
-		while(FLAG_ADC_END == RESET);
-		data[i] = ADC_T;
-	}
-
-	dataf = ADC_Filer(&data[0],6);
-	
-	return dataf;
-}
-
-
-
-u16 ADC_READ_Y(void)
-{
-	u16 data[6] ;
-	u16 dataf = 0;
-	u8 i;
-	
-	Read_Y_PIN();
-	
-	Tocuh_Sreen_ADC_CH = READ_Y;
-	
-	for(i=0;i<6;i++)
-	{
-		FLAG_ADC_END = RESET;
-		while(FLAG_ADC_END == RESET);
-		data[i] = ADC_T;
-	}
-
-	dataf = ADC_Filer(&data[0],6);
-	
-	return dataf;
-}
 
 
 

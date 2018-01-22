@@ -1,5 +1,5 @@
 Dependencies for Project 'Project_12345', Target 'HT32': (DO NOT MODIFY !)
-F (..\main.c)(0x5A65A6E0)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\main.o --omf_browse .\ht32\12345\obj\main.crf --depend .\ht32\12345\obj\main.d)
+F (..\main.c)(0x5A65AFDA)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\main.o --omf_browse .\ht32\12345\obj\main.crf --depend .\ht32\12345\obj\main.d)
 I (..\library\HT32F1xxxx_Driver\inc\ht32.h)(0x5925C194)
 I (..\library\Device\Holtek\HT32F1xxxx\Include\ht32f1xxxx_01.h)(0x5940131E)
 I (..\library\CMSIS\Include\core_cm3.h)(0x5913D46E)
@@ -48,9 +48,10 @@ I (..\drv\spi_flash.h)(0x5A659BAE)
 I (..\ESP8266.h)(0x5A659BAD)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C245B8)
 I (..\queue.h)(0x5A4D960D)
-I (..\main.h)(0x5A65A6BE)
+I (..\main.h)(0x5A65B94D)
 I (..\lcd_display.h)(0x5A5F0057)
-I (..\touch_screen.h)(0x5A659BAE)
+I (..\touch_screen.h)(0x5A65B5E2)
+I (..\touch_screen_adc.h)(0x5A65B5D7)
 I (..\library\HT32_USBD_Library\inc\ht32_usbd_core.h)(0x5919477E)
 I (..\ht32_usbd_class.h)(0x5979EB28)
 I (..\ht32_usbd_descriptor.h)(0x5979EB28)
@@ -59,7 +60,7 @@ I (..\_ht32_project_source.h)(0x5A4E0838)
 I (..\iap_buffer.h)(0x5A4F0C88)
 I (..\iap_crc16.h)(0x5A4E0774)
 I (..\iap_xmodem.h)(0x5A4E0F27)
-F (..\ht32f1xxxx_01_it.c)(0x5A65A6BE)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\ht32f1xxxx_01_it.o --omf_browse .\ht32\12345\obj\ht32f1xxxx_01_it.crf --depend .\ht32\12345\obj\ht32f1xxxx_01_it.d)
+F (..\ht32f1xxxx_01_it.c)(0x5A65B69F)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\ht32f1xxxx_01_it.o --omf_browse .\ht32\12345\obj\ht32f1xxxx_01_it.crf --depend .\ht32\12345\obj\ht32f1xxxx_01_it.d)
 I (..\library\HT32F1xxxx_Driver\inc\ht32.h)(0x5925C194)
 I (..\library\Device\Holtek\HT32F1xxxx\Include\ht32f1xxxx_01.h)(0x5940131E)
 I (..\library\CMSIS\Include\core_cm3.h)(0x5913D46E)
@@ -102,11 +103,12 @@ I (..\library\HT32F1xxxx_Driver\inc\ht32_serial.h)(0x59232B2C)
 I (..\library\HT32F1xxxx_Driver\inc\ht32_rand.h)(0x59402DB4)
 I (..\library\HT32_USBD_Library\inc\ht32_usbd_core.h)(0x5919477E)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C245B8)
+I (..\main.h)(0x5A65B94D)
+I (..\lcd_display.h)(0x5A5F0057)
 I (..\ESP8266.h)(0x5A659BAD)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C245B8)
 I (..\queue.h)(0x5A4D960D)
-I (..\main.h)(0x5A65A6BE)
-I (..\lcd_display.h)(0x5A5F0057)
+I (..\touch_screen_adc.h)(0x5A65B5D7)
 F (..\ESP8266.c)(0x5A4B0ADC)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\esp8266.o --omf_browse .\ht32\12345\obj\esp8266.crf --depend .\ht32\12345\obj\esp8266.d)
 I (..\ESP8266.h)(0x5A659BAD)
 I (..\library\HT32F1xxxx_Driver\inc\ht32.h)(0x5925C194)
@@ -152,7 +154,7 @@ I (..\library\HT32F1xxxx_Driver\inc\ht32_rand.h)(0x59402DB4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C245B8)
 I (..\queue.h)(0x5A4D960D)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C245B8)
-I (..\main.h)(0x5A65A6BE)
+I (..\main.h)(0x5A65B94D)
 I (..\lcd_display.h)(0x5A5F0057)
 F (..\queue.c)(0x5A45E9A1)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\queue.o --omf_browse .\ht32\12345\obj\queue.crf --depend .\ht32\12345\obj\queue.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C245B8)
@@ -523,7 +525,7 @@ I (..\utilities\ht32_board.h)(0x599146CC)
 I (..\utilities\HT32_board/ht32f12345_dvbtemp.h)(0x5A4EFD4F)
 I (..\drv\spi_flash.h)(0x5A659BAE)
 F (..\touch_screen.c)(0x5A659BAE)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\touch_screen.o --omf_browse .\ht32\12345\obj\touch_screen.crf --depend .\ht32\12345\obj\touch_screen.d)
-I (..\touch_screen.h)(0x5A659BAE)
+I (..\touch_screen.h)(0x5A65B5E2)
 I (..\library\HT32F1xxxx_Driver\inc\ht32.h)(0x5925C194)
 I (..\library\Device\Holtek\HT32F1xxxx\Include\ht32f1xxxx_01.h)(0x5940131E)
 I (..\library\CMSIS\Include\core_cm3.h)(0x5913D46E)
@@ -568,7 +570,54 @@ I (..\lcm.h)(0x5A5F0057)
 I (..\utilities\ht32_board.h)(0x599146CC)
 I (..\utilities\HT32_board/ht32f12345_dvbtemp.h)(0x5A4EFD4F)
 I (..\drv\spi_flash.h)(0x5A659BAE)
-I (..\main.h)(0x5A65A6BE)
+I (..\touch_screen_adc.h)(0x5A65B5D7)
+I (..\main.h)(0x5A65B94D)
+I (..\lcd_display.h)(0x5A5F0057)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C245B8)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C245B8)
+F (..\touch_screen_adc.c)(0x5A65B94D)(-c --cpu Cortex-M3 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I..\ -I..\library\HT32F1xxxx_Driver\inc -I..\library\CMSIS\Include -I..\library\Device\Holtek\HT32F1xxxx\Include -I..\library\HT32_USBD_Library\inc -I..\utilities -I..\drv -I..\common-I "C:\Users\my asus\Desktop\Git_project\Thermostat\MDK_ARMv5\RTE"-I C:\Keil_v5\ARM\PACK\Holtek\HT32_DFP\1.0.10\ARM\INC\Holtek\HT32F1xxxx-I C:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DUSE_HT32F12345 -DUSE_HT32_DRIVER -DUSE_HT32F12345_DVB -DUSE_HT32F12345-o .\ht32\12345\obj\touch_screen_adc.o --omf_browse .\ht32\12345\obj\touch_screen_adc.crf --depend .\ht32\12345\obj\touch_screen_adc.d)
+I (..\touch_screen_adc.h)(0x5A65B5D7)
+I (..\library\HT32F1xxxx_Driver\inc\ht32.h)(0x5925C194)
+I (..\library\Device\Holtek\HT32F1xxxx\Include\ht32f1xxxx_01.h)(0x5940131E)
+I (..\library\CMSIS\Include\core_cm3.h)(0x5913D46E)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x54C245B8)
+I (..\library\CMSIS\Include\core_cmInstr.h)(0x5913D46E)
+I (..\library\CMSIS\Include\core_cmFunc.h)(0x5913D46E)
+I (..\library\Device\Holtek\HT32F1xxxx\Include\system_ht32f1xxxx.h)(0x59231A8A)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_lib.h)(0x59403386)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f12345_libcfg.h)(0x594002B0)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C245B8)
+I (..\ht32f1xxxx_conf.h)(0x5A4DFBCE)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_adc.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_bftm.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_ckcu.h)(0x594038A0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_cmp.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_crc.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_ebi.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_exti.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_flash.h)(0x59402AA4)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_gpio.h)(0x59400770)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_i2c.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_i2s.h)(0x5925C194)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_tm_type.h)(0x5925C194)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_mctm.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_tm.h)(0x5925C194)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_pdma.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_pwrcu.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_rstcu.h)(0x59402AA4)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_rtc.h)(0x59312982)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_sdio.h)(0x59402148)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_spi.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_usart.h)(0x5940131E)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_usbd.h)(0x594002B0)
+I (..\ht32f1xxxx_01_usbdconf.h)(0x5979EB28)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_usbdinit.h)(0x5913D46E)
+I (..\library\HT32F1xxxx_Driver\inc\ht32_retarget_usbdconf.h)(0x5913D46E)
+I (..\library\HT32F1xxxx_Driver\inc\ht32f1xxxx_wdt.h)(0x594002B0)
+I (..\library\HT32F1xxxx_Driver\inc\ht32_cm3_misc.h)(0x5913D46E)
+I (..\library\HT32F1xxxx_Driver\inc\ht32_serial.h)(0x59232B2C)
+I (..\library\HT32F1xxxx_Driver\inc\ht32_rand.h)(0x59402DB4)
+I (..\main.h)(0x5A65B94D)
 I (..\lcd_display.h)(0x5A5F0057)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C245B8)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C245B8)

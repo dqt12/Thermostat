@@ -38,8 +38,7 @@
 //extern u8 Thermostat_DATA[12];
 
 	 
-	 
-	 
+
 /* Exported types ------------------------------------------------------------------------------------------*/
 
 typedef struct 
@@ -93,19 +92,7 @@ typedef struct
 }KeyCmd_TypeDef;
 //extern KeyCmd_TypeDef KeyCmd;
 
-typedef enum
-{
-	READ_X,
-	READ_Y,
-	READ_Z,
-	READ_FINE,
-} Touch_Screen_Enum;
 
-
-u16 ADC_READ_X(void);
-u16 ADC_READ_Y(void);
-u8 ADC_READ_INT(void);
-extern Touch_Screen_Enum Tocuh_Sreen_ADC_CH;
 
 //---------------------------------------------------------------------
 typedef struct 

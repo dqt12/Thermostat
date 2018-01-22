@@ -29,11 +29,11 @@
 #include "ht32.h"
 #include "ht32_usbd_core.h"
 #include <string.h>
-
-#include "ESP8266.h"
 #include "main.h"
-#include "queue.h" 
+#include "ESP8266.h"
 
+#include "queue.h" 
+#include "touch_screen_adc.h"
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
  * @brief   This function handles NMI exception.
@@ -322,10 +322,6 @@ void USART0_IRQHandler(void)
 extern vu16 ADC_DATA[3];
 
 
-extern Touch_Screen_Enum Tocuh_Sreen_ADC_CH;
-
-extern vu16 ADC_T;
-extern vu8 FLAG_ADC_END;
 void ADC_IRQHandler(void)
 {
 	ADC_ClearIntPendingBit(HT_ADC,ADC_INT_CYCLE_EOC);
@@ -335,19 +331,20 @@ void ADC_IRQHandler(void)
 	ADC_DATA[2] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA2);
 	
 	
-	if(Tocuh_Sreen_ADC_CH == READ_X)
+	
+//	ADC_TS_Conversion(ADC_REGULAR_DATA4,ADC_REGULAR_DATA3);
+
+	if(ADC_TS.Channl == READ_X)
 	{
-		 ADC_T = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA4);	
+		 ADC_TS.DATA = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA4);	
 	}		
-	else if(Tocuh_Sreen_ADC_CH == READ_Y)
+	else if(ADC_TS.Channl == READ_Y)
 	{
 
-		 ADC_T = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA3);	
+		 ADC_TS.DATA = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA3);	
 	}
 	
-	FLAG_ADC_END = SET;
-
-
+	ADC_TS.isEND  = TRUE;
 }
 
 

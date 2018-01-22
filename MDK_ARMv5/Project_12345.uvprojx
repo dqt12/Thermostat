@@ -472,6 +472,11 @@
               <FileType>1</FileType>
               <FilePath>..\touch_screen.c</FilePath>
             </File>
+            <File>
+              <FileName>touch_screen_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\touch_screen_adc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

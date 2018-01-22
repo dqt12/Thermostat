@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\HT32\12345\obj\HT32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\HT32\12345\obj\HT32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Mon Jan 22 16:54:57 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Mon Jan 22 18:13:36 2018
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -395,11 +395,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[6b]"></a>ADC_Filer</STRONG> (Thumb, 86 bytes, Stack size 12 bytes, main.o(i.ADC_Filer))
+<P><STRONG><a name="[6b]"></a>ADC_Filer</STRONG> (Thumb, 78 bytes, Stack size 12 bytes, touch_screen_adc.o(i.ADC_Filer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = ADC_Filer
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_READ_Y
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_READ_X
+<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_TS_READ_Y
+<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_TS_READ_X
 </UL>
 
 <P><STRONG><a name="[68]"></a>ADC_GetConversionData</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, ht32f1xxxx_adc.o(i.ADC_GetConversionData))
@@ -416,26 +416,6 @@ Global Symbols
 </UL>
 <P><STRONG><a name="[63]"></a>ADC_IntConfig</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, ht32f1xxxx_adc.o(i.ADC_IntConfig))
 <BR><BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Configuration
-</UL>
-
-<P><STRONG><a name="[69]"></a>ADC_READ_X</STRONG> (Thumb, 48 bytes, Stack size 24 bytes, main.o(i.ADC_READ_X))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ADC_READ_X &rArr; Read_X_PIN &rArr; AFIO_GPxConfig
-</UL>
-<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_X_PIN
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Filer
-</UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_MeasureXY
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_CheckPressed
-</UL>
-
-<P><STRONG><a name="[6c]"></a>ADC_READ_Y</STRONG> (Thumb, 50 bytes, Stack size 24 bytes, main.o(i.ADC_READ_Y))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ADC_READ_Y &rArr; Read_Y_PIN &rArr; AFIO_GPxConfig
-</UL>
-<BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_Y_PIN
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Filer
-</UL>
-<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_MeasureXY
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_CheckPressed
 </UL>
 
 <P><STRONG><a name="[61]"></a>ADC_RegularChannelConfig</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, ht32f1xxxx_adc.o(i.ADC_RegularChannelConfig))
@@ -458,6 +438,26 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Configuration
 </UL>
 
+<P><STRONG><a name="[69]"></a>ADC_TS_READ_X</STRONG> (Thumb, 50 bytes, Stack size 24 bytes, touch_screen_adc.o(i.ADC_TS_READ_X))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ADC_TS_READ_X &rArr; Read_X_PIN &rArr; AFIO_GPxConfig
+</UL>
+<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_X_PIN
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Filer
+</UL>
+<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_MeasureXY
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_CheckPressed
+</UL>
+
+<P><STRONG><a name="[6c]"></a>ADC_TS_READ_Y</STRONG> (Thumb, 50 bytes, Stack size 24 bytes, touch_screen_adc.o(i.ADC_TS_READ_Y))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ADC_TS_READ_Y &rArr; Read_Y_PIN &rArr; AFIO_GPxConfig
+</UL>
+<BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_Y_PIN
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Filer
+</UL>
+<BR>[Called By]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_MeasureXY
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_CheckPressed
+</UL>
+
 <P><STRONG><a name="[88]"></a>AFIO_EXTISourceConfig</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, ht32f1xxxx_gpio.o(i.AFIO_EXTISourceConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = AFIO_EXTISourceConfig
 </UL>
@@ -470,10 +470,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HT32F_DVB_PBInit
-<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_Y_PIN
-<LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_X_PIN
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Configuration
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
+<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_Y_PIN
+<LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_X_PIN
 </UL>
 
 <P><STRONG><a name="[2d]"></a>BFTM0_IRQHandler</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, ht32f1xxxx_01_it.o(i.BFTM0_IRQHandler))
@@ -729,10 +729,10 @@ Global Symbols
 <P><STRONG><a name="[82]"></a>HT32F_DVB_PBInit</STRONG> (Thumb, 182 bytes, Stack size 40 bytes, ht32_board.o(i.HT32F_DVB_PBInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = HT32F_DVB_PBInit &rArr; AFIO_GPxConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_PullResistorConfig
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
+<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_PullResistorConfig
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_InputConfig
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_EXTISourceConfig
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI_IntConfig
@@ -857,13 +857,13 @@ Global Symbols
 <P><STRONG><a name="[a2]"></a>LCD_Init</STRONG> (Thumb, 370 bytes, Stack size 24 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = LCD_Init &rArr; ZH_GPTM_Init &rArr; AFIO_GPxConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
+<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Switch
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_CCR_Num
 <LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTMCH_Switch
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EBI_Init
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EBI_Cmd
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
@@ -994,28 +994,28 @@ Global Symbols
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Download
 </UL>
 
-<P><STRONG><a name="[6a]"></a>Read_X_PIN</STRONG> (Thumb, 122 bytes, Stack size 8 bytes, main.o(i.Read_X_PIN))
+<P><STRONG><a name="[6a]"></a>Read_X_PIN</STRONG> (Thumb, 122 bytes, Stack size 8 bytes, touch_screen_adc.o(i.Read_X_PIN))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Read_X_PIN &rArr; AFIO_GPxConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteOutBits
+<BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteOutBits
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_PullResistorConfig
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DriveConfig
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
 </UL>
-<BR>[Called By]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_READ_X
+<BR>[Called By]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_TS_READ_X
 </UL>
 
-<P><STRONG><a name="[6d]"></a>Read_Y_PIN</STRONG> (Thumb, 122 bytes, Stack size 8 bytes, main.o(i.Read_Y_PIN))
+<P><STRONG><a name="[6d]"></a>Read_Y_PIN</STRONG> (Thumb, 122 bytes, Stack size 8 bytes, touch_screen_adc.o(i.Read_Y_PIN))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Read_Y_PIN &rArr; AFIO_GPxConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteOutBits
+<BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteOutBits
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_PullResistorConfig
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DriveConfig
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_READ_Y
+<BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_TS_READ_Y
 </UL>
 
 <P><STRONG><a name="[b9]"></a>SPI_Cmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, ht32f1xxxx_spi.o(i.SPI_Cmd))
@@ -1049,9 +1049,9 @@ Global Symbols
 <P><STRONG><a name="[91]"></a>SPI_FLASH_Init</STRONG> (Thumb, 146 bytes, Stack size 56 bytes, spi_flash_mx66l51235f.o(i.SPI_FLASH_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = SPI_FLASH_Init &rArr; AFIO_GPxConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
+<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_SELOutputCmd
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Init
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Cmd
@@ -1260,10 +1260,10 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[ce]"></a>TOUCH_CheckPressed</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, touch_screen.o(i.TOUCH_CheckPressed))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = TOUCH_CheckPressed &rArr; ADC_READ_Y &rArr; Read_Y_PIN &rArr; AFIO_GPxConfig
+<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = TOUCH_CheckPressed &rArr; ADC_TS_READ_Y &rArr; Read_Y_PIN &rArr; AFIO_GPxConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_READ_Y
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_READ_X
+<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_TS_READ_Y
+<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_TS_READ_X
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_Logical_Coor_Get
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_sample
@@ -1271,7 +1271,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[d0]"></a>TOUCH_Logical_Coor_Get</STRONG> (Thumb, 120 bytes, Stack size 16 bytes, touch_screen.o(i.TOUCH_Logical_Coor_Get))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = TOUCH_Logical_Coor_Get &rArr; TOUCH_MeasureXY &rArr; ADC_READ_Y &rArr; Read_Y_PIN &rArr; AFIO_GPxConfig
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = TOUCH_Logical_Coor_Get &rArr; TOUCH_MeasureXY &rArr; ADC_TS_READ_Y &rArr; Read_Y_PIN &rArr; AFIO_GPxConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_StoreUnstable
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_MeasureXY
@@ -1281,10 +1281,10 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[d1]"></a>TOUCH_MeasureXY</STRONG> (Thumb, 96 bytes, Stack size 24 bytes, touch_screen.o(i.TOUCH_MeasureXY))
-<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = TOUCH_MeasureXY &rArr; ADC_READ_Y &rArr; Read_Y_PIN &rArr; AFIO_GPxConfig
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = TOUCH_MeasureXY &rArr; ADC_TS_READ_Y &rArr; Read_Y_PIN &rArr; AFIO_GPxConfig
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_READ_Y
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_READ_X
+<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_TS_READ_Y
+<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_TS_READ_X
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_Logical_Coor_Get
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_sample
