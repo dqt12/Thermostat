@@ -106,7 +106,7 @@ typedef enum
 
 u16 ADC_READ_X(void);
 u16 ADC_READ_Y(void);
-
+u8 ADC_READ_INT(void);
 extern Touch_Screen_Enum Tocuh_Sreen_ADC_CH;
 /* Exported variables --------------------------------------------------------------------------------------*/
 extern UI_T gUI;

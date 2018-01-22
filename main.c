@@ -533,61 +533,6 @@ void Read_Y_PIN(void)//ADCx
 	}
 }
 
-void Read_Z(void)
-{	
-	
-	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_GPIO);//Y+
-  GPIO_DriveConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DV_8MA); //Y+ HIGH
-  GPIO_DirectionConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DIR_OUT);
-	GPIO_WriteOutBits(PIN_YT_PORT, PIN_YT_PIN, SET); 
-	
-  GPIO_PullResistorConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_PR_DISABLE);	//Y- FLOT
-  GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_IN);
-	
-  GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_8MA); //X- LOW
-  GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
-	GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
-
-	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_ADC);//X+ ADC
-	
-}
-
-void Read_Z2(void)
-{	
-	
-//	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_GPIO);//Y+
-//  GPIO_DriveConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DV_8MA); //Y+ HIGH
-//  GPIO_DirectionConfig(PIN_YT_PORT, PIN_YT_PIN, GPIO_DIR_OUT);
-//	GPIO_WriteOutBits(PIN_YT_PORT, PIN_YT_PIN, SET); 
-//	
-//  GPIO_PullResistorConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_PR_DISABLE);	//Y- FLOT
-//  GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_IN);
-//	
-//  GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_8MA); //X- LOW
-//  GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
-//	GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
-
-//	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_ADC);//X+ ADC
-//	
-	
-	AFIO_GPxConfig(READ_XR_PORT,READ_XR_PIN, AFIO_FUN_GPIO);//X+
-  GPIO_PullResistorConfig(READ_XR_PORT, READ_XR_PIN, GPIO_PR_DISABLE);	//X- FLOT
-  GPIO_DirectionConfig(READ_XR_PORT, READ_XR_PIN, GPIO_DIR_IN);	
-	
-	
-	
-  GPIO_DriveConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DV_8MA); //X+ HIGH
-  GPIO_DirectionConfig(PIN_XR_PORT, PIN_XR_PIN, GPIO_DIR_OUT);
-	GPIO_WriteOutBits(PIN_XR_PORT, PIN_XR_PIN, SET); 
-	
-  GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_8MA); //X- LOW
-  GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
-	GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
-	
-
-	AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_ADC);//Y+ ADC
-	
-}
 
 u16 ADC_Filer(vu16 *data,u8 num)
 {
@@ -610,29 +555,36 @@ u16 ADC_Filer(vu16 *data,u8 num)
 	
 	sum = 0;
 	
-	for(i=num/2;i<num;i++)
+	for(i=(num>>1);i<num;i++)
 	{
 		sum += data[i];
 	}
-	sum = sum/(num-num/2);
+	sum = sum/(num-(num>>1));
 	
 	return (u16)sum;
 }
 
-
-
-void Touch_Screen_calibration(void)
+u8 ADC_READ_INT(void)
 {
-	LCD_Clear(Red);
-	LCD_TextColorSet(Green);
-	LCD_BackColorSet(Red);
+	u16 dataf = 0;
 	
-	LCD_DrawChar(50, 50, 24, 16, 0,'+');
+	Read_X_PIN();
 	
-	LCD_DrawChar(430, 50, 24, 16, 0,'+');
-	LCD_DrawChar(50, 222, 24, 16, 0,'+');
-	LCD_DrawChar(430, 222, 24, 16, 0,'+');
+	Tocuh_Sreen_ADC_CH = READ_X;
+
+		FLAG_ADC_END = RESET;
+		while(FLAG_ADC_END == RESET);
+		dataf = ADC_T;
+
+
+	if(dataf <= 4000 )
+		dataf = 1;
+	else 
+		dataf = 0;
+	
+	return dataf;
 }
+
 
 
 u16 ADC_READ_X(void)
@@ -655,6 +607,8 @@ u16 ADC_READ_X(void)
 	
 	return dataf;
 }
+
+
 
 u16 ADC_READ_Y(void)
 {
@@ -681,9 +635,6 @@ u16 ADC_READ_Y(void)
 
 int main(void)
 {
-
-	u8 j;
-	int checksum = 0;
 	
   CKCU_Configuration();               /* System Related configuration       */ 	
 	GPIO_Configuration();
@@ -725,26 +676,11 @@ int main(void)
 
 	
 	LCD_Clear(Black);
-	
-	SPI_FLASH_BufferRead((u8*)&mCurrentSettings.cal[0], 0X3FFF000, sizeof(mCurrentSettings.cal));//Read cal
-	
-	for (j = 0; j < 7; j++)
-		checksum += mCurrentSettings.cal[j];
 
-	if(mCurrentSettings.cal[7] != checksum)
-	{
-	
-		ExecCalibration(&mCurrentSettings);
+	TOUCH_SCREEN_INIT(DISABLE);
 
-		SPI_FLASH_SectorErase(0X3FFF000);
-		SPI_FLASH_BufferWrite((u8*)&mCurrentSettings.cal[0], 0X3FFF000, sizeof(mCurrentSettings.cal));//Read cal
-	}
-
-	
 	LCD_Clear(Black);
-	
 
-	
 	while(1)
 	{
 
@@ -752,16 +688,17 @@ int main(void)
 		{
 			FLAG_10mS = 0;
 		//	WIFI_CAP();
-		TOUCH_Exec(&Tocuh);
-			LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Blue);
+			TOUCH_Logical_Coor_Get(&Tocuh);
+			if(Tocuh.isPress == TRUE)
+			{
+				LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Blue);
+			}
+			
 		}		 
 		 	
 		if(FLAG_20mS)
 		{
 			FLAG_20mS = 0;
-				
-			
-			
 //			KEY_Scan();
 		}
 		

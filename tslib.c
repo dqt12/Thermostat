@@ -14,13 +14,15 @@
 
 #include "tslib.h"
 
-
 #define ABS(v) ((v>0) ? v : -v)
 
-TOUCH_CALIBRATION_TypeDef  mCurrentSettings;
+TOUCH_CAL_TypeDef	Touch_Cal;
 TOUCH_XY_TypeDef  Tocuh;	
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*********************************************************************************************************//**
+ * @brief delay sometime 
+ * @param count: delay vlaue
+ * @retval NONE
+ ************************************************************************************************************/
 void DelayT(u32 count)
 {
 	u32 i,j;
@@ -28,15 +30,17 @@ void DelayT(u32 count)
 		for(j=0;j<72000;j++);
 }
 
-
-
-bool perform_calibration(TOUCH_CALIBRATION_TypeDef *pcal)
+/*********************************************************************************************************//**
+ * @brief Calculation the Calibration Value
+ * @param *pcal: Five group X_Y Value Point
+ * @retval TURE: the data can calculation ;FALSE:the data was wrong
+ ************************************************************************************************************/
+bool Calculation_calibration(TOUCH_Calibration_TypeDef *pcal)
 {
     u8 j;
     float n, x, y, x2, y2, xy, z, zx, zy;
     float det, a, b, c, e, f, i;
     float scaling = 65536.0;
-		//float scaling = 4096.0;
 		int checksum = 0;
 	
     // Get sums for matrix
@@ -79,9 +83,9 @@ bool perform_calibration(TOUCH_CALIBRATION_TypeDef *pcal)
     }
 
     // Now multiply out to get the calibration for framebuffer x coord
-    pcal->cal[0] = (int)((a * z + b * zx + c * zy) * (scaling));
-    pcal->cal[1] = (int)((b * z + e * zx + f * zy) * (scaling));
-    pcal->cal[2] = (int)((c * z + f * zx + i * zy) * (scaling));
+    pcal->Var.cal[0] = (int)((a * z + b * zx + c * zy) * (scaling));
+    pcal->Var.cal[1] = (int)((b * z + e * zx + f * zy) * (scaling));
+    pcal->Var.cal[2] = (int)((c * z + f * zx + i * zy) * (scaling));
 
     // Get sums for y calibration
     z = zx = zy = 0;
@@ -94,38 +98,42 @@ bool perform_calibration(TOUCH_CALIBRATION_TypeDef *pcal)
     }
 
     // Now multiply out to get the calibration for framebuffer y coord
-    pcal->cal[3] = (int)((a * z + b * zx + c * zy) * (scaling));
-    pcal->cal[4] = (int)((b * z + e * zx + f * zy) * (scaling));
-    pcal->cal[5] = (int)((c * z + f * zx + i * zy) * (scaling));
-
-    // If we got here, we're OK, so assign scaling to a[6] and return
-    pcal->cal[6] = (int)scaling;
-
+    pcal->Var.cal[3] = (int)((a * z + b * zx + c * zy) * (scaling));
+    pcal->Var.cal[4] = (int)((b * z + e * zx + f * zy) * (scaling));
+    pcal->Var.cal[5] = (int)((c * z + f * zx + i * zy) * (scaling));
+		
+    // If we got here, we're OK, 
+    pcal->Var.scaling = (int)scaling;		
+		
+		
 		//If we want to remmber the calibration,use for checksum
-		for (j = 0; j < 7; j++)
+		checksum = pcal->Var.scaling;
+		
+		for (j = 0; j < 6; j++)
 		{
-			checksum += pcal->cal[j];
+			checksum += pcal->Var.cal[j];
 		}
-	
-		pcal->cal[7] = checksum;
+		
+		pcal->Var.checksum = checksum;
 		
     return (TRUE);
 }
 
-//功能：读取触摸屏读坐标，坐标未做转换，不能直接使用
-//返回：0=无效，1=有效坐标	
-//说明：本函数连续采样2此，2次采样结果+-5范围才有效
-
+/*********************************************************************************************************//**
+ * @brief get the adc data for touch screen res 
+ * @param X point 
+ * @param Y point	
+ * @retval   TURE : adc data is OK ; FALSE :adc data is Jitter
+ ************************************************************************************************************/
 bool TOUCH_MeasureXY(u16 *x, u16 *y)
 {
     u16 x1, y1;
     u16 x2, y2;
-    u16 i;
-
+		u16 j;
     x1 = TOUCH_X_MeasureX();
     y1 = TOUCH_X_MeasureY();
 
-    for (i = 0; i < 1000; i++);
+    for(j=0;j<1000;j++);
 
     x2 = TOUCH_X_MeasureX();
     y2 = TOUCH_X_MeasureY();
@@ -135,108 +143,121 @@ bool TOUCH_MeasureXY(u16 *x, u16 *y)
         *x = (x1 + x2) / 2;
         *y = (y1 + y2) / 2;
 
-        return TRUE;
+        return (TRUE);
     }
     else 
     {
-        return FALSE;
+        return (FALSE);
     }
 }
 
-bool check_touch_pressed(u16 xPhys,u16 yPhys)
+/*********************************************************************************************************//**
+ * @brief check the touch screen is press ? (USE by ADC DATA POLLING)
+ * @retval TURE: touch is press ;FALSE: Touch isn't press 
+ ************************************************************************************************************/
+bool TOUCH_CheckPressed(void)
 {
-	
-#if 0
-	LCD_ShowNum(40,180,16,0,xPhys);
-	LCD_ShowNum(80,180,16,0,yPhys);
-#endif
-	
-	if((xPhys > MIN_AD_X ) && (xPhys < MAX_AD_X)) 
-	{	
-		if((yPhys > MIN_AD_Y) &&(yPhys < MAX_AD_Y))
-		{
-			return (TRUE);
+    u16 xPhys;
+    u16 yPhys;
+    xPhys = TOUCH_X_MeasureX();
+    yPhys = TOUCH_X_MeasureY();
+
+		if((xPhys > MIN_AD_X ) && (xPhys < MAX_AD_X)) 
+		{	
+			if((yPhys > MIN_AD_Y) &&(yPhys < MAX_AD_Y))
+			{
+				return (TRUE);
+			}
 		}
-	}
 	
 	return (FALSE); 
 }
 
- void get_sample(TOUCH_CALIBRATION_TypeDef *cal, u8 group,u16 x,u16 y,bool isRight)
+/*********************************************************************************************************//**
+ * @brief get the calibration data for touch screen
+ * @param *pcal: TOUCH_Calibration_TypeDef
+ * @param group: the data group number
+ * @param x: check the x 
+ * @param y: check the y
+ * @param isRight: check the in the screen direction
+ * @retval NONE
+ ************************************************************************************************************/
+ void get_sample(TOUCH_Calibration_TypeDef *pcal, u8 group,u16 x,u16 y,bool isRight)
 {
-    u16 xPhys, yPhys;
-
-	  LCD_DrawFillRect(x, y, 5,5,Blue);//
-//		LCD_DrawFillRect(x-5, y-5, 5,5,Red);
-	
-		LCD_TextColorSet(Red);
+		Touch_Display_Piont(x, y);
 	
 	  if (isRight)
 		{
-				LCD_DrawString(x - 120, y - 8, 16, 8, 0,"PRESS_PIXEL");
+				Touch_Display_MSG(x - 120, y - 8,"PRESS_PIXEL");
 		}
     else
 		{
-				LCD_DrawString(x + 20, y - 8, 16, 8, 0,"PRESS_PIXEL");
+				Touch_Display_MSG(x + 20, y - 8, "PRESS_PIXEL");
 		}
 		
     // Wait touch to release
     while (1)
     {
-        if (TOUCH_MeasureXY(&xPhys, &yPhys))
-        {
-            if (!check_touch_pressed(xPhys, yPhys))
-						{
-							break;
-						}
-                 
-        } 
-
+			
+			#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
+				if (TOUCH_CheckPressed() == FALSE)		
+			#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
+				if (TOUCH_PRESS_INT == TOUCH_NOPRESS)
+			#endif
+				{
+					break;
+				}				
+				
 				DelayT(100);
     }
+		
+		
     // Wait touch pressed
     while(1)
     {
-        if (TOUCH_MeasureXY(&xPhys, &yPhys))
-        {
-            if (check_touch_pressed(xPhys, yPhys))
-            {
-                if (TOUCH_MeasureXY(&cal->x[group], &cal->y[group]))
-								{
-                    break;
-								}
-            }
-        }
+			#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
+				if (TOUCH_CheckPressed() == TRUE)	
+			#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
+				if (TOUCH_PRESS_INT == TOUCH_PRESS)
+			#endif		
+				{
+						if (TOUCH_MeasureXY(&pcal->x[group], &pcal->y[group]))
+						{
+								break;
+						}
+				}
+
 				DelayT(100);
-    };
+    }
 
     /* Tell user to release */
-		LCD_Clear(White);
+		Touch_Display_Clear();
+		
 	  if (isRight)
-				LCD_DrawString(x - 80, y - 8, 16, 8, 0,"PRESS_PIXEL_OK");
+		{
+				Touch_Display_MSG(x - 80, y - 8,"PRESS_PIXEL_OK");
+		}
     else
-				LCD_DrawString(x + 20, y - 8, 16, 8, 0,"PRESS_PIXEL_OK");
+		{
+				Touch_Display_MSG(x + 20, y - 8,"PRESS_PIXEL_OK");
+		}
 		
-		
-    cal->xfb[group] = x;
-    cal->yfb[group] = y;
+    pcal->xfb[group] = x;
+    pcal->yfb[group] = y;
 }
 
-/*********************************************************************
-*
-*       _ExecCalibration
-*
-**********************************************************************
-*/
 
-bool ExecCalibration(TOUCH_CALIBRATION_TypeDef *pcal)
+/*********************************************************************************************************//**
+ * @brief Tocuh Screen Main Calibration
+ * @param *pcal: TOUCH_Calibration_TypeDef
+ * @retval TURE:  Calibration OK ; FALSE: Calibration NOK
+ ************************************************************************************************************/
+bool  TOUCH_Calibration(TOUCH_Calibration_TypeDef *pcal)
 {
     bool result;
-    u16 xPhys,yPhys;
         
     /* _Calibrate upper left */
-		LCD_TextColorSet(Red);
-		LCD_Clear(White);
+		Touch_Display_Clear();
 	
     // Top Left
     get_sample(pcal, 0, 50,             50,             FALSE);
@@ -255,104 +276,196 @@ bool ExecCalibration(TOUCH_CALIBRATION_TypeDef *pcal)
 
 		
     //GUI_Clear();
-		LCD_Clear(White);
+		Touch_Display_Clear();
 		
-    result = perform_calibration(pcal);
+    result = Calculation_calibration(pcal);
 
     if (result)
 		{
-			LCD_DrawString(80, 8, 16, 8, 0,"MSG_CALIBRATION_SUCCESSFUL");
+			Touch_Display_MSG(80, 8,"TOUCH_SCREEN_CALIBRATION_SUCCESSFUL");
 		}
     else
 		{
-			LCD_DrawString(80, 8, 16, 8, 0,"MSG_CALIBRATION_NOT_SUCCESSFUL");
+			Touch_Display_MSG(80, 8,"TOUCH_SCREEN_CALIBRATION_NOT_SUCCESSFUL");
 		}
 		
-			LCD_DrawString(80, 30, 16, 8, 0,"MSG_PRESS_TOUCH_TO_CONTINUE");
+		
+		Touch_Display_MSG(100, 30, "PRESS_TOUCH_TO_CONTINUE");
+			
 
-		DelayT(200);
+		// Wait touch to release
+    while (1)
+    {
+			
+			#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
+				if (TOUCH_CheckPressed() == FALSE)		
+			#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
+				if (TOUCH_PRESS_INT == TOUCH_NOPRESS)
+			#endif
+				{
+					break;
+				}				
+				
+				DelayT(100);
+    }
+		
     // Wait the touch to continue
     while (1)
     {
-        if (TOUCH_MeasureXY(&xPhys, &yPhys))
-        {
-            if (check_touch_pressed(xPhys, yPhys))
-                break;
-        }
-				DelayT(10);
+			#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
+				if(TOUCH_CheckPressed() == TRUE)		
+			#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
+				if (TOUCH_PRESS_INT == TOUCH_PRESS)
+			#endif		
+				{
+					Touch_Display_Clear();
+					break;
+				}
+
+				DelayT(100);
     }
 
     return (result);
 }
 
-/*********************************************************************
-*
-*       _StoreUnstable
-*/
-// void _StoreUnstable(int x, int y)
-//{
-//    static int _xLast = -1;
-//    static int _yLast = -1;
-//    int xOut, yOut;
 
-//    if ((x != -1) &&
-//        (y != -1) &&
-//        (_xLast != -1) &&
-//        (_yLast != -1))
-//    {
-//        xOut = _xLast;
-//        yOut = _yLast;
-//    }
-//    else
-//    {
-//        xOut = -1;
-//        yOut = -1;
-//    }
-
-//    _xLast = x;
-//    _yLast = y;
-
-//    //GUI_TOUCH_StoreUnstable(xOut, yOut); //去抖函数
-//}
-
-
-/*********************************************************************
-*
-*       TOUCH_Exec
-*/
-void TOUCH_Exec(TOUCH_XY_TypeDef *tocuh)
+void _StoreUnstable(u16 *x, u16 *y)
 {
-//    u16 xPhys, yPhys;
-//    int x, y;
-
-    if (TOUCH_MeasureXY(&tocuh->xPhys, &tocuh->yPhys))
-    {
-//		 if (check_touch_pressed(tocuh->xPhys, tocuh->yPhys))
-     {       
-			
-        /* Convert values into logical values */
-			 tocuh->x = (u16)((mCurrentSettings.cal[0] + mCurrentSettings.cal[1] * tocuh->xPhys +
-                   mCurrentSettings.cal[2] * tocuh->yPhys) / mCurrentSettings.cal[6]);
-
-       tocuh->y = (u16)((mCurrentSettings.cal[3] + mCurrentSettings.cal[4] * tocuh->xPhys +
-                   mCurrentSettings.cal[5] * tocuh->yPhys) / mCurrentSettings.cal[6]);
-
-        if ((tocuh->x  > LCD_XSIZE) || (tocuh->y > LCD_YSIZE))
-        {
-					tocuh->x = LCD_XSIZE;
-					tocuh->y = LCD_YSIZE;
-					
-					
-           // _StoreUnstable(-1, -1);
-        }
-        else 
-        {
-           // _StoreUnstable(x, y);
-        }
-				
-				
-				
-			}
-		 
-    }
+    static u16 _xLast = 0;
+    static u16 _yLast = 0;	
+		u16  xDiff, yDiff;
+	
+		xDiff = abs (*x - _xLast);
+		yDiff = abs (*y - _yLast);
+	
+		if (xDiff + yDiff > 2) 
+		{
+			_xLast = *x;
+			_yLast = *y;
+		}
+	
+		*x = _xLast;
+		*y = _yLast;
 }
+
+
+
+/*********************************************************************************************************//**
+ * @brief TOUCH_SCREEN_INIT 
+ * @param able_cal: force the Calibration, can be ENABLE or DISABLE.
+ * @retval TOUCH_SCREEN_INIT 
+ ************************************************************************************************************/
+void TOUCH_Logical_Coor_Get(TOUCH_XY_TypeDef *tocuh)
+{
+#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)		
+		if (TOUCH_CheckPressed() == TRUE) 
+#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
+		if (TOUCH_PRESS_INT == TOUCH_PRESS)
+#endif			
+		{
+			tocuh->isPress = TRUE;
+		}	
+		else 
+		{
+			tocuh->isPress = FALSE;
+		}
+				
+	if (tocuh->isPress)
+	{             
+		 TOUCH_MeasureXY(&tocuh->xPhys, &tocuh->yPhys);
+		/* Convert values into logical values */
+		 tocuh->x = (u16)((Touch_Cal.cal[0] + Touch_Cal.cal[1] * tocuh->xPhys +
+								 Touch_Cal.cal[2] * tocuh->yPhys) / Touch_Cal.scaling );
+
+		 tocuh->y = (u16)((Touch_Cal.cal[3] + Touch_Cal.cal[4] * tocuh->xPhys +
+								 Touch_Cal.cal[5] * tocuh->yPhys) / Touch_Cal.scaling );
+
+			if ((tocuh->x  > LCD_XSIZE) || (tocuh->y > LCD_YSIZE))
+			{
+				tocuh->x = LCD_XSIZE;
+				tocuh->y = LCD_YSIZE;
+			}
+			else 
+			{	
+				//Filer shake
+				 _StoreUnstable(&tocuh->x, &tocuh->y);
+			}
+			
+	}
+		 
+    
+}
+
+/*********************************************************************************************************//**
+ * @brief TOUCH_SCREEN_INIT 
+ * @param force_cal: force the Calibration, can be ENABLE or DISABLE.
+ * @retval TOUCH_SCREEN_INIT 
+ ************************************************************************************************************/
+bool TOUCH_SCREEN_INIT(ControlStatus force_cal)
+{
+	TOUCH_Calibration_TypeDef  *Touch_Cal_Frist;		
+	bool result = FALSE;
+	
+#if (USE_TOUCH_CAL_SAVE	== TOUCH_USE)
+	
+	u8 i;
+	int checksum = 0;
+	
+	Touch_Cal_Var_Read(Touch_Cal); 
+	
+	checksum = Touch_Cal.scaling;
+	
+	for (i = 0; i < 6; i++)
+	{
+		checksum += Touch_Cal.cal[i];
+	}
+	
+
+	if(Touch_Cal.checksum != checksum || force_cal) //if checksum is not same ,use for cal again 
+	{
+		Touch_Cal_Frist = (TOUCH_Calibration_TypeDef*)malloc(sizeof(TOUCH_Calibration_TypeDef));
+		
+		if(TOUCH_Calibration(Touch_Cal_Frist))//if cal OK,save the cal var
+		{
+
+				Touch_Cal_Var_Erase();
+				Touch_Cal_Var_Save(Touch_Cal_Frist->Var);
+				Touch_Cal_Var_Read(Touch_Cal);
+				
+				if(Touch_Cal_Frist->Var.checksum == Touch_Cal.checksum) //read the cal var ,check the chceksum
+					result = TRUE;
+				else 
+					result = FALSE;
+				
+				free(Touch_Cal_Frist);
+		}
+		
+	}
+	else//if checksum is same ,use the cal var 
+	{
+			result = TRUE;
+	}
+	
+	return result;
+#endif
+
+
+#if (USE_TOUCH_CAL_SAVE	== TOUCH_NOUSE)
+	
+		Touch_Cal_Frist = (TOUCH_Calibration_TypeDef*)malloc(sizeof(TOUCH_Calibration_TypeDef));
+
+		result = TOUCH_Calibration(Touch_Cal_Frist);
+		
+		memcpy(&Touch_Cal,&Touch_Cal_Frist->Var,sizeof(Touch_Cal));
+
+	
+		free(Touch_Cal_Frist);
+	
+		return result;
+		
+#endif	
+}
+
+
+
+

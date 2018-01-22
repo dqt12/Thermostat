@@ -77,7 +77,7 @@
         <tvExpOptDlg>0</tvExpOptDlg>
         <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
-      <CpuCode>0</CpuCode>
+      <CpuCode>255</CpuCode>
       <DebugOpt>
         <uSim>0</uSim>
         <uTrg>1</uTrg>
@@ -149,18 +149,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>714</LineNumber>
+          <LineNumber>286</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>1468</Address>
+          <Address>2990</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\main.c</Filename>
+          <Filename>..\tslib.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../main.c\714</Expression>
+          <Expression>\\HT32\../tslib.c\286</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -209,22 +209,17 @@
         <Ww>
           <count>0</count>
           <WinNumber>2</WinNumber>
-          <ItemText>mCurrentSettings,0x10</ItemText>
+          <ItemText>Touch_Cal</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>2</WinNumber>
-          <ItemText>Tocuh,0x0A</ItemText>
+          <ItemText>checksum</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>2</WinNumber>
-          <ItemText>CNT_10mS</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>CNT_20mS</ItemText>
+          <ItemText>Touch_Cal_Frist,0x10</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow1>
