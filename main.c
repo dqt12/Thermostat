@@ -18,7 +18,7 @@
 #include "_ht32_project_source.h"
 
 //USE FOR LCD DISPLAY
-//#include "lcd_display.h"
+#include "lcd_display.h"
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 __ALIGN4 USBDCore_TypeDef gUSBCore;
@@ -49,6 +49,7 @@ UI_T gUI;
 LCD_DrawSize LCD_IData;
 //u16 RemapTable[178];
 LCD_DISPLAY_FlagTypedef FLAG_IMG;
+
 
 
 /* Private function prototypes -----------------------------------------------------------------------------*/
@@ -121,7 +122,7 @@ void TS_SET_RECT(Touch_Screen_Rect_TypeDef *p,u16 xBg,u16 yBg,u16 xEn,u16 yEn)
 	p->yEn = yEn;
 	p->ispress = FALSE;	
 	
-	LCD_DrawRect(xBg,yBg,yEn-yBg,xEn-xBg,White);
+	LCD_DrawRect(xBg,yBg,yEn-yBg,xEn-xBg,Red);
 	
 }
 
@@ -189,18 +190,6 @@ void Display_Temp(void)
 		
 
 }
-
-
-
-/**/
-//u16 Line ;
-//void Display_State_Clear(void)
-//{
-//	Line = 0;
-//	TFT_Fill(250,0,479,271,White);
-//}
-//	
-
 
 void Display_State(char *Str)
 {
@@ -369,7 +358,7 @@ u16 ADC_to_TEMP(u16 NTC_adc)
 
 
 // "E0S000N000\r\n"
-void UPDATA(void)
+void WIFI_DATA_UPDATA(void)
 {
 	if(FLAG_WIFI.UPDATA)
 	{
@@ -518,6 +507,7 @@ int main(void)
 	ADC_Configuration();
 
 	TOUCH_SCREEN_INIT(DISABLE);
+//		TOUCH_SCREEN_INIT(ENABLE);
 	
 	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
 	gUI.Demo1_ShowPicID = 10;
@@ -582,7 +572,7 @@ int main(void)
 //			Display_State("123456789");
 
 			WIFI_Control();
-			UPDATA();
+			WIFI_DATA_UPDATA();
 			
 				
 		}

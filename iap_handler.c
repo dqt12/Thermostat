@@ -33,6 +33,7 @@
 #include "iap_crc16.h"
 #include "iap_buffer.h"
 #include "spi_flash.h"
+
 /** @addtogroup HT32_Series_Peripheral_Examples HT32 Peripheral Examples
   * @{
   */
@@ -79,7 +80,6 @@ static void IAP_Download(void)
   u32 result;
   u8 IAP_Buffer[136];
   u8 select;
-
 
   while (1)
   {

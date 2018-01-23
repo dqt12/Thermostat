@@ -349,7 +349,8 @@ void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
     
   /* Write part of picture to LCD GRAM.
      The action of read SPI Flash via DMA is process at the same time*/
-#if  (LCD_CONTROL_MODE == RGB888_EBI8)
+#if  (DISPLAY_MODE == EBI8_RGB888)
+	
 		picsize = pDisplay->NextDataLength /3;//a Pixel use a 8bit * 3 =24bit 
 		while(picsize--)
 		{
@@ -361,7 +362,7 @@ void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
 			pBuf++;		
 		}
 	
-#elif (LCD_CONTROL_MODE == RGB565_EBI16)
+#elif (DISPLAY_MODE == EBI16_RGB565)
 		
 		picsize = pDisplay->NextDataLength /2;//a Pixel use a 8bit * 2 =14bit 
 		while(picsize--)
