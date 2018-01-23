@@ -1,40 +1,60 @@
-#include <stdio.h>  
-#include <stdlib.h>  
 #include "queue.h"  
 
 
-//status CreateQueue(SqQueue *Q,QLentype maxsize)  
-//{  
-//	//  Q->pbase = (int *)malloc(sizeof(int)*maxsize);  
-//    if(NULL==Q->pbase)  
-//    {  
-//			return false;
-//    }  
-//    Q->front=0;         //
-//    Q->rear=0;  
-//    Q->maxsize=maxsize;  
-//		
-//		return true;
-//}  		
-
-
-status DestoryQueue(SqQueue *Q,QLentype Len)  
+SqQueue *CreateQueue(QLentype maxsize)  
 {  
-	QLentype nowlen =  QueueLength(Q);
-	if(nowlen < Len)
-	{
-		 return false;
-	}
-		else if (nowlen > Len )
-		{
-			Q->front = Q->front + Len; 
-		}   
-			else 
-			{
-				Q->front = 0;	
-				Q->rear = 0; 
-			}
-			 
+		SqQueue *Q = NULL;
+	
+	  Q = (SqQueue *)malloc(sizeof(SqQueue));  
+		
+		Q->pbase = (QElemtype *)malloc(sizeof(QLentype)*maxsize);
+	
+    Q->front = 0;         //
+    Q->rear = 0;  
+    Q->maxsize = maxsize;  
+		
+		return Q;
+}  		
+
+status DestoryQueue(SqQueue *Q)  
+{  
+	  free(Q);  
+	
+    if(NULL != Q)  
+    {  
+			return false;
+    }  
+
+		return true;
+}  	
+
+
+status CreateQueueStr(SqQueue *Q,QLentype maxsize)  
+{  
+	
+	  Q->pbase = (QElemtype *)malloc(sizeof(QLentype)*maxsize);  
+	
+    if(NULL == Q->pbase)  
+    {  
+			return false;
+    }  
+    Q->front = 0;         //
+    Q->rear = 0;  
+    Q->maxsize = maxsize;  
+		
+		return true;
+}  		
+
+
+status DestoryQueueStr(SqQueue *Q)  
+{  
+	  free(Q->pbase);  
+	
+    if(NULL != Q->pbase)  
+    {  
+			return false;
+    }  
+
 		return true;
 }  	
 
@@ -66,13 +86,7 @@ status DeQueue(SqQueue *Q,QElemtype **e)
     return true;
 }
 
-//QElemtype *DeQueue(SqQueue *Q)
-//{
-//		QElemtype *e;
-//    e = &(Q->pbase[Q->front]);
-//    Q->front =(Q->front+1)%Q->maxsize;
-//		return e;
-//}
+
 
 status FullQueue(SqQueue *Q)
 {
@@ -130,7 +144,6 @@ char *StrQueue(SqQueue *Q,QElemtype *Str)
 					return NULL;
 			}
 	}
-	//while(*p1 != '\n');
 	while(!EmptyQueue(Q));
 	
 		return NULL;

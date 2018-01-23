@@ -30,14 +30,10 @@
 #define EEPROM_ADDRESS        0x51
    
 /* Exported constants --------------------------------------------------------------------------------------*/
-	 extern vu8  URRxFin ;
 
-//void Display_State_Clear(void);
-//void Display_State(char *Str);
 
-//extern u8 Thermostat_DATA[12];
-
-	 
+extern u8 Thermostat_DATA[12];
+void Display_State(char *Str);
 
 /* Exported types ------------------------------------------------------------------------------------------*/
 
@@ -91,9 +87,6 @@ typedef struct
 //  u16 Know;
 //}KeyCmd_TypeDef;
 //extern KeyCmd_TypeDef KeyCmd;
-
-
-
 //---------------------------------------------------------------------
 typedef struct 
 {

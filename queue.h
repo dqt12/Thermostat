@@ -2,7 +2,8 @@
 #define __QUEUE_H_  
 
 #include "ht32.h"
-
+#include <stdio.h>  
+#include <stdlib.h>  
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,15 +27,20 @@ typedef enum
 	true = 1,
 }status;
 
+SqQueue *CreateQueue(QLentype maxsize) ;// 堆分配一個隊列(全部)
+status DestoryQueue(SqQueue *Q);//  堆釋放一個隊列(全部)
+
+status CreateQueueStr(SqQueue *Q,QLentype maxsize); // 堆分配一個隊列*(存儲數組）
+status DestoryQueueStr(SqQueue *Q); //  堆釋放一個隊列(存儲數組）
 
 void InitQueue(SqQueue *Q,QLentype maxsize,QElemtype *buff) ; // 將數組初始化為循環隊列
-status DestoryQueue(SqQueue *Q,QLentype Len);// 隊列 清空隊列Len個數據
 
 status EnQueue(SqQueue *Q,QElemtype e);// 隊列 入隊
 status DeQueue(SqQueue *Q,QElemtype **e);// 隊列 出隊
 status FullQueue(SqQueue *Q);// 隊列 檢查是否隊滿
 status EmptyQueue(SqQueue *Q);// 隊列 檢查是否隊空
 QLentype QueueLength(SqQueue *Q);// 隊列 檢查檔前隊列長度
+
 char *StrQueue(SqQueue *Q,char *Str);// 隊列Q和數組Str比較，如匹配，則返回最後byte指針，如不匹配則返回NULL。
 status CpyQueue(SqQueue *Q,char *Str,QLentype len);//隊列Q複製到數組Str，len個長度
 

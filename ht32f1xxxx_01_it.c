@@ -267,12 +267,12 @@ void RTC_IRQHandler(void)
  * @retval  None
  ************************************************************************************************************/
 
-extern SqQueue WIFI_FRAM;
-extern WIFI_REC_TypeDef WIFI_REC;
-extern vu8 	URRxFin;
+//extern SqQueue WIFI_FRAM;
+//extern WIFI_REC_TypeDef WIFI_REC;
+//extern vu8 	URRxFin;
 
-extern char *URTxBuf;
-extern vu8 URTxCont;
+//extern char *URTxBuf;
+//extern vu8 URTxCont;
 
 void USART0_IRQHandler(void)
 {
@@ -287,26 +287,24 @@ void USART0_IRQHandler(void)
 		
 		if(buf == '\n')
 		{
-				WIFI_REC.JUMP = NULL;
-				URRxFin++;
+				WIFI_REC.JUMP = FALSE;
+				WIFI_UART.RxFin++;
 		}
 		
-		if(WIFI_REC.JUMP  ==  NULL)
+		if(WIFI_REC.JUMP  ==  FALSE)
 			EnQueue(&WIFI_FRAM,buf);
   }
 	
   /* Tx, move data from buffer to UART                                                                */
   if(USART_GetFlagStatus(HT_USART0,USART_FLAG_TXDE)) 
   {
-    if(URTxCont)
+    if(WIFI_UART.TxCont)
     {
-      USART_SendData(HT_USART0, *(URTxBuf++));
-			URTxCont--;
-			//URTxContBuf++;
+      USART_SendData(HT_USART0, *(WIFI_UART.TxBuf++));
+			WIFI_UART.TxCont--;
     }
 		else
 		{
-//			URTxContBuf = 0;
 			USART_IntConfig(HT_USART0,USART_INT_TXDE,DISABLE);
 		}
 		

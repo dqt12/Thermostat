@@ -2,12 +2,6 @@
 #include <string.h>
 #include "main.h"
 
-#define ERR		3
-#define WAIT	2
-#define OK		1
-#define NULL	0
-
-
 void Clear_Buf(char *str,u8 size)
 {
 	size++;
@@ -20,12 +14,12 @@ void Clear_Buf(char *str,u8 size)
 	
 }
 
+
+
 char URRxBuf[REC_BUF_SIZE];
 SqQueue WIFI_FRAM;
+WIFI_UART_TypeDef WIFI_UART;
 
-char *URTxBuf;
-vu8 URTxCont = 0;
-vu8 URRxFin = 0;
 
 void USART_Configuration(void)
 {
@@ -82,8 +76,8 @@ void WIFI_HW_STA(FlagStatus sta) //0:reset 1:work
 
 void WIFI_SendCMD(char *Str)
 {
-		URTxCont = strlen((const char*)Str) ;  
-		URTxBuf = Str;
+		WIFI_UART.TxCont = strlen((const char*)Str) ;  
+		WIFI_UART.TxBuf = Str;
 		USART_IntConfig(HT_USART0, USART_INT_TXDE, ENABLE);
 }
 
@@ -95,10 +89,11 @@ void WIFI_INIT(void)
 	InitQueue(&WIFI_FRAM,REC_BUF_SIZE,URRxBuf);
 	
 	#ifdef USE_WIFI_AUTOLINK
-		FALG_WIFI_AUTOLINK = SET;
+		FLAG_WIFI.AUTOLINK = TRUE;
 	#else 
-		FALG_WIFI_AUTOLINK = NULL;
+		FLAG_WIFI.AUTOLINK = FALSE;
 	#endif
+	
 	
 }
 
@@ -107,12 +102,9 @@ void WIFI_INIT(void)
 
 ///////////////////////////////////////////////////////////////////////////////
 WIFI_REC_TypeDef WIFI_REC; //接收模塊
-WIFI_CMD_CONT_TypeDef CMD_Cont,CMD_Cont_Trg;	 //命令步驟
-
-u8 FALG_WIFI_AUTOLINK;
-u8 FALG_WIFI_LINK = NULL;
-u8 FALG_WIFI_DEVLINK = NULL;
-u8 FLAG_WIFI_UPDATA;
+WIFI_CMD_CONT_TypeDef CMD_Cont;
+WIFI_CMD_CONT_TypeDef CMD_Cont_Trg;	 //命令步驟
+WIFI_FLAG_TypeDef FLAG_WIFI;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 void WIFI_WAIT_FUNC(void)
@@ -156,11 +148,11 @@ void WIFI_CMDSET(char *cmd,char *ack ,u16 waittime)
 	
 		if(WIFI_REC.CMD != NULL) 
 		{
-//				Display_State(WIFI_REC.CMD);
+//				WIFI_DISPLAY(WIFI_REC.CMD);
 				WIFI_REC.STA = CENABLE; 			
 				WIFI_REC.MODE |= SEND;
-				URTxCont = strlen((const char*)cmd);  
-				URTxBuf = cmd;	
+				WIFI_UART.TxCont = strlen((const char*)cmd);  
+				WIFI_UART.TxBuf = cmd;	
 				USART_IntConfig(HT_USART0, USART_INT_TXDE, ENABLE);
 		}
 		
@@ -228,13 +220,13 @@ void WIFI_CAP_CONNECT(void)
 		if(strstr(&WIFI_FRAM.pbase[WIFI_FRAM.front],"0,CLOSE"))
 		{
 			
-			FALG_WIFI_DEVLINK = NULL;
+			FLAG_WIFI.DEVLINK = FALSE;
 			CMD_Cont_Trg = L_Dev ;//跳轉到檢測設備是否有連接
 			CMD_Cont = CMD_Cont_Trg;
 			WIFI_REC.STA = CDISABLE;
 			
-			#ifdef USE_WIFI_DISPLAY
-				Display_State("Dev_Close\r\n\0");
+			#ifdef USE_WIFI_LIST_DISPLAY
+				WIFI_DISPLAY("Dev_Close\r\n\0");
 			#endif
 
 		}
@@ -247,8 +239,6 @@ void WIFI_CAP_CONNECT(void)
 返回值   ：无
 備註     ：根據傳輸的WIFI協議編寫
 ********************************************************************************/
-extern u8 Thermostat_DATA[12];
-
 void WIFI_CAP_DATA(void)//接收透傳信息
 {	
 	char *p = NULL;
@@ -275,7 +265,7 @@ void WIFI_CAP_DATA(void)//接收透傳信息
 				}
 				//cpy 協議數據
 				CpyQueue(&WIFI_FRAM,(char*)Thermostat_DATA,len);		
-				FLAG_WIFI_UPDATA = SET;				
+				FLAG_WIFI.UPDATA = TRUE;				
 				CMD_Cont_Trg++;
 				CMD_Cont = CMD_Cont_Trg;
 				WIFI_REC.STA = CDISABLE;
@@ -305,12 +295,12 @@ void WIFI_READY(void)
 功能     ：等待WIFI自動連接路由功能（配合發送模塊使用）
 输入参数 ：無
 返回值   ：无
-備註     ：FALG_WIFI_AUTOLINK 控制是否使能 WIFI自動連接路由功能，
+備註     ：FLAG_WIFI.AUTOLINK 控制是否使能 WIFI自動連接路由功能，
 						如果失能或等待超時，則跳轉到恢復出廠設置指令。
 ********************************************************************************/
 void WIFI_AUTOLINK(void)
 {
-	if(FALG_WIFI_AUTOLINK == SET)
+	if(FLAG_WIFI.AUTOLINK == TRUE)
 	{
 		
 		if(WIFI_REC.STA != CTIME_OUT)
@@ -322,7 +312,7 @@ void WIFI_AUTOLINK(void)
 		else
 		{
 			CMD_Cont = L_REST;
-			FALG_WIFI_AUTOLINK = NULL;
+			FLAG_WIFI.AUTOLINK = FALSE;
 		}
 		
 	}
@@ -339,7 +329,7 @@ void WIFI_AUTOLINK(void)
 函数名   ：u8 WIFI_GotIP(char *mac,char *ip)
 功能     ：讀取當前WIFI模塊的IP&MAC（配合發送模塊使用）
 输入参数 ：MAC存儲數組指針，IP存儲數組指針
-返回值   ：查詢成功:OK;查詢失敗：ERR
+返回值   ：查詢成功:TRUE;查詢失敗：FALSE
 備註     :
 
 AT+CIFSR
@@ -351,15 +341,15 @@ cost : 42ms
 ********************************************************************************/
 char WIFI_IP[14];
 char WIFI_MAC[18];
-u8 WIFI_GotIP(char *mac,char *ip)
+bool WIFI_GotIP(char *mac,char *ip)
 {	
 	char *p = NULL;
-	URRxFin = 0;
+	WIFI_UART.RxFin = 0;
 
 	WIFI_SendCMD("AT+CIFSR\r\n");	
 	
-	while(!URRxFin);
-	URRxFin = 0;
+	while(!WIFI_UART.RxFin);
+	WIFI_UART.RxFin = 0;
 	
 	p = StrQueue(&WIFI_FRAM,"+CIFSR:STAIP,");
 	if(p != NULL)
@@ -368,20 +358,33 @@ u8 WIFI_GotIP(char *mac,char *ip)
 		CpyQueue(&WIFI_FRAM,ip,13);
 		
 		*(ip+13)='\0';
+		
+	#ifdef USE_WIFI_LIST_DISPLAY
+		WIFI_DISPLAY("WIFI_INF_：\0");	
+		WIFI_DISPLAY(ip);	
+	#endif
+		
 	}
-	else return ERR;
+	else return FALSE;
 	
-	while(!URRxFin);
+	while(!WIFI_UART.RxFin);
 	p = StrQueue(&WIFI_FRAM,"+CIFSR:STAMAC,");
 	if(p != NULL)
 	{
 		DeQueue(&WIFI_FRAM,&p);
 		CpyQueue(&WIFI_FRAM,mac,17);
 		*(mac+18)='\0';
+		
+	#ifdef USE_WIFI_LIST_DISPLAY
+		WIFI_DISPLAY(mac);	
+	#endif
 	}
-	else return ERR;
+	else return FALSE;
 	
-	return SET;
+
+	
+	
+	return TRUE;
 }
 
 
@@ -440,20 +443,34 @@ void WIFI_Control(void)
 		case L_6	:		WIFI_CMDSET("AT+CWMODE=1\r\n","OK",5);	  WIFI_LIST_POINT(CAP_STATUE);;break;
 		case L_7	:		WIFI_CMDSET("AT+RST\r\n","ready" ,5);			WIFI_LIST_POINT(CAP_STATUE);;break;
 		case L_8	:		WIFI_CMDSET("ATE0\r\n","OK" ,5);					WIFI_LIST_POINT(CAP_STATUE);;break;
-		case L_9	:		WIFI_CMDSET("AT+CWSTARTSMART=3\r\n","smartconfig connected wifi",0);WIFI_LIST_POINT(CAP_STATUE);;break;
-		case L_10	:		WIFI_CMDSET("AT+CWSTOPSMART\r\n","OK" ,5);WIFI_LIST_POINT(CAP_STATUE);;break;
+		
+		case L_9	:		FLAG_WIFI.SMARTLINK = TRUE;
+									WIFI_CMDSET("AT+CWSTARTSMART=3\r\n","smartconfig connected wifi",0);
+									WIFI_LIST_POINT(CAP_STATUE);
+									;break;
+		
+		case L_10	:		FLAG_WIFI.SMARTLINK = FALSE;	
+									WIFI_CMDSET("AT+CWSTOPSMART\r\n","OK" ,5);
+									WIFI_LIST_POINT(CAP_STATUE);
+									;break;
 		
 		///////////////////////////////		
-		case L_LINKED	:		FALG_WIFI_LINK = SET; WIFI_CMDSET("ATE0\r\n","OK",5);	WIFI_LIST_POINT(CAP_STATUE);;break;
-		case L_12	:		if(WIFI_GotIP(WIFI_MAC,WIFI_IP) == SET) CMD_Cont++;break;
-		case L_13	:		/*Display_State(WIFI_IP); */CMD_Cont++;break;
-		
+		case L_LINKED	:		FLAG_WIFI.APLINK = TRUE; 
+										  WIFI_CMDSET("ATE0\r\n","OK",5);	
+									   	WIFI_LIST_POINT(CAP_STATUE);
+											;break;
+											
+		case L_12	:		if(WIFI_GotIP(WIFI_MAC,WIFI_IP) == TRUE) CMD_Cont++;break;
+		case L_13	:		CMD_Cont++;break;
 		case L_14	:		WIFI_CMDSET("AT+CIPMUX=1\r\n","OK",5);		     WIFI_LIST_POINT(CAP_STATUE);;break;
 		case L_15	:		WIFI_CMDSET("AT+CIPSERVER=1,1001\r\n","OK",5); WIFI_LIST_POINT(CAP_STATUE);;break;
 		case L_Dev	:	WIFI_CMDSET(NULL,"0,CONNECT" ,0);					     WIFI_LIST_POINT(CAP_STATUE);;break;
-		case L_REC	:	FALG_WIFI_DEVLINK = SET;	
+		
+		case L_REC	:	FLAG_WIFI.DEVLINK = TRUE;	
 									Clear_Buf(WIFI_FRAM.pbase,REC_BUF_SIZE);
-									WIFI_CMDSET(NULL,"+IPD,",0);			WIFI_LIST_POINT(CAP_DATA);;break;
+									WIFI_CMDSET(NULL,"+IPD,",0);			
+									WIFI_LIST_POINT(CAP_DATA);
+									;break;
 		
 		case L_SEND_1	:	WIFI_CMDSET("AT+CIPSEND=0,12\r\n",">",5);    WIFI_LIST_POINT(CAP_STATUE);break;
 		case L_SEND_2	:	WIFI_CMDSET((char*)Thermostat_DATA,"OK",5);  WIFI_LIST_POINT(CAP_STATUE);break;
@@ -475,7 +492,7 @@ void WIFI_CAP(void)
 	if(WIFI_REC.STA == CENABLE )
 	{
 //////////////////////////////////////////////////////////////////////////////			
-		if(FALG_WIFI_DEVLINK == SET ) 
+		if(FLAG_WIFI.DEVLINK == TRUE ) 
 		{
 				WIFI_CAP_CONNECT();
 		}
@@ -490,24 +507,26 @@ void WIFI_CAP(void)
 //////////////////////////////////////////////////////////////////////////////				
 		if(WIFI_REC.STA == CSUCCESS )
 		{
-//			WIFI_REC.STA = CDISABLE;
-			WIFI_REC.WAIT_EN = FALSE;
+				WIFI_REC.WAIT_EN = FALSE;
 			
-//			#ifdef USE_WIFI_DISPLAY
-//			Display_State(WIFI_REC.ACK);	
-//			#endif
+			#ifdef USE_WIFI_LIST_DISPLAY
+			if(WIFI_REC.CMD!=NULL)
+				WIFI_DISPLAY(WIFI_REC.CMD);	
+			
+			WIFI_DISPLAY(WIFI_REC.ACK);	
+			#endif
 		}		
 		
 		
 /////////////////////////////////////////////////////////////////////////////////////////			
-		if(WIFI_REC.WAIT_EN == SET) //啟動等待
+		if(WIFI_REC.WAIT_EN == TRUE) //啟動等待
 		{
 			if(WIFI_REC.WAIT_1SCNT >= WIFI_REC.WAIT_MAXTIME )//超時錯誤
 			{
 				WIFI_REC.WAIT_EN = FALSE;
 				WIFI_REC.STA = CTIME_OUT;
 				CMD_Cont = CMD_Cont_Trg;
-				URRxFin = 0;
+				WIFI_UART.RxFin = 0;
 			}
 		}		
 		

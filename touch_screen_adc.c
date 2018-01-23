@@ -165,11 +165,7 @@ void ADC_TS_Conversion(u8 X_ADC_DATA,u8 Y_ADC_DATA)
 }
 
 
-/*********************************************************************************************************//**
- * @brief Return the result of ADC regular channel conversion.
- * @param ADC_REGULAR_DATAn where x can be 0 ~ 15
- * @retval NONE
- ************************************************************************************************************/
+
 u16 ADC_Filer(u16 *data,u8 num)
 {
 	u8 i,j;

@@ -292,7 +292,7 @@ bool  TOUCH_Calibration(TOUCH_Calibration_TypeDef *pcal)
 					break;
 				}				
 				
-				DelayT(100);
+				DelayT(200);
     }
 		
     // Wait the touch to continue
@@ -308,7 +308,7 @@ bool  TOUCH_Calibration(TOUCH_Calibration_TypeDef *pcal)
 					break;
 				}
 
-				DelayT(100);
+				DelayT(200);
     }
 
     return (result);

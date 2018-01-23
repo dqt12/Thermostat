@@ -47,7 +47,7 @@ const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
 //vu32 gTimebaseDelayCounter;
 UI_T gUI;
 LCD_DrawSize LCD_IData;
-u16 RemapTable[178];
+//u16 RemapTable[178];
 LCD_DISPLAY_FlagTypedef FLAG_IMG;
 
 
@@ -98,12 +98,54 @@ struct
 struct TIME_SLICE TimeSlice;
 
 
+
+typedef struct
+{
+	u16 xBg;
+	u16 yBg;
+	u16 xEn;
+	u16 yEn;
+	bool ispress;
+}Touch_Screen_Rect_TypeDef;
+
+
+Touch_Screen_Rect_TypeDef Butten;
+Touch_Screen_Rect_TypeDef ButtenADD;
+Touch_Screen_Rect_TypeDef ButtenSUB;
+void TS_SET_RECT(Touch_Screen_Rect_TypeDef *p,u16 xBg,u16 yBg,u16 xEn,u16 yEn)
+{
+
+	p->xBg = xBg;
+	p->xEn = xEn;
+	p->yBg = yBg;
+	p->yEn = yEn;
+	p->ispress = FALSE;	
+	
+	LCD_DrawRect(xBg,yBg,yEn-yBg,xEn-xBg,White);
+	
+}
+
+bool TS_Scan_RECT(Touch_Screen_Rect_TypeDef *p,TOUCH_XY_TypeDef *pt)
+{
+	if(pt->isPress == TRUE)
+	{
+		if((pt->x > p->xBg) && (pt->x < p->xEn )) 
+		{	
+			if((pt->y > p->yBg) &&(pt->y < p->yEn))
+			{
+				
+				p->ispress = TRUE;
+				return (TRUE);
+			}
+		}
+	}
+	p->ispress = FALSE;
+	return (FALSE);
+}
+
 u8 KEY_STATE;
 u8 FLAG_DISPLAY ;
-
 vu16 ADC_DATA[3];
-
-
 void Display_Temp(void)
 {
 		if(TEMP.SetEn == TRUE)
@@ -116,7 +158,8 @@ void Display_Temp(void)
 			LCD_BackColorSet(Blue2);
 		  LCD_TextColorSet(Yellow);
 		}
-	
+		
+		
 		LCD_DrawString(110, 0, 16, 8, 1,"Set Temp:");			
 		LCD_ShowTemp(110,20,0,TEMP.Set);		
 		
@@ -149,36 +192,35 @@ void Display_Temp(void)
 
 
 
-/*
-u16 Line ;
-void Display_State_Clear(void)
-{
-	Line = 0;
-	TFT_Fill(250,0,479,271,White);
-}
-	
+/**/
+//u16 Line ;
+//void Display_State_Clear(void)
+//{
+//	Line = 0;
+//	TFT_Fill(250,0,479,271,White);
+//}
+//	
 
 
 void Display_State(char *Str)
 {
-	u8 line;
+	static u16 line = 0;
+	                                          
+	LCD_TextColorSet(Black);
 	
-	if(FLAG_DISPLAY == NULL)
+	if(line >= 256) 
 	{
-	
-		LCD_BackColorSet(White);                                                
-		LCD_TextColorSet(Black);
-		line = TFT_ShowString(255,Line,Str,16,0);
-		if(line == 0) 
-		{
-			Line = 16;
-			
-		}
-		Line = Line + line;
+		LCD_DrawFillRect(279,0,271,200,White);
+		line = 0;
 	}
-
+	
+	LCD_DrawString(285,line, 16, 8, 1,Str);
+	
+	line += 16;	
+	
+	
 }
-*/
+
 /*********************************************************************************************************//**
   * @brief  Demo1.
   * @retval None
@@ -326,13 +368,12 @@ u16 ADC_to_TEMP(u16 NTC_adc)
 
 
 
-
-
+// "E0S000N000\r\n"
 void UPDATA(void)
 {
-	if(FLAG_WIFI_UPDATA)
+	if(FLAG_WIFI.UPDATA)
 	{
-		FLAG_WIFI_UPDATA = 0;
+		FLAG_WIFI.UPDATA = FALSE;
 		
 		if(Thermostat_DATA[0] == 'E')
 			Thermostat_DATA[1] = TEMP.En + '0' ;
@@ -475,14 +516,15 @@ int main(void)
 	
 	KEY_Configuration();
 	ADC_Configuration();
-//	WIFI_INIT();
-	
+
 	TOUCH_SCREEN_INIT(DISABLE);
-	LCD_Clear(Red);	
 	
 	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
 	gUI.Demo1_ShowPicID = 10;
 	Demo_full();	
+	TS_SET_RECT(&Butten,100,0,200,50);
+	LCD_DrawFillRect(279,0,271,200,White);
+	WIFI_INIT();
 	
 	KEY_STATE = 0;
 	TEMP.En = FALSE;
@@ -491,13 +533,16 @@ int main(void)
 	TEMP.Set = 260;
 	TEMP.Time = 0;
 	
+	
+	
+	
 	while(1)
 	{
 
 		if(TimeSlice._10ms.flag)
 		{
 			TimeSlice._10ms.flag = FALSE;
-		//	WIFI_CAP();
+			WIFI_CAP();
 		}		 
 		 	
 		if(TimeSlice._20ms.flag)
@@ -509,6 +554,7 @@ int main(void)
 			if(Tocuh.isPress == TRUE)
 			{
 				LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Blue);
+
 			}
 			
 		}
@@ -517,17 +563,26 @@ int main(void)
 		{
 			TimeSlice._100ms.flag = FALSE;
 			TEMP.Now = ADC_to_TEMP(ADC_DATA[0]);
+			
 		}
 		
 		
 		if(TimeSlice._500ms.flag)
 		{
 			TimeSlice._500ms.flag = FALSE;
-			
 			Display_Temp();
 			TEMP.Time++;
-//			WIFI_Control();
-//			UPDATA();
+			
+				if(TS_Scan_RECT(&Butten,&Tocuh))
+				{
+					
+						KEY_STATE |= (1<<0);
+				}
+			
+//			Display_State("123456789");
+
+			WIFI_Control();
+			UPDATA();
 			
 				
 		}
