@@ -350,9 +350,16 @@ void LCD_TEST(void)
 	LCD_TextColorSet(Red);
 
 	LCD_DrawChar(0,0,12,6,0,'1');
-	LCD_DrawChar(6,0,16,8,0,'2');
-	LCD_DrawChar(14,0,24,16,0,'3');
+	LCD_DrawChar(10,0,16,8,0,'2');
+	LCD_DrawChar(20,0,24,16,0,'3');
+	
+	LCD_DrawChar(0,40,12,6,1,'1');
+	LCD_DrawChar(10,40,16,8,1,'2');
+	LCD_DrawChar(20,40,24,16,1,'3');
 
+	LCD_ShowTemp(0,120,0,234);
+	LCD_ShowTemp(0,150,1,234);
+	
 	LCD_DrawPoint(100,10,Green);
 	LCD_DrawPoint(100,20,Red);
 	LCD_DrawPoint(100,30,Blue);
@@ -378,11 +385,11 @@ void LCD_TEST(void)
 	LCD_DrawFillCircle(180,100,10,Red);
 	LCD_DrawFillCircle(210,100,10,Blue);
 	
-	LCD_DrawString(0, 130, 12, 6, 0, "123456789ABCD");
-	LCD_DrawString(0, 145, 16, 8, 0, "123456789ABCD");
-  LCD_DrawString(0, 165, 24, 16, 0, "123456789ABCD");
-	 
-	LCD_DrawBigChar(0, 200, 0, 2);
+	LCD_DrawString(0, 210, 12, 6, 0, "123456789ABCD");
+	LCD_DrawString(0, 230, 16, 8, 0, "123456789ABCD");
+  LCD_DrawString(0, 250, 24, 16, 0, "123456789ABCD");
+
+	
 
 }
 //	u8 text[256];

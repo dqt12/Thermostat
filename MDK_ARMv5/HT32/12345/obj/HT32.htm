@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\HT32\12345\obj\HT32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\HT32\12345\obj\HT32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Tue Jan 23 12:23:12 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Tue Jan 23 14:23:11 2018
 <BR><P>
-<H3>Maximum Stack Usage =        124 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        148 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; LCD_TEST &rArr; LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
 <P>
@@ -322,12 +322,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
 </UL>
 
-<P><STRONG><a name="[74]"></a>AFIO_GPxConfig</STRONG> (Thumb, 94 bytes, Stack size 32 bytes, ht32f1xxxx_gpio.o(i.AFIO_GPxConfig))
+<P><STRONG><a name="[73]"></a>AFIO_GPxConfig</STRONG> (Thumb, 94 bytes, Stack size 32 bytes, ht32f1xxxx_gpio.o(i.AFIO_GPxConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = AFIO_GPxConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
-<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
 </UL>
 
 <P><STRONG><a name="[2d]"></a>BFTM0_IRQHandler</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, ht32f1xxxx_01_it.o(i.BFTM0_IRQHandler))
@@ -389,22 +389,22 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = CKCU_PeripClockConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
-<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_Configuration
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
 </UL>
 
 <P><STRONG><a name="[7]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, ht32f1xxxx_01_it.o(i.DebugMon_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_ht32f1xxxx_01.o(RESET)
 </UL>
-<P><STRONG><a name="[75]"></a>EBI_Cmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, ht32f1xxxx_ebi.o(i.EBI_Cmd))
-<BR><BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<P><STRONG><a name="[74]"></a>EBI_Cmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, ht32f1xxxx_ebi.o(i.EBI_Cmd))
+<BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 </UL>
 
 <P><STRONG><a name="[66]"></a>EBI_Init</STRONG> (Thumb, 170 bytes, Stack size 16 bytes, ht32f1xxxx_ebi.o(i.EBI_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = EBI_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Config
 </UL>
 
@@ -454,14 +454,14 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Wakeup
 </UL>
 
-<P><STRONG><a name="[73]"></a>GPIO_DirectionConfig</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, ht32f1xxxx_gpio.o(i.GPIO_DirectionConfig))
+<P><STRONG><a name="[72]"></a>GPIO_DirectionConfig</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, ht32f1xxxx_gpio.o(i.GPIO_DirectionConfig))
 <BR><BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
-<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 </UL>
 
 <P><STRONG><a name="[65]"></a>GPIO_SetOutBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, ht32f1xxxx_gpio.o(i.GPIO_SetOutBits))
 <BR><BR>[Called By]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
-<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Config
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_WaitDMA_Finished
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Wakeup
@@ -498,41 +498,36 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[67]"></a>LCD_DrawBigChar</STRONG> (Thumb, 162 bytes, Stack size 36 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawBigChar))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = LCD_DrawBigChar &rArr; LCD_SetDisplayArea
+<P><STRONG><a name="[67]"></a>LCD_DrawChar</STRONG> (Thumb, 188 bytes, Stack size 52 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawChar))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = LCD_DrawChar &rArr; LCD_SetDisplayArea
 </UL>
 <BR>[Calls]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetDisplayArea
+<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_WriteRAMWord
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_StarterSet
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
-</UL>
-
-<P><STRONG><a name="[69]"></a>LCD_DrawChar</STRONG> (Thumb, 154 bytes, Stack size 36 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawChar))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = LCD_DrawChar &rArr; LCD_SetDisplayArea
-</UL>
-<BR>[Calls]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetDisplayArea
-</UL>
-<BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawString
+<BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_ShowTemp
+<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawString
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
 <P><STRONG><a name="[6a]"></a>LCD_DrawCircle</STRONG> (Thumb, 228 bytes, Stack size 52 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawCircle))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = LCD_DrawCircle
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_WriteRAMWord
+<BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_WriteRAMWord
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_StarterSet
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
-<P><STRONG><a name="[6c]"></a>LCD_DrawFillCircle</STRONG> (Thumb, 200 bytes, Stack size 44 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawFillCircle))
+<P><STRONG><a name="[6b]"></a>LCD_DrawFillCircle</STRONG> (Thumb, 200 bytes, Stack size 44 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawFillCircle))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = LCD_DrawFillCircle &rArr; LCD_DrawLine
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
-<P><STRONG><a name="[6e]"></a>LCD_DrawFillRect</STRONG> (Thumb, 28 bytes, Stack size 12 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawFillRect))
+<P><STRONG><a name="[6d]"></a>LCD_DrawFillRect</STRONG> (Thumb, 28 bytes, Stack size 12 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawFillRect))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = LCD_DrawFillRect &rArr; LCD_SetDisplayArea
 </UL>
 <BR>[Calls]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetDisplayArea
@@ -540,18 +535,18 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
-<P><STRONG><a name="[6d]"></a>LCD_DrawLine</STRONG> (Thumb, 72 bytes, Stack size 28 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawLine))
+<P><STRONG><a name="[6c]"></a>LCD_DrawLine</STRONG> (Thumb, 72 bytes, Stack size 28 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawLine))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = LCD_DrawLine
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_WriteRAMWord
+<BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_WriteRAMWord
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_StarterSet
 </UL>
-<BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawRect
-<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillCircle
+<BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawRect
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillCircle
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
-<P><STRONG><a name="[6f]"></a>LCD_DrawPoint</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawPoint))
+<P><STRONG><a name="[6e]"></a>LCD_DrawPoint</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawPoint))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = LCD_DrawPoint
 </UL>
 <BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_StarterSet
@@ -559,34 +554,34 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
-<P><STRONG><a name="[70]"></a>LCD_DrawRect</STRONG> (Thumb, 78 bytes, Stack size 28 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawRect))
+<P><STRONG><a name="[6f]"></a>LCD_DrawRect</STRONG> (Thumb, 78 bytes, Stack size 28 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawRect))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = LCD_DrawRect &rArr; LCD_DrawLine
 </UL>
-<BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
-<P><STRONG><a name="[71]"></a>LCD_DrawString</STRONG> (Thumb, 78 bytes, Stack size 44 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawString))
-<BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
+<P><STRONG><a name="[70]"></a>LCD_DrawString</STRONG> (Thumb, 78 bytes, Stack size 44 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_DrawString))
+<BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
 </UL>
-<BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
+<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
-<P><STRONG><a name="[72]"></a>LCD_Init</STRONG> (Thumb, 370 bytes, Stack size 24 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_Init))
+<P><STRONG><a name="[71]"></a>LCD_Init</STRONG> (Thumb, 370 bytes, Stack size 24 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = LCD_Init &rArr; ZH_GPTM_Init &rArr; AFIO_GPxConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Switch
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_CCR_Num
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTMCH_Switch
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Switch
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_CCR_Num
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTMCH_Switch
+<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EBI_Init
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EBI_Cmd
+<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EBI_Cmd
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_ms
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetOutBits
 </UL>
@@ -596,31 +591,39 @@ Global Symbols
 <P><STRONG><a name="[68]"></a>LCD_SetDisplayArea</STRONG> (Thumb, 56 bytes, Stack size 12 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_SetDisplayArea))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = LCD_SetDisplayArea
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillRect
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
-<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawBigChar
+<BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillRect
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
+</UL>
+
+<P><STRONG><a name="[79]"></a>LCD_ShowTemp</STRONG> (Thumb, 148 bytes, Stack size 32 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_ShowTemp))
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = LCD_ShowTemp &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
+</UL>
+<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
 <P><STRONG><a name="[61]"></a>LCD_StarterSet</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_StarterSet))
-<BR><BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawPoint
-<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<BR><BR>[Called By]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawPoint
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawCircle
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
 </UL>
 
-<P><STRONG><a name="[7a]"></a>LCD_TEST</STRONG> (Thumb, 384 bytes, Stack size 32 bytes, main.o(i.LCD_TEST))
-<BR><BR>[Stack]<UL><LI>Max Depth = 124<LI>Call Chain = LCD_TEST &rArr; LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
+<P><STRONG><a name="[7a]"></a>LCD_TEST</STRONG> (Thumb, 448 bytes, Stack size 40 bytes, main.o(i.LCD_TEST))
+<BR><BR>[Stack]<UL><LI>Max Depth = 148<LI>Call Chain = LCD_TEST &rArr; LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TextColorSet
-<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawString
-<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawRect
-<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawPoint
-<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
-<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillRect
-<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillCircle
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_ShowTemp
+<LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawString
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawRect
+<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawPoint
+<LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillRect
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawFillCircle
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawCircle
-<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
-<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawBigChar
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_BackColorSet
 </UL>
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -630,9 +633,10 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TEST
 </UL>
 
-<P><STRONG><a name="[6b]"></a>LCD_WriteRAMWord</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_WriteRAMWord))
-<BR><BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<P><STRONG><a name="[69]"></a>LCD_WriteRAMWord</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, lcm_ssd1963_480x272_5inch.o(i.LCD_WriteRAMWord))
+<BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawCircle
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawChar
 </UL>
 
 <P><STRONG><a name="[3]"></a>MemManage_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, ht32f1xxxx_01_it.o(i.MemManage_Handler))
@@ -705,8 +709,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = SPI_FLASH_Init &rArr; AFIO_GPxConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
+<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_DirectionConfig
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_SELOutputCmd
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Init
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_Cmd
@@ -816,18 +820,18 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[bc]"></a>TM_Cmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, ht32f1xxxx_tm.o(i.TM_Cmd))
-<BR><BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Switch
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
+<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Switch
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
 </UL>
 
 <P><STRONG><a name="[bb]"></a>TM_OutputInit</STRONG> (Thumb, 84 bytes, Stack size 20 bytes, ht32f1xxxx_tm.o(i.TM_OutputInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = TM_OutputInit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
+<BR>[Called By]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
 </UL>
 
 <P><STRONG><a name="[ba]"></a>TM_TimeBaseInit</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, ht32f1xxxx_tm.o(i.TM_TimeBaseInit))
-<BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
+<BR><BR>[Called By]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ZH_GPTM_Init
 </UL>
 
 <P><STRONG><a name="[95]"></a>TimingDelay</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, main.o(i.TimingDelay))
@@ -1087,30 +1091,30 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_ht32f1xxxx_01.o(RESET)
 </UL>
-<P><STRONG><a name="[79]"></a>ZH_GPTMCH_Switch</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, zh_gptm.o(i.ZH_GPTMCH_Switch))
-<BR><BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<P><STRONG><a name="[78]"></a>ZH_GPTMCH_Switch</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, zh_gptm.o(i.ZH_GPTMCH_Switch))
+<BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 </UL>
 
-<P><STRONG><a name="[77]"></a>ZH_GPTM_CCR_Num</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, zh_gptm.o(i.ZH_GPTM_CCR_Num))
-<BR><BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<P><STRONG><a name="[76]"></a>ZH_GPTM_CCR_Num</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, zh_gptm.o(i.ZH_GPTM_CCR_Num))
+<BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 </UL>
 
-<P><STRONG><a name="[76]"></a>ZH_GPTM_Init</STRONG> (Thumb, 256 bytes, Stack size 56 bytes, zh_gptm.o(i.ZH_GPTM_Init))
+<P><STRONG><a name="[75]"></a>ZH_GPTM_Init</STRONG> (Thumb, 256 bytes, Stack size 56 bytes, zh_gptm.o(i.ZH_GPTM_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = ZH_GPTM_Init &rArr; AFIO_GPxConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CKCU_PeripClockConfig
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AFIO_GPxConfig
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_TimeBaseInit
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_OutputInit
 <LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_Cmd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 </UL>
 
-<P><STRONG><a name="[78]"></a>ZH_GPTM_Switch</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, zh_gptm.o(i.ZH_GPTM_Switch))
+<P><STRONG><a name="[77]"></a>ZH_GPTM_Switch</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, zh_gptm.o(i.ZH_GPTM_Switch))
 <BR><BR>[Calls]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_Cmd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 </UL>
 
 <P><STRONG><a name="[c7]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
@@ -1120,10 +1124,10 @@ Global Symbols
 <P><STRONG><a name="[c9]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 124<LI>Call Chain = main &rArr; LCD_TEST &rArr; LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
+<BR><BR>[Stack]<UL><LI>Max Depth = 148<LI>Call Chain = main &rArr; LCD_TEST &rArr; LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
 </UL>
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SPI_FLASH_Init
-<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Config
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SYSTICK_configuration
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Configuration
@@ -1155,7 +1159,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[64]"></a>delay_ms</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, lcm_ssd1963_480x272_5inch.o(i.delay_ms))
-<BR><BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
+<BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Init
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Config
 </UL>
 

@@ -556,8 +556,6 @@ void LCD_TextColorSet(ColorType Color)
   Color_Text = Color;
 }
 
-
-
 /*********************************************************************************************************//**
   * @brief  Display the characters on line.
   * @param  u16 Xpos, u16 Ypos,  u16 Height, u16 Width, u8 Mode:0(非叠加方式).
@@ -605,95 +603,47 @@ void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii)
 	LCD_WriteRAMPrior();
 	for(y = 0; y < Height; y++)
 	{
-		
-			switch(Height)
-			{
-				case 12 : temp = ASCII_1206[Ascii][y];break;//调用1206字体
-				case 16	: temp = ASCII_1608[Ascii][y];break;//调用1608字体
-				case 24 : temp = ASCII_2416[Ascii*24+y];break;//调用2416字体
-				default	: temp = ASCII_1206[Ascii][y];break;
-			}
-		
+		 
+		switch(Height)
+		{
+			case 12 : temp = ASCII_1206[Ascii][y];break;//调用1206字体
+			case 16	: temp = ASCII_1608[Ascii][y];break;//调用1608字体
+			case 24 : temp = ASCII_2416[Ascii*24+y];break;//调用2416字体
+			default	: temp = ASCII_1206[Ascii][y];break;
+		}
+
 		for(x = 0; x < Width; x++)
-		{                 
-			if(temp & 0x01)
-			{
-				LCD_WritePixel(Color_Text);
+		{		
+			if(!Mode)//非叠加方式				 
+			{				
+					if(temp & 0x01)
+						LCD_WritePixel(Color_Text);
+					else
+						LCD_WritePixel(Color_Back);					
 			}
-			else
+			else 
 			{
-				if(!Mode)//非叠加方式				
-					LCD_WritePixel(Color_Back);
-			}					
+					if(temp & 0x01)
+					{
+						LCD_StarterSet(Xpos+x, Ypos+y); 
+						LCD_WriteRAMWord(Color_Text);
+					}
+			}
+			
 			temp >>= 1; 
 		}
 	}	
 } 
 
 
-/*********************************************************************************************************//**
-  * @brief  Display a Big Size character.
-  * @param  u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii
-  * @retval None
-  ***********************************************************************************************************/
-void LCD_DrawBigChar(u16 Xpos, u16 Ypos, u8 Mode, u8 Num)
-{
-	u32 temp = 0;
-	u16 x, y;
-	u16 count,deadline;
-	
-	if(Xpos > HDP || Ypos > VDP)
-		return;
-	
-  LCD_SetDisplayArea(Xpos, Ypos, 60, 30);
-
-	//Ascii = Ascii - 32;	//-' ' 得到偏移后的值
-	
-	if(Num == ':') count = 150;
-	else if(Num == '.') count = 165;
-	else if(Num == 'C') count = 180;
-	else count = 15*Num;
-	
-	LCD_WriteRAMPrior();
-	
-	deadline = count+15;
-	
-	for(;count<deadline;count++)
-	{	 
-		for(y=0;y<16;y++)
-		{
-			temp = ASCII_3060[count][y];
-			
-			for(x=0;x<8;x++)
-			{
-				if(temp&0x80) 
-				{
-					 LCD_WritePixel(Color_Text);
-				}
-				else 
-				{
-					if(!Mode)
-						LCD_WritePixel(Color_Back);
-				}
-				temp <<= 1;
-				if(((y%4)==3)&&x==5)break;
-			}
-		}
-	}
-	
-			
-} 
-
-
-
 void LCD_ShowTemp(u16 Xpos, u16 Ypos, u8 Mode, u16 Num)
 {
-		u8 size = 30;
-		LCD_DrawBigChar(Xpos+size,Ypos,Mode,(Num/100));    
-		LCD_DrawBigChar(Xpos+2*size,Ypos,Mode,(Num/10)%10);      							   
-    LCD_DrawBigChar(Xpos+3*size,Ypos,Mode,'.'); 
-    LCD_DrawBigChar(Xpos+4*size,Ypos,Mode,Num%10); 
-		LCD_DrawBigChar(Xpos+5*size,Ypos,Mode,'C'); 
+		u8 size = 16;
+		LCD_DrawChar(Xpos,Ypos,24,16,Mode,(Num/100)+'0');    
+		LCD_DrawChar(Xpos+size,Ypos,24,16,Mode,(Num/10)%10+'0');      							   
+    LCD_DrawChar(Xpos+2*size,Ypos,24,16,Mode,'.'); 
+    LCD_DrawChar(Xpos+3*size,Ypos,24,16,Mode,Num%10+'0'); 
+		LCD_DrawChar(Xpos+4*size,Ypos,24,16,Mode,'C'); 
 }
 
 void LCD_ShowNum(u16 Xpos, u16 Ypos,u8 Font_Size,u8 Mode, u16 Num)
@@ -938,10 +888,6 @@ void LCD_DrawFillCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Col
  }
 
 }
-
-
-
-
 
 /*********************************************************************************************************//**
   * @brief  Display one character (16 dots width, 24 dots height).
