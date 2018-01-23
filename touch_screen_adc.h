@@ -45,7 +45,7 @@ typedef struct
 {
 	Touch_Screen_CH_Enum Channl;
 	Touch_Screen_CH_Enum LastChannl;
-	u16 DATA;
+	vu16 DATA;
 	bool isEND;
 }ADC_TOUCH_SCREEN_TypeDef;
 

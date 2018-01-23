@@ -105,8 +105,9 @@ u16 ADC_TS_READ_X(void)
 	u16 dataf = 0;
 	u8 i;
 	
-	ADC_TS.Channl = READ_Y;
 	Read_X_PIN();
+	ADC_TS.Channl = READ_X;
+	
 	for(i=0;i<6;i++)
 	{
 		ADC_TS.isEND = FALSE;
@@ -125,8 +126,10 @@ u16 ADC_TS_READ_Y(void)
 	u16 data[6] ;
 	u16 dataf = 0;
 	u8 i;
-	ADC_TS.Channl = READ_X;
+	
 	Read_Y_PIN();
+	ADC_TS.Channl = READ_Y;
+	
 	for(i=0;i<6;i++)
 	{
 		ADC_TS.isEND = FALSE;

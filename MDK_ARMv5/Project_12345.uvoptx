@@ -149,9 +149,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>32</LineNumber>
+          <LineNumber>140</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>6970</Address>
+          <Address>1624</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -160,12 +160,12 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\touch_screen_adc.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../touch_screen_adc.c\32</Expression>
+          <Expression>\\HT32\../touch_screen_adc.c\140</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>117</LineNumber>
+          <LineNumber>118</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>1568</Address>
           <ByteObject>0</ByteObject>
@@ -176,7 +176,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\touch_screen_adc.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../touch_screen_adc.c\117</Expression>
+          <Expression>\\HT32\../touch_screen_adc.c\118</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
