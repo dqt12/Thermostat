@@ -31,14 +31,14 @@ extern "C" {
 #define READ_YT_PIN		  AFIO_PIN_0	
 	
 	
-#define ADC_TS_DATA_COUNT		          6 //must n%2 = 0;
+#define ADC_TS_DATA_COUNT		          	6 //must n%2 = 0;
 #define ADC_FILER_DATA_COUNT						2 //must n%2 = 0;
 	
 typedef enum
 {
 	READ_NULL,
-	READ_X,
-	READ_Y,
+	READ_X = 1,
+	READ_Y = 2,
 } Touch_Screen_CH_Enum;
 
 typedef struct
@@ -46,22 +46,19 @@ typedef struct
 	Touch_Screen_CH_Enum Channl;
 	Touch_Screen_CH_Enum LastChannl;
 	vu16 DATA;
-	bool isEND;
+	volatile bool isEND;
 }ADC_TOUCH_SCREEN_TypeDef;
 
-extern volatile ADC_TOUCH_SCREEN_TypeDef ADC_TS;
+extern ADC_TOUCH_SCREEN_TypeDef ADC_TS;
 
 u16 ADC_TS_READ_XY(Touch_Screen_CH_Enum ch);
-
-bool ADC_TS_READ_INT(void);	
-u16 ADC_TS_READ_X(void);
-u16 ADC_TS_READ_Y(void);
-
 void ADC_TS_Conversion(u8 X_ADC_DATA,u8 Y_ADC_DATA);
 
 u16 ADC_Filer(u16 *data,u8 num);
 
-
+bool ADC_TS_READ_INT(void);	
+u16 ADC_TS_READ_X(void);
+u16 ADC_TS_READ_Y(void);
 #ifdef __cplusplus
 }
 #endif

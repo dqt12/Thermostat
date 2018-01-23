@@ -1,6 +1,6 @@
 #include "touch_screen_adc.h"
 
-volatile ADC_TOUCH_SCREEN_TypeDef  ADC_TS;
+ ADC_TOUCH_SCREEN_TypeDef  ADC_TS;
 	
 void Read_X_PIN(void)//ADCy
 {	
@@ -14,7 +14,7 @@ void Read_X_PIN(void)//ADCy
 		
 		GPIO_DriveConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DV_8MA); //Y- LOW
 		GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_OUT);
-		GPIO_WriteOutBits(PIN_YB_PORT, PIN_YB_PIN, SET); 	
+		GPIO_WriteOutBits(PIN_YB_PORT, PIN_YB_PIN, RESET); 	
 		
 		GPIO_PullResistorConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_PR_DISABLE);	//X- FLOT
 		GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_IN);
@@ -36,34 +36,13 @@ void Read_Y_PIN(void)//ADCx
 		
 		GPIO_DriveConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DV_8MA); //X- LOW
 		GPIO_DirectionConfig(PIN_XL_PORT, PIN_XL_PIN, GPIO_DIR_OUT);
-		GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, SET); 	
+		GPIO_WriteOutBits(PIN_XL_PORT, PIN_XL_PIN, RESET); 	
 		
 		GPIO_PullResistorConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_PR_DISABLE);	//Y- FLOT
 		GPIO_DirectionConfig(PIN_YB_PORT, PIN_YB_PIN, GPIO_DIR_IN);
 		
 		AFIO_GPxConfig(READ_YT_PORT,READ_YT_PIN, AFIO_FUN_ADC);//Y+ ADC
 	}
-}
-
-
-
-bool ADC_TS_READ_INT(void)
-{
-	u16 dataf = 0;
-	
-	Read_X_PIN();
-	
-	ADC_TS.Channl = READ_X;
-
-		ADC_TS.isEND = FALSE;
-		while(ADC_TS.isEND == FALSE);
-		dataf = ADC_TS.DATA;;
-
-
-	if(dataf <= 4000 )
-		return TRUE;
-
-	return FALSE;
 }
 
 u16 ADC_TS_READ_XY(Touch_Screen_CH_Enum ch)
@@ -98,49 +77,71 @@ u16 ADC_TS_READ_XY(Touch_Screen_CH_Enum ch)
 }
 
 
+bool ADC_TS_READ_INT(void)
+{
+	u16 dataf = 0;
+	
+	Read_X_PIN();
+	
+	ADC_TS.Channl = READ_X;
+
+		ADC_TS.isEND = FALSE;
+		while(ADC_TS.isEND == FALSE);
+		dataf = ADC_TS.DATA;;
+
+
+	if(dataf <= 4000 )
+		return TRUE;
+
+	return FALSE;
+}
+
 
 u16 ADC_TS_READ_X(void)
 {
-	u16 data[6] ;
+	u16 data[ADC_TS_DATA_COUNT] ;
 	u16 dataf = 0;
 	u8 i;
 	
 	Read_X_PIN();
 	ADC_TS.Channl = READ_X;
 	
-	for(i=0;i<6;i++)
+	for(i=0;i<ADC_TS_DATA_COUNT;i++)
 	{
 		ADC_TS.isEND = FALSE;
 		while(ADC_TS.isEND == FALSE);
 		data[i] = ADC_TS.DATA;
 	}
 
-	dataf = ADC_Filer(&data[0],6);
+	dataf = ADC_Filer(&data[0],ADC_TS_DATA_COUNT);
 	
 	return dataf;
 }
 
 
+
 u16 ADC_TS_READ_Y(void)
 {
-	u16 data[6] ;
+	u16 data[ADC_TS_DATA_COUNT] ;
 	u16 dataf = 0;
 	u8 i;
 	
 	Read_Y_PIN();
 	ADC_TS.Channl = READ_Y;
 	
-	for(i=0;i<6;i++)
+	for(i=0;i<ADC_TS_DATA_COUNT;i++)
 	{
 		ADC_TS.isEND = FALSE;
 		while(ADC_TS.isEND == FALSE);
 		data[i] = ADC_TS.DATA;
 	}
 
-	dataf = ADC_Filer(&data[0],6);
+	dataf = ADC_Filer(&data[0],ADC_TS_DATA_COUNT);
 	
 	return dataf;
 }
+
+
 
 /*********************************************************************************************************//**
  * @brief Return the result of ADC regular channel conversion.
@@ -152,14 +153,15 @@ void ADC_TS_Conversion(u8 X_ADC_DATA,u8 Y_ADC_DATA)
 	if(ADC_TS.Channl == READ_X)
 	{
 		 ADC_TS.DATA = ADC_GetConversionData(HT_ADC,X_ADC_DATA);	
+		 ADC_TS.isEND  = TRUE;
 	}		
 	else if(ADC_TS.Channl == READ_Y)
 	{
-
 		 ADC_TS.DATA = ADC_GetConversionData(HT_ADC,Y_ADC_DATA);	
+		 ADC_TS.isEND  = TRUE;
 	}
 	
-	ADC_TS.isEND  = TRUE;
+	
 }
 
 

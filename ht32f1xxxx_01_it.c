@@ -332,19 +332,8 @@ void ADC_IRQHandler(void)
 	
 	
 	
-//	ADC_TS_Conversion(ADC_REGULAR_DATA4,ADC_REGULAR_DATA3);
+	ADC_TS_Conversion(ADC_REGULAR_DATA4,ADC_REGULAR_DATA3);
 
-	if(ADC_TS.Channl == READ_X)
-	{
-		 ADC_TS.DATA = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA4);	
-	}		
-	else if(ADC_TS.Channl == READ_Y)
-	{
-
-		 ADC_TS.DATA = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA3);	
-	}
-	
-	ADC_TS.isEND  = TRUE;
 }
 
 

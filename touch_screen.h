@@ -36,17 +36,17 @@ extern "C" {
 #define	TOUCH_NOPRESS						(0)
 #define	TOUCH_PRESS_INT 			  ADC_READ_INT()
 
-//Setting the touch screen ADC MAX&MIN data,and ADC measure data;	
+//Setting the touch screen ADC MAX&MIN data,and ADC Conversion data;	
 #define MIN_AD_X  40
 #define MAX_AD_X  4080
 #define MIN_AD_Y  40
 #define MAX_AD_Y  4080
 
-#define TOUCH_X_MeasureX()   	ADC_TS_READ_X()//return u16 type adc data
-#define TOUCH_X_MeasureY()		ADC_TS_READ_Y()
+//#define TOUCH_X_MeasureX()   	ADC_TS_READ_X()//return u16 type adc data
+//#define TOUCH_X_MeasureY()		ADC_TS_READ_Y()
 
-//#define TOUCH_X_MeasureX()   	ADC_TS_READ_XY(READ_X)//return u16 type adc data
-//#define TOUCH_X_MeasureY()		ADC_TS_READ_XY(READ_Y)
+#define TOUCH_X_MeasureX()   	ADC_TS_READ_XY(READ_X)//return u16 type adc data
+#define TOUCH_X_MeasureY()		ADC_TS_READ_XY(READ_Y)
 
 //Setting the Display functions 
 #define	Touch_Display_Piont(X,Y)			LCD_DrawFillRect(x-3, y-3, 6, 6,Red)
