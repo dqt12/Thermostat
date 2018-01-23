@@ -85,11 +85,11 @@ typedef struct
 
 } UI_T;
 
-typedef struct
-{
-  u16 Kold;
-  u16 Know;
-}KeyCmd_TypeDef;
+//typedef struct
+//{
+//  u16 Kold;
+//  u16 Know;
+//}KeyCmd_TypeDef;
 //extern KeyCmd_TypeDef KeyCmd;
 
 
@@ -109,6 +109,8 @@ struct TIME_SLICE
 	Time_Slice_TypeDef _500ms;
 };
 extern struct TIME_SLICE TimeSlice;
+extern u8 KEY_STATE;
+
 
 /* Exported variables --------------------------------------------------------------------------------------*/
 extern UI_T gUI;

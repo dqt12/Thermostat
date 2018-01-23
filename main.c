@@ -25,7 +25,6 @@ __ALIGN4 USBDCore_TypeDef gUSBCore;
 USBD_Driver_TypeDef gUSBDriver;
 u32 gIsLowPowerAllowed = TRUE;
 
-
 /*
   Frame Information for Full
  */
@@ -69,8 +68,6 @@ void Delay(u32 nTime);
 void TimingDelay(void);
 
 
-
-
 /* Global functions ----------------------------------------------------------------------------------------*/
 
 
@@ -91,8 +88,8 @@ u8 Thermostat_DATA[12]={'E','0','S','2','6','0','N','2','6','0','\r','\n'};
 
 struct
 {
-	u8 	En;
-	u8 	SetEn;
+	bool 	En;
+	bool 	SetEn;
 	u16 Now;
 	u16	Set;
 	u16 Time;
@@ -104,65 +101,50 @@ struct TIME_SLICE TimeSlice;
 u8 KEY_STATE;
 u8 FLAG_DISPLAY ;
 
+vu16 ADC_DATA[3];
+
 
 void Display_Temp(void)
 {
-
-//		LCD_DrawString(10,180, 16, 8, 0,"ADCT X~Y:");
-//		LCD_ShowNum(80,180,16,0,ADC_TFiler_X);
-//		LCD_ShowNum(80,180+16*1,16,0,Touch_X);
-
-//	  LCD_ShowNum(120,180,16,0,ADC_TFiler_Y);
-//		LCD_ShowNum(120,180+16*1,16,0,Touch_Y);
-	
-
-		LCD_DrawString(40,160, 16, 8, 0,"X  ~  Y:");
-		
-		LCD_ShowNum(40,180,16,0,Tocuh.xPhys);
-		LCD_ShowNum(40,180+16*1,16,0,Tocuh.x);
-
-	  LCD_ShowNum(80,180,16,0,Tocuh.yPhys);
-		LCD_ShowNum(80,180+16*1,16,0,Tocuh.y);
-		
-//		LCD_ShowNum(120,180,16,0,ADC_TFiler_Z);
-//		LCD_ShowNum(120,180+16*1,16,0,Touch_Z/10000);
-//		LCD_ShowNum(120+8*4,180+16*1,16,0,Touch_Z%10000);
-}
-
-vu16 ADC_DATA[3];
-void Display_Temp_1(void)
-{
-		if(TEMP.SetEn)
+		if(TEMP.SetEn == TRUE)
 		{
-			LCD_BackColorSet(Yellow);                                                
-			LCD_TextColorSet(Red);
-		}	
-		else 
-		{																																
-			LCD_BackColorSet(Red);                                                           
-			LCD_TextColorSet(Yellow);
+		 LCD_BackColorSet(Black);
+		 LCD_TextColorSet(White);	
 		}
-		
-		LCD_DrawString(10, 60, 16, 8, 0,"Set Temp:");			
-		LCD_ShowTemp(50,60,0,TEMP.Set);		
-		
+		else 
+		{
+			LCD_BackColorSet(Blue2);
+		  LCD_TextColorSet(Yellow);
+		}
 	
-		LCD_BackColorSet(Red);
-		LCD_TextColorSet(Yellow);
+		LCD_DrawString(110, 0, 16, 8, 1,"Set Temp:");			
+		LCD_ShowTemp(110,20,0,TEMP.Set);		
 		
-		LCD_DrawString(10, 0, 16, 8, 0,"Now Temp:");	
-		LCD_ShowTemp(50,0,0,TEMP.Now);
+		LCD_BackColorSet(Blue2);
+		LCD_TextColorSet(Yellow);	
 		
-		LCD_DrawString(10, 120, 16, 8, 0,"KEY_STATE:");
-		LCD_ShowNum(100,120,16,0,KEY_STATE);	
+		LCD_DrawString(0, 0, 16, 8, 1,"Now Temp:");	
+		LCD_ShowTemp(0,20,0,TEMP.Now);
+		
+		LCD_DrawString(0, 50, 16, 8, 1,"KEY_STATE:");
+		LCD_ShowNum(0,70,16,0,KEY_STATE);	
 
-		LCD_DrawString(10, 140, 16, 8, 0,"TIME:");
-		LCD_ShowNum(100,140,16,0,TEMP.Time);
+		LCD_DrawString(110, 50, 16, 8, 1,"Second:");
+		LCD_ShowNum(110,70,16,0,TEMP.Time);
 		
-		LCD_DrawString(10,160, 16, 8, 0,"ADC0~2:");
-		LCD_ShowNum(80,160,16,0,ADC_DATA[0]);
-		LCD_ShowNum(120,160,16,0,ADC_DATA[1]);
-		LCD_ShowNum(160,160,16,0,ADC_DATA[2]);
+		LCD_DrawString(0,90, 16, 8, 1,"ADC0~1~2:");
+		LCD_ShowNum(0,110,16,0,ADC_DATA[0]);
+		LCD_ShowNum(40,110,16,0,ADC_DATA[1]);
+		LCD_ShowNum(80,110,16,0,ADC_DATA[2]);
+//		
+//		
+		LCD_DrawString(0,160, 16, 8, 1,"TS:X ~ Y:");
+		LCD_ShowNum(0,180,16,0,Tocuh.xPhys);
+		LCD_ShowNum(0,180+16*1,16,0,Tocuh.x);
+	  LCD_ShowNum(40,180,16,0,Tocuh.yPhys);
+		LCD_ShowNum(40,180+16*1,16,0,Tocuh.y);
+		
+
 }
 
 
@@ -197,6 +179,49 @@ void Display_State(char *Str)
 
 }
 */
+/*********************************************************************************************************//**
+  * @brief  Demo1.
+  * @retval None
+  ***********************************************************************************************************/
+void Demo_part(LCD_DISPLAY_FrameInfoTypeDef* qq)
+{
+    LCD_DISPLAY_InitTypedef init;
+    //gUI.IsDemo1Update = FALSE;
+    
+    init.Mode             = LCD_DISPLAY_MODE_NORMAL;
+    init.pFrameInfo       = qq;
+    init.pImageRemapTable = NULL;
+    init.ImageStartIndex  = gUI.Demo1_ShowPicID;
+    init.ImageLength      = 1;
+    init.FrameRate        = 0;
+    LCD_DISPLAY_Init(&init);
+
+    while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
+    {
+      LCD_DISPLAY_Process();
+    }
+}
+
+void Demo_full(void)
+{
+	LCD_DISPLAY_InitTypedef init;
+  //gUI.IsDemo1Update = FALSE;
+
+  init.Mode             = LCD_DISPLAY_MODE_NORMAL;
+  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_Full;
+//  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_pp;	
+  init.pImageRemapTable = NULL;
+  init.ImageStartIndex  = gUI.Demo1_ShowPicID;
+  init.ImageLength      = 1;
+  init.FrameRate        = 0;
+  LCD_DISPLAY_Init(&init);
+
+	while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
+  {
+    LCD_DISPLAY_Process();
+  }
+}
+
 
 u16 TEMP_LIMIT(u16 data)
 {
@@ -207,14 +232,18 @@ u16 TEMP_LIMIT(u16 data)
 		return data;
 }
 
-
 void KEY_Scan(void)
 {
+	u8 i = 0;
 		switch(KEY_STATE)
 		{
 			case 0x01 : 
 			{
-				TEMP.SetEn ^=(1<<0) ;
+				if(TEMP.SetEn == TRUE)
+					TEMP.SetEn = FALSE;
+				else 
+					TEMP.SetEn = TRUE;
+				 
 			}; break;//key1
 			
 			case 0x02 : 
@@ -226,15 +255,14 @@ void KEY_Scan(void)
 				}
 				else
 				{
-//					Display_State_Clear();
-//					FLAG_DISPLAY = SET;
-//					TFT_DrawPicDMA(0, 0, 272, 480,0);
 					
-//					LCD_Clear(Red);
-//					TFT_DrawPicture(20, 220, 48, 100, HT32_Table);
-//					TFT_Fill(250,0,479,271,White);
-//					Display_Temp();
-//					FLAG_DISPLAY = NULL;					
+					for(i=0; i< gLCD_Display_ImageInfo.Count; i++)
+					{
+						gUI.Demo1_ShowPicID = i;
+						Demo_full();
+						Delay(15);
+					}
+					Delay(500);				
 					
 					
 				}
@@ -331,16 +359,9 @@ void UPDATA(void)
 		Thermostat_DATA[7] = TEMP.Now/100 + '0';
 		Thermostat_DATA[8] = TEMP.Now%100/10 + '0';
 		Thermostat_DATA[9] = TEMP.Now%10 + '0';	
-	
-
 	}
 	
 }
-
-/*********************************************************************************************************//**
-  * @brief  Main program.
-  * @retval None
-  ***********************************************************************************************************/
 
 
 
@@ -390,12 +411,12 @@ void LCD_TEST(void)
   LCD_DrawString(0, 250, 24, 16, 0, "123456789ABCD");
 
 	
-
+	while(1);
 }
+
+
 //	u8 text[256];
 //	u8 cont;
-
-
 //void FLASH_TEST(void)
 //{
 //	u16 i;
@@ -418,56 +439,10 @@ void LCD_TEST(void)
 
 //	cont = 200;
 //}
-
-
 /*********************************************************************************************************//**
-  * @brief  Demo1.
+  * @brief  Main program.
   * @retval None
   ***********************************************************************************************************/
-void Demo_part(LCD_DISPLAY_FrameInfoTypeDef* qq)
-{
-    LCD_DISPLAY_InitTypedef init;
-    //gUI.IsDemo1Update = FALSE;
-    
-    init.Mode             = LCD_DISPLAY_MODE_NORMAL;
-    init.pFrameInfo       = qq;
-    init.pImageRemapTable = NULL;
-    init.ImageStartIndex  = gUI.Demo1_ShowPicID;
-    init.ImageLength      = 1;
-    init.FrameRate        = 0;
-    LCD_DISPLAY_Init(&init);
-
-    while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
-    {
-      LCD_DISPLAY_Process();
-    }
-}
-
-void Demo_full(void)
-{
-	LCD_DISPLAY_InitTypedef init;
-  //gUI.IsDemo1Update = FALSE;
- // init.
-	
-  init.Mode             = LCD_DISPLAY_MODE_NORMAL;
- // init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_Full;
-  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_pp;	
-  init.pImageRemapTable = NULL;
-  init.ImageStartIndex  = gUI.Demo1_ShowPicID;
-  init.ImageLength      = 1;
-  init.FrameRate        = 0;
-  LCD_DISPLAY_Init(&init);
-
-	while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
-  {
-    LCD_DISPLAY_Process();
-  }
-}
-
-
-
-
-
 int main(void)
 {
 	
@@ -482,11 +457,8 @@ int main(void)
   LCD_Init();
 //// LCD driver configuration
   LCD_Config();	
-	LCD_TEST();
-	
-	
-	while(1);
-	
+//	LCD_TEST();
+
 	HT32F_DVB_PBInit(BUTTON_KEY1,BUTTON_MODE_GPIO);
 	Delay(100);
 	KEY_STATE = HT32F_DVB_PBGetState(BUTTON_KEY1);
@@ -501,25 +473,24 @@ int main(void)
 		IAP_Handler();	
 	}	
 	
-//	KEY_Configuration();
+	KEY_Configuration();
 	ADC_Configuration();
 //	WIFI_INIT();
-
 	
-
+	TOUCH_SCREEN_INIT(DISABLE);
+	LCD_Clear(Red);	
+	
+	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
+	gUI.Demo1_ShowPicID = 10;
+	Demo_full();	
+	
 	KEY_STATE = 0;
-	TEMP.En = 0;
-	TEMP.SetEn = 0;
+	TEMP.En = FALSE;
+	TEMP.SetEn = FALSE;
 	TEMP.Now = 260;
 	TEMP.Set = 260;
-
+	TEMP.Time = 0;
 	
-	LCD_Clear(Black);
-
-	TOUCH_SCREEN_INIT(DISABLE);
-
-	LCD_Clear(Black);
-
 	while(1)
 	{
 
@@ -527,14 +498,12 @@ int main(void)
 		{
 			TimeSlice._10ms.flag = FALSE;
 		//	WIFI_CAP();
-
-			
 		}		 
 		 	
 		if(TimeSlice._20ms.flag)
 		{
 			TimeSlice._20ms.flag = FALSE;
-//			KEY_Scan();
+			KEY_Scan();
 			
 			TOUCH_Logical_Coor_Get(&Tocuh);
 			if(Tocuh.isPress == TRUE)
@@ -547,7 +516,7 @@ int main(void)
 		if(TimeSlice._100ms.flag)
 		{
 			TimeSlice._100ms.flag = FALSE;
-//			KEY_Scan();
+			TEMP.Now = ADC_to_TEMP(ADC_DATA[0]);
 		}
 		
 		
@@ -556,37 +525,15 @@ int main(void)
 			TimeSlice._500ms.flag = FALSE;
 			
 			Display_Temp();
-			
+			TEMP.Time++;
 //			WIFI_Control();
 //			UPDATA();
 			
 				
 		}
 		
-//		if(FLAG_1S) //1s
-//		{
-//			FLAG_1S = 0;
-//			TEMP.Time++;
-
-//		}
 	}	
-//=======
-//	 FLAG_IMG = LCD_DISPLAY_GetImageInfo();
 
-//	LCD_Clear(Black);
-//	
-//	while(1)
-//	{
-//			for(i=0; i< gLCD_Display_ImageInfo.Count; i++)
-//			{
-//				gUI.Demo1_ShowPicID = i;
-//				Demo_full();
-//				Delay(15);
-//			}
-//			Delay(500);
-//	}		
-
-//>>>>>>> master
 
 }	
 

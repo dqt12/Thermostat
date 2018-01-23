@@ -180,7 +180,7 @@ void PDMA_CH7_IRQHandler(void)
  * @retval  None
  ************************************************************************************************************/
 
-extern u8 KEY_STATE;
+
 
 //key1
 void EXTI0_IRQHandler(void)
@@ -257,11 +257,9 @@ void RTC_IRQHandler(void)
 //	FLAG_1S = 1;	
 	
 	
-	if(WIFI_REC.WAIT_EN == SET)
-			WIFI_REC.WAIT_1SCNT++;
-	else
-			WIFI_REC.WAIT_1SCNT = 0;
+	WIFI_WAIT_FUNC();
 }
+
 
 
 /*********************************************************************************************************//**

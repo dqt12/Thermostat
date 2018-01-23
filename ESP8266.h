@@ -32,7 +32,7 @@ typedef struct
 	char *CMD; //發送命令
 	char *ACK; //等待返回
 	
-	u8 WAIT_EN;  //是否啟動等待
+	bool WAIT_EN;  //是否啟動等待
 	u8 WAIT_MAXTIME; //等待最長時間nS
 	u8 WAIT_1SCNT;	//等待計數
 	
@@ -54,7 +54,7 @@ typedef struct
 		SENDREC = SEND|REC,
 	}MODE;
 
-	vu8 JUMP;	//跳過亂碼
+	bool JUMP;	//跳過亂碼
 	
 }WIFI_REC_TypeDef ;
 
@@ -99,7 +99,6 @@ extern WIFI_REC_TypeDef WIFI_REC;//接收模模塊變量反映其狀態
 extern WIFI_CMD_CONT_TypeDef CMD_Cont,CMD_Cont_Trg;	 //發送模塊流程項目
 
 
-//extern u8 FLAG_CMDSET ;//AT指令回應
 extern u8 FALG_WIFI_AUTOLINK;//WIFI是否啟動自動連接
 extern u8 FALG_WIFI_LINK ;//WIFI是否已經連接上路由
 extern u8 FALG_WIFI_DEVLINK;//WIFI是否有設備連接
@@ -108,7 +107,7 @@ extern u8 FLAG_WIFI_UPDATA;//WIFI是否有接收到設備信息
 void WIFI_INIT(void);//WIFI初始化
 void WIFI_HW_STA(FlagStatus sta);//WIFI 硬件復位
 void WIFI_SendCMD(char *Str);//發送指令
-
+void WIFI_WAIT_FUNC(void);
 
 void WIFI_CMDSET(char *cmd,char *ack ,u16 waittime);//設置發送指令、回復信息、等待回復時間
 void WIFI_LIST_POINT(WIFI_CMD_CONT_TypeDef type);//設置命令跳轉到接收模塊的類型

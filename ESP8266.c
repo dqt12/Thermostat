@@ -115,7 +115,13 @@ u8 FALG_WIFI_DEVLINK = NULL;
 u8 FLAG_WIFI_UPDATA;
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-
+void WIFI_WAIT_FUNC(void)
+{
+		if(WIFI_REC.WAIT_EN == TRUE)
+			WIFI_REC.WAIT_1SCNT++;
+		else
+			WIFI_REC.WAIT_1SCNT = 0;
+}
 /*******************************************************************************
 函数名   ：void WIFI_CMDSET(char *cmd,char *ack ,u16 waittime)
 功能     ：WIFI AT指令發送（配合接收模塊使用）
@@ -133,19 +139,19 @@ void WIFI_CMDSET(char *cmd,char *ack ,u16 waittime)
 		{
 			 WIFI_REC.WAIT_MAXTIME = waittime;
 			 WIFI_REC.WAIT_1SCNT = 0;
-			 WIFI_REC.WAIT_EN = SET; //等待回復模式
+			 WIFI_REC.WAIT_EN = TRUE; //等待回復模式
 		}	
 		else 
 		{
 			 WIFI_REC.WAIT_MAXTIME = 0xFF;
 			 WIFI_REC.WAIT_1SCNT = 0; 
-			 WIFI_REC.WAIT_EN = NULL;
+			 WIFI_REC.WAIT_EN = FALSE;
 		}
 		
 		
 		if(strstr((const char*)ack,"ready"))
 		{
-				WIFI_REC.JUMP = SET;
+				WIFI_REC.JUMP = TRUE;
 		}
 	
 		if(WIFI_REC.CMD != NULL) 
@@ -485,7 +491,7 @@ void WIFI_CAP(void)
 		if(WIFI_REC.STA == CSUCCESS )
 		{
 //			WIFI_REC.STA = CDISABLE;
-			WIFI_REC.WAIT_EN = NULL;
+			WIFI_REC.WAIT_EN = FALSE;
 			
 //			#ifdef USE_WIFI_DISPLAY
 //			Display_State(WIFI_REC.ACK);	
@@ -498,7 +504,7 @@ void WIFI_CAP(void)
 		{
 			if(WIFI_REC.WAIT_1SCNT >= WIFI_REC.WAIT_MAXTIME )//超時錯誤
 			{
-				WIFI_REC.WAIT_EN = NULL;
+				WIFI_REC.WAIT_EN = FALSE;
 				WIFI_REC.STA = CTIME_OUT;
 				CMD_Cont = CMD_Cont_Trg;
 				URRxFin = 0;
