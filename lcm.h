@@ -178,9 +178,7 @@ typedef struct
 	u16 Width;
 	u16 Mode;
 }LCD_DrawSize;
-
 extern LCD_DrawSize LCD_IData;
-
 extern ColorType Color_Text; 
 extern ColorType Color_Back;  
 

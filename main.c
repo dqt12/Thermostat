@@ -360,21 +360,29 @@ void LCD_TEST(void)
 	LCD_DrawLine(150,10,100,Horizontal,Green);	
 	LCD_DrawLine(150,20,100,Horizontal,Red);	
 	LCD_DrawLine(150,30,100,Horizontal,Blue);	 
-	
+
 	LCD_DrawRect(50,50,20,20,Green);
-	LCD_DrawRect(60,60,20,20,Red);
-	LCD_DrawRect(70,70,20,20,Blue);
+	LCD_DrawRect(80,50,20,20,Red);
+	LCD_DrawRect(110,50,20,20,Blue);
 	
 	LCD_DrawFillRect(150,50,20,20,Green);
-	LCD_DrawFillRect(160,60,20,20,Red);
-	LCD_DrawFillRect(170,70,20,20,Blue);	
+	LCD_DrawFillRect(180,50,20,20,Red);
+	LCD_DrawFillRect(210,50,20,20,Blue);	
 	
-	LCD_DrawString(0, 100, 12, 6, 0, "123456789ABCD");
-	LCD_DrawString(0, 120, 16, 8, 0, "123456789ABCD");
-  LCD_DrawString(0, 140, 24, 16, 0, "123456789ABCD");
+	
+	LCD_DrawCircle(50,100,10,Green);
+	LCD_DrawCircle(80,100,10,Red);
+	LCD_DrawCircle(110,100,10,Blue);
+	
+	LCD_DrawFillCircle(150,100,10,Green);
+	LCD_DrawFillCircle(180,100,10,Red);
+	LCD_DrawFillCircle(210,100,10,Blue);
+	
+	LCD_DrawString(0, 130, 12, 6, 0, "123456789ABCD");
+	LCD_DrawString(0, 145, 16, 8, 0, "123456789ABCD");
+  LCD_DrawString(0, 165, 24, 16, 0, "123456789ABCD");
 	 
 	LCD_DrawBigChar(0, 200, 0, 2);
-
 
 }
 //	u8 text[256];
@@ -468,6 +476,9 @@ int main(void)
 //// LCD driver configuration
   LCD_Config();	
 	LCD_TEST();
+	
+	
+	while(1);
 	
 	HT32F_DVB_PBInit(BUTTON_KEY1,BUTTON_MODE_GPIO);
 	Delay(100);

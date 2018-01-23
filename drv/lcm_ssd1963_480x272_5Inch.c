@@ -853,77 +853,51 @@ void LCD_DrawFillRect(u16 X_Location, u16 Y_Location, u16 Height, u16 Width,Colo
   ***********************************************************************************************************/
 void LCD_DrawCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color)
 {
-//	s32  DV;  // Decision Variable
-//  u32  X_Value;  // Current X Value
-//  u32  Y_Value;  // Current Y Value
+	s32  DV;  // Decision Variable
+  u32  X_Value;  // Current X Value
+  u32  Y_Value;  // Current Y Value
 
-//  DV = 3 - (Radius << 1);
-//  X_Value = 0;
-//  Y_Value = Radius;
+  DV = 3 - (Radius << 1);
+  X_Value = 0;
+  Y_Value = Radius;
 
-//  while (X_Value <= Y_Value)
-//  {
-//    LCD_StarterSet(X_Location + X_Value, Y_Location + Y_Value);
-//    LCD_WriteRAM(Color);
+  while (X_Value <= Y_Value)
+  {
+    LCD_StarterSet(X_Location + X_Value, Y_Location + Y_Value);
+    LCD_WriteRAMWord(Color);
 
-//    LCD_StarterSet(X_Location + X_Value, Y_Location - Y_Value);
-//    LCD_WriteRAM(Color);
+    LCD_StarterSet(X_Location + X_Value, Y_Location - Y_Value);
+    LCD_WriteRAMWord(Color);
 
-//    LCD_StarterSet(X_Location - X_Value, Y_Location + Y_Value);
-//    LCD_WriteRAM(Color);
+    LCD_StarterSet(X_Location - X_Value, Y_Location + Y_Value);
+    LCD_WriteRAMWord(Color);
 
-//    LCD_StarterSet(X_Location - X_Value, Y_Location - Y_Value);
-//    LCD_WriteRAM(Color);
+    LCD_StarterSet(X_Location - X_Value, Y_Location - Y_Value);
+    LCD_WriteRAMWord(Color);
 
-//    LCD_StarterSet(X_Location + Y_Value, Y_Location + X_Value);
-//    LCD_WriteRAM(Color);
+    LCD_StarterSet(X_Location + Y_Value, Y_Location + X_Value);
+    LCD_WriteRAMWord(Color);
 
-//    LCD_StarterSet(X_Location + Y_Value, Y_Location - X_Value);
-//    LCD_WriteRAM(Color);
+    LCD_StarterSet(X_Location + Y_Value, Y_Location - X_Value);
+    LCD_WriteRAMWord(Color);
 
-//    LCD_StarterSet(X_Location - Y_Value, Y_Location + X_Value);
-//    LCD_WriteRAM(Color);
+    LCD_StarterSet(X_Location - Y_Value, Y_Location + X_Value);
+    LCD_WriteRAMWord(Color);
 
-//    LCD_StarterSet(X_Location - Y_Value, Y_Location - X_Value);
-//    LCD_WriteRAM(Color);
+    LCD_StarterSet(X_Location - Y_Value, Y_Location - X_Value);
+    LCD_WriteRAMWord(Color);
 
-//    if (DV < 0)
-//    {
-//      DV += (X_Value << 2) + 6;
-//    }
-//    else
-//    {
-//      DV += ((X_Value - Y_Value) << 2) + 10;
-//      Y_Value--;
-//    }
-//    X_Value++;
-//  }
-
-}
-
-void TFT_DrawPicDMA(u16 X,u16 Y,u16 Height,u16 Width ,u8 ptr_num)
-{
-//	u32 i;
-//	u32 picsize;
-//	u32 pic_addr;
-//	u8 data[200];
-
-//	pic_addr = 0;
-//	LCD_SetDisplayArea(X,Y,Height,Width);
-//	
-//	LCD_WriteRAMPrior(); // Get ready to write GRAM
-//  picsize = (Height) * (Width) * 3;//byte
-
-//	
-//	for(pic_addr=0;pic_addr < picsize; pic_addr +=200 )
-//	{
-//		SPI_FLASH_BufferRead(data,pic_addr,200);
-
-//		for(i=0;i < 200;i++)
-//		   EBI_LCD->EBI_LCD_RAM = data[i];
-//}
-
-//	SPI_FLASH_ReadDMA(pic_addr,(u32)&EBI_LCD->EBI_LCD_RAM ,picsize,SPI_FLASH_DMA_ADR_FIX_MODE);
+    if (DV < 0)
+    {
+      DV += (X_Value << 2) + 6;
+    }
+    else
+    {
+      DV += ((X_Value - Y_Value) << 2) + 10;
+      Y_Value--;
+    }
+    X_Value++;
+  }
 }
 
 /*********************************************************************************************************//**
@@ -937,10 +911,33 @@ void TFT_DrawPicDMA(u16 X,u16 Y,u16 Height,u16 Width ,u8 ptr_num)
   ***********************************************************************************************************/
 void LCD_DrawFillCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color)
 {
-	;
+ u32 i;
+ u32 iMax = ((u32)Radius*707)/1000+1;
+ u32 SqMax = (u32)Radius*(u32)Radius+(u32)Radius/2;
+ u32 X_Value = Radius;
+ 
+	LCD_DrawLine(X_Location - Radius , Y_Location, 2*Radius, Horizontal,Color);
+ 
+ for (i=1;i<=iMax;i++)
+ {
+  if ((i*i+X_Value*X_Value)>SqMax)// draw lines from outside 
+  {
+    if (X_Value>iMax)
+   {
+
+		LCD_DrawLine(X_Location - i + 1, Y_Location + X_Value, 2*(i-1), Horizontal,Color);
+		LCD_DrawLine(X_Location - i + 1, Y_Location - X_Value, 2*(i-1), Horizontal,Color);
+		 
+   }
+   X_Value--;
+  }
+
+  	LCD_DrawLine(X_Location - X_Value, Y_Location + i, 2*X_Value, Horizontal,Color);
+		LCD_DrawLine(X_Location - X_Value, Y_Location - i, 2*X_Value, Horizontal,Color);
+
+ }
+
 }
-
-
 
 
 
