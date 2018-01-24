@@ -80,7 +80,7 @@ typedef enum
 #define  EBI16_RGB565			(1)
 
 #define  DISPLAY_MODE			EBI16_RGB565
-
+extern LCD_DISPLAY_FlagTypedef FLAG_IMG;
 extern LCD_DISPLAY_InfoTypedef gLCD_DISPLAY;
 extern LCD_DISPLAY_ImageInfoTypeDef gLCD_Display_ImageInfo;
 void LCD_DISPLAY_Init(LCD_DISPLAY_InitTypedef* pDisplay);

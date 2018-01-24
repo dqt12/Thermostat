@@ -22,7 +22,7 @@
 
 //#define LCM_EXCHANGE_X_Y  1
 
-//LCD_DrawSize LCD_IData;
+LCD_DrawSize LCD_IData;
 
 
 #if (LCM_DIRECTION == LCM_NORMAL)

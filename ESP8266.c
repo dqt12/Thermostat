@@ -380,44 +380,11 @@ bool WIFI_GotIP(char *mac,char *ip)
 	#endif
 	}
 	else return FALSE;
-	
 
-	
-	
 	return TRUE;
 }
 
 
-//u8 WIFI_GotIP(SqQueue *Q,char *mac,char *ip)
-//{	
-//	char *p = NULL;
-//	URRxFin = 0;
-
-//	WIFI_SendCMD("AT+CIFSR\r\n");	
-//	
-//	while(!URRxFin);
-//	URRxFin = 0;
-//	
-//	p = StrQueue(Q,"+CIFSR:STAIP,");
-//	if(p != NULL)
-//	{
-//		DeQueue(Q,&p);
-//		CpyQueue(Q,ip,13);
-//	}
-//	else return ERR;
-//	
-//	while(!URRxFin);
-//	p = StrQueue(Q,"+CIFSR:STAMAC,");
-//	if(p != NULL)
-//	{
-//		DeQueue(Q,&p);
-//		CpyQueue(Q,mac,17);
-//	
-//	}
-//	else return ERR;
-//	
-//	return SET;
-//}
 
 /*******************************************************************************
 º¯ÊýÃû   £ºvoid WIFI_Control(void)
@@ -444,10 +411,10 @@ void WIFI_Control(void)
 		case L_7	:		WIFI_CMDSET("AT+RST\r\n","ready" ,5);			WIFI_LIST_POINT(CAP_STATUE);;break;
 		case L_8	:		WIFI_CMDSET("ATE0\r\n","OK" ,5);					WIFI_LIST_POINT(CAP_STATUE);;break;
 		
-		case L_9	:		FLAG_WIFI.SMARTLINK = TRUE;
-									WIFI_CMDSET("AT+CWSTARTSMART=3\r\n","smartconfig connected wifi",0);
-									WIFI_LIST_POINT(CAP_STATUE);
-									;break;
+		case L_SMART :	FLAG_WIFI.SMARTLINK = TRUE;
+										WIFI_CMDSET("AT+CWSTARTSMART=3\r\n","smartconfig connected wifi",0);
+										WIFI_LIST_POINT(CAP_STATUE);
+										;break;
 		
 		case L_10	:		FLAG_WIFI.SMARTLINK = FALSE;	
 									WIFI_CMDSET("AT+CWSTOPSMART\r\n","OK" ,5);
@@ -456,7 +423,7 @@ void WIFI_Control(void)
 		
 		///////////////////////////////		
 		case L_LINKED	:		FLAG_WIFI.APLINK = TRUE; 
-										  WIFI_CMDSET("ATE0\r\n","OK",5);	
+										  WIFI_CMDSET("ATE0\r\n","OK",2);	
 									   	WIFI_LIST_POINT(CAP_STATUE);
 											;break;
 											

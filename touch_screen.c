@@ -141,24 +141,55 @@ bool TOUCH_MeasureXY(u16 *x, u16 *y)
  * @brief check the touch screen is press ? (USE by ADC DATA POLLING)
  * @retval TURE: touch is press ;FALSE: Touch isn't press 
  ************************************************************************************************************/
+//bool TOUCH_CheckPressed(void)
+//{
+//    u16 xPhys;
+//    u16 yPhys;
+//    xPhys = TOUCH_X_MeasureX();
+//    yPhys = TOUCH_X_MeasureY();
+
+//		if((xPhys > MIN_AD_X ) && (xPhys < MAX_AD_X)) 
+//		{	
+//			if((yPhys > MIN_AD_Y) &&(yPhys < MAX_AD_Y))
+//			{
+//				return (TRUE);
+//			}
+//		}
+//	
+//	return (FALSE); 
+//}
 bool TOUCH_CheckPressed(void)
 {
+#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
     u16 xPhys;
     u16 yPhys;
     xPhys = TOUCH_X_MeasureX();
-    yPhys = TOUCH_X_MeasureY();
+//    yPhys = TOUCH_X_MeasureY();
 
 		if((xPhys > MIN_AD_X ) && (xPhys < MAX_AD_X)) 
 		{	
-			if((yPhys > MIN_AD_Y) &&(yPhys < MAX_AD_Y))
+	//		if((yPhys > MIN_AD_Y) &&(yPhys < MAX_AD_Y))
 			{
 				return (TRUE);
 			}
 		}
 	
 	return (FALSE); 
+		
+#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
+		
+		if (TOUCH_PRESS_INT == TOUCH_PRESS)
+			return (TRUE);
+		
+		return (FALSE); 
+#endif
 }
 
+
+
+
+				
+			
 /*********************************************************************************************************//**
  * @brief get the calibration data for touch screen
  * @param *pcal: TOUCH_Calibration_TypeDef
@@ -184,12 +215,7 @@ bool TOUCH_CheckPressed(void)
     // Wait touch to release
     while (1)
     {
-			
-			#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
 				if (TOUCH_CheckPressed() == FALSE)		
-			#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
-				if (TOUCH_PRESS_INT == TOUCH_NOPRESS)
-			#endif
 				{
 					break;
 				}				
@@ -201,11 +227,7 @@ bool TOUCH_CheckPressed(void)
     // Wait touch pressed
     while(1)
     {
-			#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
-				if (TOUCH_CheckPressed() == TRUE)	
-			#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
-				if (TOUCH_PRESS_INT == TOUCH_PRESS)
-			#endif		
+				if (TOUCH_CheckPressed() == TRUE)		
 				{
 						if (TOUCH_MeasureXY(&pcal->x[group], &pcal->y[group]))
 						{
@@ -282,12 +304,7 @@ bool  TOUCH_Calibration(TOUCH_Calibration_TypeDef *pcal)
 		// Wait touch to release
     while (1)
     {
-			
-			#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
 				if (TOUCH_CheckPressed() == FALSE)		
-			#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
-				if (TOUCH_PRESS_INT == TOUCH_NOPRESS)
-			#endif
 				{
 					break;
 				}				
@@ -298,11 +315,7 @@ bool  TOUCH_Calibration(TOUCH_Calibration_TypeDef *pcal)
     // Wait the touch to continue
     while (1)
     {
-			#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
 				if(TOUCH_CheckPressed() == TRUE)		
-			#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
-				if (TOUCH_PRESS_INT == TOUCH_PRESS)
-			#endif		
 				{
 					Touch_Display_Clear();
 					break;
@@ -343,19 +356,8 @@ void _StoreUnstable(u16 *x, u16 *y)
  ************************************************************************************************************/
 void TOUCH_Logical_Coor_Get(TOUCH_XY_TypeDef *tocuh)
 {
-#if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)		
-		if (TOUCH_CheckPressed() == TRUE) 
-#elif (USE_TOUCH_PRESS_INT == TOUCH_USE)
-		if (TOUCH_PRESS_INT == TOUCH_PRESS)
-#endif			
-		{
-			tocuh->isPress = TRUE;
-		}	
-		else 
-		{
-			tocuh->isPress = FALSE;
-		}
-				
+	tocuh->isPress = TOUCH_CheckPressed();
+
 	if (tocuh->isPress)
 	{             
 		 TOUCH_MeasureXY(&tocuh->xPhys, &tocuh->yPhys);

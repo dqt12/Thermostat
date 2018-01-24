@@ -240,7 +240,7 @@ void BFTM0_IRQHandler(void)
 
 	TIME_SLICE_CHECK(&TimeSlice._10ms,10);
 	TIME_SLICE_CHECK(&TimeSlice._20ms,20);
-	TIME_SLICE_CHECK(&TimeSlice._100ms,200);
+	TIME_SLICE_CHECK(&TimeSlice._100ms,100);
 	TIME_SLICE_CHECK(&TimeSlice._500ms,500);
 	
 
@@ -249,12 +249,11 @@ void BFTM0_IRQHandler(void)
  * @brief   This function handles RTC interrupt.
  * @retval  None
  ************************************************************************************************************/
-//extern vu8 FLAG_1S;
 void RTC_IRQHandler(void)
 {
 	
   RTC_GetFlagStatus();
-//	FLAG_1S = 1;	
+	TIME_SLICE_CHECK(&TimeSlice._1s,1);
 	
 	
 	WIFI_WAIT_FUNC();
@@ -315,9 +314,6 @@ void USART0_IRQHandler(void)
  * @brief   This function handles ADC0 interrupt.
  * @retval  None
  ************************************************************************************************************/
-extern vu16 ADC_DATA[3];
-
-
 void ADC_IRQHandler(void)
 {
 	ADC_ClearIntPendingBit(HT_ADC,ADC_INT_CYCLE_EOC);

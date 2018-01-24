@@ -178,19 +178,18 @@ typedef struct
 	u16 Width;
 	u16 Mode;
 }LCD_DrawSize;
+
 extern LCD_DrawSize LCD_IData;
+
 extern ColorType Color_Text; 
 extern ColorType Color_Back;  
 
 /* Exported functions --------------------------------------------------------------------------------------*/
-
 void LCD_Init(void);//OK
 void LCD_Config(void);//OK
 
-
 void LCD_DisplayOff(void);
 void LCD_DisplayOn(void);
-
 
 void LCD_WriteReg(u16 LCD_Reg_Index, u16 LCD_Reg_Value);//OK
 
@@ -206,37 +205,28 @@ void LCD_Clear(ColorType Color);//OK
 void LCD_BackColorSet(ColorType Color);//OK
 void LCD_TextColorSet(ColorType Color);//OK
 
-
 void LCD_DrawPoint(u16 Xpos, u16 Ypos, ColorType Color);//OK
 void LCD_DrawLine(u16 X_Location, u16 Y_Location, u16 Length,u8 Direction, ColorType Color);//OK
 void LCD_DrawRect(u16 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color);//OK
 void LCD_DrawFillRect(u16 X_Location, u16 Y_Location, u16 Height, u16 Width,ColorType Color);//OK
-void LCD_DrawCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color);//null
-void LCD_DrawFillCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color);//null
+void LCD_DrawCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color);//OK
+void LCD_DrawFillCircle(u16 X_Location, u16 Y_Location, u16 Radius,ColorType Color);//OK
 
 void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii);//OK
 void LCD_DrawString(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, char *Sptr);//OK
 
-void LCD_DrawBigChar(u16 Xpos, u16 Ypos, u8 Mode, u8 Ascii);//OK
 void LCD_ShowTemp(u16 Xpos, u16 Ypos, u8 Mode, u16 Num);//OK
 void LCD_ShowNum(u16 Xpos, u16 Ypos,u8 Font_Size,u8 Mode, u16 Num);//OK
-	
-	
-void TFT_DrawPicDMA(u16 X,u16 Y,u16 Height,u16 Width ,u8 ptr_num);//test
-	
-	
-	
+
 void LCD_StringDisplay(char *Sptr);
 void LCD_IData_ALL(u16 Xpos, u16 Ypos, u16 XposEnd, u16 YposEnd, u16 Height, u16 Width, u8 Mode);
-void LCD_PicDraw(u8 X_Location, u16 Y_Location, u16 Height, u16 Width, uc8 *Pptr);
-
 
 //null
 void LCD_SetPartialDisplayArea(u16 Start, u16 End);
 void LCD_NormalDisplay(void);
 void LCD_PartialDisplayOn(void);
 void LCD_LowPowerCmd(ControlStatus cmd);
-
+void LCD_PicDraw(u8 X_Location, u16 Y_Location, u16 Height, u16 Width, uc8 *Pptr);
 
 #ifdef __cplusplus
 }

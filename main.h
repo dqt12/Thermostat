@@ -19,21 +19,36 @@
 #endif
 
 /* Includes ------------------------------------------------------------------------------------------------*/
-//#include "board.h"
-#include "lcd_display.h"
+#include "ht32.h"
+#include "ht32_board.h"
+
+#include <string.h>
+#include "lcm.h"
+#include "spi_flash.h"
+#include "ESP8266.h"
+#include "touch_screen.h"
+
+// FOR USB VCP
+#include "ht32_usbd_core.h"
+#include "ht32_usbd_class.h"
+#include "ht32_usbd_descriptor.h"
+#include "iap_handler.h"
+#include "_ht32_project_source.h"
+
+//USE FOR LCD DISPLAY
+#include "lcd_display.h"	 
+	 
+//USE FOR DEMO
+extern u16 Display_State_Line ;
+ void Display_Temp(void);
+ void LCD_TEST(void);
+ void FLASH_TEST(void);
+ void Display_State(char *Str);
 /* Setting -----------------------------------------------------------------------------------------------*/
-
-#define DEMO_BOARD_HT32DVB    0
-#define DEMO_BOARD_ELSONIC    1   
-#define DEMO_BOARD_SEL        DEMO_BOARD_HT32DVB
-
-#define EEPROM_ADDRESS        0x51
    
 /* Exported constants --------------------------------------------------------------------------------------*/
 
-
 extern u8 Thermostat_DATA[12];
-void Display_State(char *Str);
 
 /* Exported types ------------------------------------------------------------------------------------------*/
 
@@ -81,6 +96,7 @@ typedef struct
 
 } UI_T;
 
+extern UI_T gUI;
 //typedef struct
 //{
 //  u16 Kold;
@@ -88,6 +104,21 @@ typedef struct
 //}KeyCmd_TypeDef;
 //extern KeyCmd_TypeDef KeyCmd;
 //---------------------------------------------------------------------
+
+struct TEMP
+{
+	bool 	En;
+	bool 	CorEn;
+	bool 	SetEn;
+	bool 	SubEn;
+	bool 	AddEn;
+	u16 Now;
+	u16	Set;
+	u16 Time;
+};
+
+extern struct TEMP Temp;
+
 typedef struct 
 {
 	bool flag;
@@ -100,13 +131,15 @@ struct TIME_SLICE
 	Time_Slice_TypeDef _20ms;
 	Time_Slice_TypeDef _100ms;
 	Time_Slice_TypeDef _500ms;
+	Time_Slice_TypeDef _1s;
 };
+
 extern struct TIME_SLICE TimeSlice;
 extern u8 KEY_STATE;
-
+extern vu16 ADC_DATA[3];
 
 /* Exported variables --------------------------------------------------------------------------------------*/
-extern UI_T gUI;
+
 
 /* Exported macro ------------------------------------------------------------------------------------------*/
 

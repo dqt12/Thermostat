@@ -14,10 +14,8 @@
 #define WIFI_RST_PIN    GPIO_PIN_12
 
 #define USE_WIFI_AUTOLINK
-#define USE_WIFI_LIST_DISPLAY
-
+//#define USE_WIFI_LIST_DISPLAY
 	 
-	
 #ifdef 	 USE_WIFI_LIST_DISPLAY
 #define  WIFI_DISPLAY(x)			Display_State(x)
 #endif
@@ -73,7 +71,7 @@ typedef enum
 	L_6,
 	L_7,
 	L_8,
-	L_9,
+	L_SMART,
 	L_10,
 	L_LINKED,
 	L_12,
@@ -103,9 +101,6 @@ typedef struct
 extern WIFI_UART_TypeDef WIFI_UART;
 
 ////URAT使用
-//extern vu8  URRxFin ;
-//extern char *URTxBuf;
-//extern vu8 URTxCont ;
 
 #define REC_BUF_SIZE		64  //接收隊列最大長度（30~64）
 extern SqQueue WIFI_FRAM;   //接收數據隊列

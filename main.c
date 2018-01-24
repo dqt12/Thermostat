@@ -1,24 +1,5 @@
 /* Includes ------------------------------------------------------------------------------------------------*/
-#include "ht32.h"
-#include "ht32_board.h"
-
-#include <string.h>
-#include "lcm.h"
-#include "spi_flash.h"
-#include "ESP8266.h"
 #include "main.h"
-
-#include "touch_screen.h"
-
-// FOR USB VCP
-#include "ht32_usbd_core.h"
-#include "ht32_usbd_class.h"
-#include "ht32_usbd_descriptor.h"
-#include "iap_handler.h"
-#include "_ht32_project_source.h"
-
-//USE FOR LCD DISPLAY
-#include "lcd_display.h"
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 __ALIGN4 USBDCore_TypeDef gUSBCore;
@@ -42,13 +23,7 @@ const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
   1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_pp
 };
 
-//extern u16 Demo_N;
-//KeyCmd_TypeDef KeyCmd;
-//vu32 gTimebaseDelayCounter;
 UI_T gUI;
-LCD_DrawSize LCD_IData;
-//u16 RemapTable[178];
-LCD_DISPLAY_FlagTypedef FLAG_IMG;
 
 
 
@@ -82,23 +57,13 @@ const u16 NTC_10K_MAP[]={
 };
 
 
-
 //wifi ‚÷Ý”…f×h
 ////////////////////////E,0,S,2,5,6,N,2,5,0,/r,/n
 u8 Thermostat_DATA[12]={'E','0','S','2','6','0','N','2','6','0','\r','\n'};
 
-struct
-{
-	bool 	En;
-	bool 	SetEn;
-	u16 Now;
-	u16	Set;
-	u16 Time;
-}TEMP;
 
 struct TIME_SLICE TimeSlice;
-
-
+struct TEMP Temp;
 
 typedef struct
 {
@@ -110,19 +75,22 @@ typedef struct
 }Touch_Screen_Rect_TypeDef;
 
 
-Touch_Screen_Rect_TypeDef Butten;
-Touch_Screen_Rect_TypeDef ButtenADD;
-Touch_Screen_Rect_TypeDef ButtenSUB;
-void TS_SET_RECT(Touch_Screen_Rect_TypeDef *p,u16 xBg,u16 yBg,u16 xEn,u16 yEn)
-{
+Touch_Screen_Rect_TypeDef Button;
+Touch_Screen_Rect_TypeDef ButtonADD;
+Touch_Screen_Rect_TypeDef ButtonSUB;
 
-	p->xBg = xBg;
-	p->xEn = xEn;
-	p->yBg = yBg;
-	p->yEn = yEn;
-	p->ispress = FALSE;	
+Touch_Screen_Rect_TypeDef TS_SET_RECT(u16 xBg,u16 yBg,u16 xEn,u16 yEn)
+{
+	Touch_Screen_Rect_TypeDef p;
+	p.xBg = xBg;
+	p.xEn = xEn;
+	p.yBg = yBg;
+	p.yEn = yEn;
+	p.ispress = FALSE;	
 	
-	LCD_DrawRect(xBg,yBg,yEn-yBg,xEn-xBg,Red);
+//	LCD_DrawRect(xBg,yBg,yEn-yBg,xEn-xBg,Red);
+	
+	return p;
 	
 }
 
@@ -144,71 +112,52 @@ bool TS_Scan_RECT(Touch_Screen_Rect_TypeDef *p,TOUCH_XY_TypeDef *pt)
 	return (FALSE);
 }
 
-u8 KEY_STATE;
+
 u8 FLAG_DISPLAY ;
 vu16 ADC_DATA[3];
-void Display_Temp(void)
+
+
+
+
+
+bool DW_flag_m1 = TRUE;
+bool DW_flag_m2 = TRUE;
+bool DW_flag_m3 = TRUE;
+void Display_WIFI(void)
 {
-		if(TEMP.SetEn == TRUE)
-		{
-		 LCD_BackColorSet(Black);
-		 LCD_TextColorSet(White);	
-		}
-		else 
-		{
-			LCD_BackColorSet(Blue2);
-		  LCD_TextColorSet(Yellow);
-		}
-		
-		
-		LCD_DrawString(110, 0, 16, 8, 1,"Set Temp:");			
-		LCD_ShowTemp(110,20,0,TEMP.Set);		
-		
-		LCD_BackColorSet(Blue2);
-		LCD_TextColorSet(Yellow);	
-		
-		LCD_DrawString(0, 0, 16, 8, 1,"Now Temp:");	
-		LCD_ShowTemp(0,20,0,TEMP.Now);
-		
-		LCD_DrawString(0, 50, 16, 8, 1,"KEY_STATE:");
-		LCD_ShowNum(0,70,16,0,KEY_STATE);	
-
-		LCD_DrawString(110, 50, 16, 8, 1,"Second:");
-		LCD_ShowNum(110,70,16,0,TEMP.Time);
-		
-		LCD_DrawString(0,90, 16, 8, 1,"ADC0~1~2:");
-		LCD_ShowNum(0,110,16,0,ADC_DATA[0]);
-		LCD_ShowNum(40,110,16,0,ADC_DATA[1]);
-		LCD_ShowNum(80,110,16,0,ADC_DATA[2]);
-//		
-//		
-		LCD_DrawString(0,160, 16, 8, 1,"TS:X ~ Y:");
-		LCD_ShowNum(0,180,16,0,Tocuh.xPhys);
-		LCD_ShowNum(0,180+16*1,16,0,Tocuh.x);
-	  LCD_ShowNum(40,180,16,0,Tocuh.yPhys);
-		LCD_ShowNum(40,180+16*1,16,0,Tocuh.y);
-		
-
-}
-
-void Display_State(char *Str)
-{
-	static u16 line = 0;
-	                                          
-	LCD_TextColorSet(Black);
-	
-	if(line >= 256) 
+	if( CMD_Cont_Trg < L_REST && DW_flag_m1)	 
 	{
-		LCD_DrawFillRect(279,0,271,200,White);
-		line = 0;
+		Display_State("WIFI AUTO LINKing!");
+		
+		DW_flag_m1 = FALSE;
 	}
 	
-	LCD_DrawString(285,line, 16, 8, 1,Str);
-	
-	line += 16;	
-	
-	
+	if(CMD_Cont_Trg >= L_SMART  && CMD_Cont_Trg < L_LINKED && DW_flag_m2)	
+	{
+		if(FLAG_WIFI.SMARTLINK == TRUE) 
+		{
+			
+			Display_State("WIFI LINK TO AP BY APP!");
+			
+			DW_flag_m2 = FALSE;
+		}
+
+	}
+	if(CMD_Cont_Trg >= L_Dev && DW_flag_m3 )	
+	{
+	//	if(FLAG_WIFI.DEVLINK == TRUE) 
+		{
+			Display_State("WIFI AUTO LINK OK!");
+			Display_State("WIFI INF:");
+			Display_State(WIFI_MAC);
+			Display_State(WIFI_IP);
+			Display_State("COM:1001");
+		}
+		DW_flag_m3 = FALSE;
+	}
+
 }
+
 
 /*********************************************************************************************************//**
   * @brief  Demo1.
@@ -263,6 +212,49 @@ u16 TEMP_LIMIT(u16 data)
 		return data;
 }
 
+
+
+void TEMP_SET_CONTRONL(void)
+{
+
+	if(Temp.SetEn) 
+	{
+		if(Temp.AddEn)
+		{
+			Temp.AddEn = FALSE;
+			
+			Temp.Set += 5;
+			Temp.Set = TEMP_LIMIT(Temp.Set);
+		}
+		
+		if(Temp.SubEn)
+		{
+			Temp.SubEn = FALSE;
+			Temp.Set -= 5;
+			Temp.Set = TEMP_LIMIT(Temp.Set);
+		}
+	}
+	else 
+	{
+		Temp.SubEn = FALSE;
+		Temp.AddEn = FALSE;
+	}
+
+		if(Temp.CorEn == TRUE)
+		{
+			Temp.CorEn = FALSE;
+			
+			if(Temp.SetEn == TRUE)
+				Temp.SetEn = FALSE;
+			else 
+				Temp.SetEn = TRUE;
+		}
+}
+
+
+
+
+u8 KEY_STATE;
 void KEY_Scan(void)
 {
 	u8 i = 0;
@@ -270,62 +262,97 @@ void KEY_Scan(void)
 		{
 			case 0x01 : 
 			{
-				if(TEMP.SetEn == TRUE)
-					TEMP.SetEn = FALSE;
-				else 
-					TEMP.SetEn = TRUE;
+					Temp.CorEn = TRUE;
 				 
 			}; break;//key1
 			
 			case 0x02 : 
 			{
-				if(TEMP.SetEn) 
-				{ 
-					TEMP.Set += 5;
-					TEMP.Set = TEMP_LIMIT(TEMP.Set);
-				}
-				else
+				
+				if(Temp.SetEn == TRUE)
 				{
-					
-					for(i=0; i< gLCD_Display_ImageInfo.Count; i++)
+					Temp.AddEn = TRUE;
+				}
+				else 
+				{					
+					for(i=0; i< gLCD_Display_ImageInfo.Count - 1; i++)
 					{
 						gUI.Demo1_ShowPicID = i;
 						Demo_full();
 						Delay(15);
 					}
 					Delay(500);				
-					
-					
 				}
 			}break;//key2
 
 			case 0x04 : 
 			{
-				if(TEMP.SetEn) 
-				{ 
-						TEMP.Set -= 5;
-						TEMP.Set = TEMP_LIMIT(TEMP.Set);						
-				}
-				else 
+				if(Temp.SetEn == TRUE)
 				{
-					
-					
-					
+					Temp.SubEn = TRUE;
 				}
+				
 			};break;//key3	
 			
 			case 0x08 :
 			{
+				Display_State_Line = 0;
+				Demo_full();	
 				CMD_Cont = L_REST;
 				CMD_Cont_Trg = L_REST;
+				DW_flag_m1 = TRUE;
+				DW_flag_m2 = TRUE;
+				DW_flag_m3 = TRUE;
+				
 			};break;//key4
 									
 			default : break;
 		
 		}
 				KEY_STATE = 0;
+		
 }
 
+
+
+void TS_Scan(void)
+{
+	TOUCH_Logical_Coor_Get(&Tocuh);
+		
+	if(TS_Scan_RECT(&Button,&Tocuh))
+	{
+		if(TOUCH_CheckPressed() == TRUE) 
+		{
+			Temp.Time++;
+			Temp.CorEn = TRUE;
+		}
+
+	}		
+	
+	if(Temp.SetEn == TRUE)
+	{
+		if(TS_Scan_RECT(&ButtonADD,&Tocuh))
+		{
+			if(TOUCH_CheckPressed() == TRUE)
+			{
+				Temp.Time++;
+				Temp.AddEn = TRUE;
+			}
+		}
+		
+		if(TS_Scan_RECT(&ButtonSUB,&Tocuh))
+		{
+			if(TOUCH_CheckPressed() == TRUE)
+			{
+				Temp.Time++;
+				Temp.SubEn = TRUE;
+			
+			}
+		}
+	
+	}
+
+}
 
 
 u16 ADC_to_TEMP(u16 NTC_adc)
@@ -355,8 +382,6 @@ u16 ADC_to_TEMP(u16 NTC_adc)
 
 }
 
-
-
 // "E0S000N000\r\n"
 void WIFI_DATA_UPDATA(void)
 {
@@ -365,123 +390,50 @@ void WIFI_DATA_UPDATA(void)
 		FLAG_WIFI.UPDATA = FALSE;
 		
 		if(Thermostat_DATA[0] == 'E')
-			Thermostat_DATA[1] = TEMP.En + '0' ;
+			Thermostat_DATA[1] = Temp.En + '0' ;
 		
 		if(Thermostat_DATA[2] == 'S')
 		{
-			TEMP.Set = (Thermostat_DATA[3]-'0')*100; 
-			TEMP.Set += (Thermostat_DATA[4]-'0')*10; 
-			TEMP.Set += (Thermostat_DATA[5]-'0'); 	
+			Temp.Set = (Thermostat_DATA[3]-'0')*100; 
+			Temp.Set += (Thermostat_DATA[4]-'0')*10; 
+			Temp.Set += (Thermostat_DATA[5]-'0'); 	
 		}
 	}	
 	else 
 	{
 	  Thermostat_DATA[0] = 'E';
-	  Thermostat_DATA[1] = TEMP.En + '0' ;
+	  Thermostat_DATA[1] = Temp.En + '0' ;
 
 		Thermostat_DATA[2] = 'S';
-		Thermostat_DATA[3] = TEMP.Set/100 + '0';
-		Thermostat_DATA[4] = TEMP.Set%100/10 + '0';
-		Thermostat_DATA[5] = TEMP.Set%10 + '0';
+		Thermostat_DATA[3] = Temp.Set/100 + '0';
+		Thermostat_DATA[4] = Temp.Set%100/10 + '0';
+		Thermostat_DATA[5] = Temp.Set%10 + '0';
 	
 	
 		Thermostat_DATA[6] = 'N';
-		Thermostat_DATA[7] = TEMP.Now/100 + '0';
-		Thermostat_DATA[8] = TEMP.Now%100/10 + '0';
-		Thermostat_DATA[9] = TEMP.Now%10 + '0';	
+		Thermostat_DATA[7] = Temp.Now/100 + '0';
+		Thermostat_DATA[8] = Temp.Now%100/10 + '0';
+		Thermostat_DATA[9] = Temp.Now%10 + '0';	
 	}
 	
 }
 
 
 
-void LCD_TEST(void)
-{
-	LCD_BackColorSet(White);
-	LCD_TextColorSet(Red);
-
-	LCD_DrawChar(0,0,12,6,0,'1');
-	LCD_DrawChar(10,0,16,8,0,'2');
-	LCD_DrawChar(20,0,24,16,0,'3');
-	
-	LCD_DrawChar(0,40,12,6,1,'1');
-	LCD_DrawChar(10,40,16,8,1,'2');
-	LCD_DrawChar(20,40,24,16,1,'3');
-
-	LCD_ShowTemp(0,120,0,234);
-	LCD_ShowTemp(0,150,1,234);
-	
-	LCD_DrawPoint(100,10,Green);
-	LCD_DrawPoint(100,20,Red);
-	LCD_DrawPoint(100,30,Blue);
-	
-	LCD_DrawLine(150,10,100,Horizontal,Green);	
-	LCD_DrawLine(150,20,100,Horizontal,Red);	
-	LCD_DrawLine(150,30,100,Horizontal,Blue);	 
-
-	LCD_DrawRect(50,50,20,20,Green);
-	LCD_DrawRect(80,50,20,20,Red);
-	LCD_DrawRect(110,50,20,20,Blue);
-	
-	LCD_DrawFillRect(150,50,20,20,Green);
-	LCD_DrawFillRect(180,50,20,20,Red);
-	LCD_DrawFillRect(210,50,20,20,Blue);	
-	
-	
-	LCD_DrawCircle(50,100,10,Green);
-	LCD_DrawCircle(80,100,10,Red);
-	LCD_DrawCircle(110,100,10,Blue);
-	
-	LCD_DrawFillCircle(150,100,10,Green);
-	LCD_DrawFillCircle(180,100,10,Red);
-	LCD_DrawFillCircle(210,100,10,Blue);
-	
-	LCD_DrawString(0, 210, 12, 6, 0, "123456789ABCD");
-	LCD_DrawString(0, 230, 16, 8, 0, "123456789ABCD");
-  LCD_DrawString(0, 250, 24, 16, 0, "123456789ABCD");
-
-	
-	while(1);
-}
 
 
-//	u8 text[256];
-//	u8 cont;
-//void FLASH_TEST(void)
-//{
-//	u16 i;
-//	SPI_FLASH_Init();
-//	
-//	SPI_FLASH_WriteStatus(0x00);
-//	
-//	SPI_FLASH_BufferRead(text, 0, 200);
-//	
-//	SPI_FLASH_SectorErase(0);  
-//	
-//	SPI_FLASH_BufferRead(text, 0, 200);
-//	
-//	for(i=0;i<200;i++) text[i]=i;
-//	SPI_FLASH_BufferWrite(text, 0, 200);
-
-//	for(i=0;i<200;i++) text[i]=0;
-//	
-//	SPI_FLASH_BufferRead(text, 0, 200);
-
-//	cont = 200;
-//}
 /*********************************************************************************************************//**
   * @brief  Main program.
   * @retval None
   ***********************************************************************************************************/
 int main(void)
 {
-	
   CKCU_Configuration();               /* System Related configuration       */ 	
 	GPIO_Configuration();
 	NVIC_Configuration();
 	SYSTICK_configuration();
 	BFTM_Configuration();
-//	RTC_Configuration();
+	RTC_Configuration();
 	SPI_FLASH_Init();
 // Initialize LCD related peripheral
   LCD_Init();
@@ -512,19 +464,19 @@ int main(void)
 	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
 	gUI.Demo1_ShowPicID = 10;
 	Demo_full();	
-	TS_SET_RECT(&Butten,100,0,200,50);
-	LCD_DrawFillRect(279,0,271,200,White);
+//	LCD_DrawFillRect(279,0,271,200,White);
 	WIFI_INIT();
 	
+	Button = TS_SET_RECT(100,0,200,50);
+	ButtonADD = TS_SET_RECT(100,60,150,90);
+	ButtonSUB = TS_SET_RECT(160,60,210,90);
+	
 	KEY_STATE = 0;
-	TEMP.En = FALSE;
-	TEMP.SetEn = FALSE;
-	TEMP.Now = 260;
-	TEMP.Set = 260;
-	TEMP.Time = 0;
-	
-	
-	
+	Temp.En = FALSE;
+	Temp.SetEn = FALSE;
+	Temp.Now = 260;
+	Temp.Set = 260;
+	Temp.Time = 0;
 	
 	while(1)
 	{
@@ -543,8 +495,7 @@ int main(void)
 			TOUCH_Logical_Coor_Get(&Tocuh);
 			if(Tocuh.isPress == TRUE)
 			{
-				LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Blue);
-
+				LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Red);
 			}
 			
 		}
@@ -552,7 +503,10 @@ int main(void)
 		if(TimeSlice._100ms.flag)
 		{
 			TimeSlice._100ms.flag = FALSE;
-			TEMP.Now = ADC_to_TEMP(ADC_DATA[0]);
+			
+			Temp.Now = ADC_to_TEMP(ADC_DATA[0]);
+			
+			TS_Scan();
 			
 		}
 		
@@ -560,22 +514,23 @@ int main(void)
 		if(TimeSlice._500ms.flag)
 		{
 			TimeSlice._500ms.flag = FALSE;
+			
+			TEMP_SET_CONTRONL();
 			Display_Temp();
-			TEMP.Time++;
 			
-				if(TS_Scan_RECT(&Butten,&Tocuh))
-				{
-					
-						KEY_STATE |= (1<<0);
-				}
-			
-//			Display_State("123456789");
-
 			WIFI_Control();
 			WIFI_DATA_UPDATA();
-			
-				
+			Display_WIFI();
 		}
+		
+		if(TimeSlice._1s.flag )
+		{
+			TimeSlice._1s.flag = FALSE;
+			//Temp.Time++;
+			
+		}
+		
+		
 		
 	}	
 
@@ -699,11 +654,11 @@ void ADC_Configuration(void)
   /* ADC Channel n, Rank 0, Sampling clock is (1.5 + n) ADCLK
      Conversion time = (sampling clock + 12.5) / ADCLK = 12.4 uS */
 	
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_8, 0, 2);//for NTC1
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_9, 1, 2);//for for NTC2
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_10, 2, 2);//for for NTC3
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_0, 3, 3); //for LCD-Touch
-	ADC_RegularChannelConfig(HT_ADC, ADC_CH_1, 4, 3); //for LCD-Touch
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_8, 0, 1);//for NTC1
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_9, 1, 1);//for for NTC2
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_10, 2, 1);//for for NTC3
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_0, 3, 2); //for LCD-Touch
+	ADC_RegularChannelConfig(HT_ADC, ADC_CH_1, 4, 2); //for LCD-Touch
 			
   /* Use Software Trigger as ADC trigger source                                                             */
   ADC_RegularTrigConfig(HT_ADC, ADC_TRIG_SOFTWARE);
