@@ -349,9 +349,9 @@ int main(void)
 	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
 
 	
-//	DISPLAY_full(17);	
+	DISPLAY_full(17);	
 
-//	DISPLAY_full(0);	
+
 	
 //	LCD_DrawFillRect(279,0,271,200,White);
 //	WIFI_INIT();
@@ -418,19 +418,19 @@ int main(void)
 			
 		//	DISPLAY(4);
 			Temp.Time++;
-				if(Temp.Time%2 == 0)
-					LCD_Clear(Black);
-				else
-				{
-					DISPLAY_full(picnum);
-				//DISPLAY_full(picnum+10);	
-				//DISPLAY_ADD(picnum);
-				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,picnum);
-				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,picnum+4);
-				if(picnum >= 1)
-							picnum = 0 ; 
-				else picnum++;			
-			}
+//				if(Temp.Time%2 == 0)
+//					LCD_Clear(Black);
+//				else
+//				{
+//					DISPLAY_full(picnum);
+//				//DISPLAY_full(picnum+10);	
+//				//DISPLAY_ADD(picnum);
+//				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,picnum);
+//				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,picnum+4);
+//				if(picnum >= 1)
+//							picnum = 0 ; 
+//				else picnum++;			
+//			}
 			
 			//TEMP_SET_CONTRONL();
 			//Display_Temp();
@@ -448,7 +448,7 @@ int main(void)
 			if(Temp.Time )//> 3Temp.TimeBuf + 
 			{
 				Temp.TimeBuf = Temp.Time;
-				gUI.Demo1_ShowPicID = picnum;
+
 				
 //				if(picnum < 5)
 //					picnum = 5;
