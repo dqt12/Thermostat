@@ -53,13 +53,13 @@
 //    <0=> COM Port <1=> Virtual COM Port
 #define PROGRAM_IF               1
 
-//#if (PROGRAM_IF == PROGRAM_IF_VCOM)
-//  #define XMODEM_ACK_CNT                30
-//  #define SPI_FLASH_BUFFER_SIZE         ( (133*31)+1 ) 
-//#else
-  #define XMODEM_ACK_CNT                30
-  #define SPI_FLASH_BUFFER_SIZE         640 //( (133*(XMODEM_ACK_CNT+1))+1 ) //
-//#endif
+#if (PROGRAM_IF == PROGRAM_IF_VCOM)
+  #define XMODEM_ACK_CNT                4 //30
+  #define SPI_FLASH_BUFFER_SIZE         640 //( (133*31)+1 ) 
+#else
+  #define XMODEM_ACK_CNT                4
+  #define SPI_FLASH_BUFFER_SIZE         640 
+#endif
 
 //#if (SPI_FLASH_CH == 0) 
 //  #define SPI_FLASH_SCK_GPIO_PORT_ID    SPI_CH0_SCK_GPIO_PORT_ID
