@@ -83,45 +83,73 @@ void Display_Temp(void)
 		}
 		else 
 		{
-			LCD_BackColorSet(Blue2);
+			LCD_BackColorSet(Blue);
 		  LCD_TextColorSet(Yellow);
 		}
 		
 		
-		LCD_DrawString(110, 0, 16, 8, 1,"Set Temp:");			
+		LCD_DrawString(110, 0, 16, 8, 0,"Set Temp:");			
 		LCD_ShowTemp(110,20,0,Temp.Set);		
 		
 		LCD_DrawString(100, 60, 24, 16, 0," + ");	
 		LCD_DrawString(160, 60, 24, 16, 0," - ");	
 		
-		LCD_BackColorSet(Blue2);
+		LCD_BackColorSet(Blue);
 		LCD_TextColorSet(Yellow);	
 		
-		LCD_DrawString(0, 0, 16, 8, 1,"Now Temp:");	
+		LCD_DrawString(0, 0, 16, 8, 0,"Now Temp:");	
 		LCD_ShowTemp(0,20,0,Temp.Now);
 		
 //		LCD_DrawString(0, 50, 16, 8, 1,"KEY_STATE:");
 //		LCD_ShowNum(0,70,16,0,KEY_STATE);	
 
-		LCD_DrawString(0, 50, 16, 8, 1,"Second:");
+		LCD_DrawString(0, 50, 16, 8, 0,"Second:");
 		LCD_ShowNum(0,70,16,0,Temp.Time);
 		
 //		LCD_DrawString(110, 50, 16, 8, 1,"Second:");
 //		LCD_ShowNum(110,70,16,0,Temp.Time);
 		
-		LCD_DrawString(0,90, 16, 8, 1,"ADC0~1~2:");
+		LCD_DrawString(0,90, 16, 8, 0,"ADC0~1~2:");
 		LCD_ShowNum(0,110,16,0,ADC_DATA[0]);
 		LCD_ShowNum(40,110,16,0,ADC_DATA[1]);
 		LCD_ShowNum(80,110,16,0,ADC_DATA[2]);
 //		
 //		
-		LCD_DrawString(0,160, 16, 8, 1,"TS:X ~ Y:");
+		LCD_DrawString(0,160, 16, 8, 0,"TS:X ~ Y:");
 		LCD_ShowNum(0,180,16,0,Tocuh.xPhys);
 		LCD_ShowNum(0,180+16*1,16,0,Tocuh.x);
 	  LCD_ShowNum(40,180,16,0,Tocuh.yPhys);
 		LCD_ShowNum(40,180+16*1,16,0,Tocuh.y);
 }
 
+void Display_WIFI(void)
+{
+	u8 line = 16;
+//	LCD_DrawString(300,line*0, 16, 8, 1,"WIFI Configuration");
+	
+//	if( CMD_Cont_Trg < L_REST )	 
+	{
+		LCD_DrawString(285,line, 16, 8, 0,"WIFI AUTO LINKing...");
+	}
+	
+	if(CMD_Cont_Trg >= L_SMART  && CMD_Cont_Trg < L_LINKED)	
+	{
+		if(FLAG_WIFI.SMARTLINK == TRUE) 
+		{
+			LCD_DrawString(285,line*2, 16, 8, 0,"WIFI LINK TO AP BY APP!");
+		}
+
+	}
+	if(CMD_Cont_Trg >= L_Dev )	
+	{
+		LCD_DrawString(285,line*3, 16, 8, 0,"WIFI AUTO LINK OK!");
+		LCD_DrawString(285,line*4, 16, 8, 0,"WIFI INF:");
+		LCD_DrawString(285,line*5, 16, 8, 0,WIFI_MAC);
+		LCD_DrawString(285,line*6, 16, 8, 0,WIFI_IP);
+		LCD_DrawString(285,line*7, 16, 8, 0,"PORT:1001");
+	}
+
+}
 
 u16 Display_State_Line = 0;
 void Display_State(char *Str)

@@ -32,7 +32,7 @@
 //#define SPI_FLASH_CH                    0
 //#define SPI_FLASH_SEL_CH                0
 #define SPI_FLASH_PAGESIZE              (256)
-#define SPI_FLASH_SECTOR_SIZE           (1024*4)
+#define SPI_FLASH_SECTOR_SIZE           (1024*4)// (1024*64)//
 #define SPI_FLASH_JEDECID_B3            (0xC2)
 #define SPI_FLASH_JEDECID_B2            (0x20)
 #define SPI_FLASH_JEDECID_B1            (0x18)
@@ -57,8 +57,8 @@
 //  #define XMODEM_ACK_CNT                30
 //  #define SPI_FLASH_BUFFER_SIZE         ( (133*31)+1 ) 
 //#else
-  #define XMODEM_ACK_CNT                4
-  #define SPI_FLASH_BUFFER_SIZE         640 
+  #define XMODEM_ACK_CNT                30
+  #define SPI_FLASH_BUFFER_SIZE         640 //( (133*(XMODEM_ACK_CNT+1))+1 ) //
 //#endif
 
 //#if (SPI_FLASH_CH == 0) 

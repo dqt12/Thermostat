@@ -125,7 +125,7 @@ typedef struct
 #define RGB888_EBI8 				(1)
 #define RGB565_EBI16				(2)
 
-#define LCD_CONTROL_MODE     2
+#define LCD_CONTROL_MODE     (1)
 
 #if  (LCD_CONTROL_MODE == RGB888_EBI8)
 	typedef u32		ColorType ;

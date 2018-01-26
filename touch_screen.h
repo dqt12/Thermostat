@@ -49,7 +49,7 @@ extern "C" {
 #define TOUCH_X_MeasureY()		ADC_TS_READ_XY(READ_Y)
 
 //Setting the Display functions 
-#define	Touch_Display_Piont(X,Y)			LCD_DrawFillRect(x-3, y-3, 6, 6,Red)
+#define	Touch_Display_Piont(X,Y)			LCD_DrawFillCircle(X,Y,5,Red) //LCD_DrawFillRect(X-3, Y-3, 6, 6,Red)
 #define	Touch_Display_MSG(X,Y,MSG)		LCD_TextColorSet(Red);\
 																			LCD_DrawString(X, Y, 16, 8, 0,MSG)
 #define	Touch_Display_Clear()					LCD_Clear(White)

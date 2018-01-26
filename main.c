@@ -6,26 +6,7 @@ __ALIGN4 USBDCore_TypeDef gUSBCore;
 USBD_Driver_TypeDef gUSBDriver;
 u32 gIsLowPowerAllowed = TRUE;
 
-/*
-  Frame Information for Full
- */
-const LCD_DISPLAY_PositionTypeDef PositionTable_Full[] = {
-  {0,0}
-};
-const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_Full = {
-  1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_Full
-};
-
-const LCD_DISPLAY_PositionTypeDef PositionTable_pp[] = {
-  {0,190}
-};
-const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
-  1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_pp
-};
-
-UI_T gUI;
-
-
+//u16 RemapTable[178];
 
 /* Private function prototypes -----------------------------------------------------------------------------*/
 void USB_Configuration(void);
@@ -113,94 +94,10 @@ bool TS_Scan_RECT(Touch_Screen_Rect_TypeDef *p,TOUCH_XY_TypeDef *pt)
 }
 
 
-u8 FLAG_DISPLAY ;
 vu16 ADC_DATA[3];
 
 
 
-
-
-bool DW_flag_m1 = TRUE;
-bool DW_flag_m2 = TRUE;
-bool DW_flag_m3 = TRUE;
-void Display_WIFI(void)
-{
-	if( CMD_Cont_Trg < L_REST && DW_flag_m1)	 
-	{
-		Display_State("WIFI AUTO LINKing!");
-		
-		DW_flag_m1 = FALSE;
-	}
-	
-	if(CMD_Cont_Trg >= L_SMART  && CMD_Cont_Trg < L_LINKED && DW_flag_m2)	
-	{
-		if(FLAG_WIFI.SMARTLINK == TRUE) 
-		{
-			
-			Display_State("WIFI LINK TO AP BY APP!");
-			
-			DW_flag_m2 = FALSE;
-		}
-
-	}
-	if(CMD_Cont_Trg >= L_Dev && DW_flag_m3 )	
-	{
-	//	if(FLAG_WIFI.DEVLINK == TRUE) 
-		{
-			Display_State("WIFI AUTO LINK OK!");
-			Display_State("WIFI INF:");
-			Display_State(WIFI_MAC);
-			Display_State(WIFI_IP);
-			Display_State("COM:1001");
-		}
-		DW_flag_m3 = FALSE;
-	}
-
-}
-
-
-/*********************************************************************************************************//**
-  * @brief  Demo1.
-  * @retval None
-  ***********************************************************************************************************/
-void Demo_part(LCD_DISPLAY_FrameInfoTypeDef* qq)
-{
-    LCD_DISPLAY_InitTypedef init;
-    //gUI.IsDemo1Update = FALSE;
-    
-    init.Mode             = LCD_DISPLAY_MODE_NORMAL;
-    init.pFrameInfo       = qq;
-    init.pImageRemapTable = NULL;
-    init.ImageStartIndex  = gUI.Demo1_ShowPicID;
-    init.ImageLength      = 1;
-    init.FrameRate        = 0;
-    LCD_DISPLAY_Init(&init);
-
-    while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
-    {
-      LCD_DISPLAY_Process();
-    }
-}
-
-void Demo_full(void)
-{
-	LCD_DISPLAY_InitTypedef init;
-  //gUI.IsDemo1Update = FALSE;
-
-  init.Mode             = LCD_DISPLAY_MODE_NORMAL;
-  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_Full;
-//  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_pp;	
-  init.pImageRemapTable = NULL;
-  init.ImageStartIndex  = gUI.Demo1_ShowPicID;
-  init.ImageLength      = 1;
-  init.FrameRate        = 0;
-  LCD_DISPLAY_Init(&init);
-
-	while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
-  {
-    LCD_DISPLAY_Process();
-  }
-}
 
 
 u16 TEMP_LIMIT(u16 data)
@@ -257,14 +154,14 @@ void TEMP_SET_CONTRONL(void)
 u8 KEY_STATE;
 void KEY_Scan(void)
 {
-	u8 i = 0;
+//	u8 i = 0;
 		switch(KEY_STATE)
 		{
 			case 0x01 : 
 			{
 					Temp.CorEn = TRUE;
 				 
-			}; break;//key1
+			};break;//key1
 			
 			case 0x02 : 
 			{
@@ -273,17 +170,8 @@ void KEY_Scan(void)
 				{
 					Temp.AddEn = TRUE;
 				}
-				else 
-				{					
-					for(i=0; i< gLCD_Display_ImageInfo.Count - 1; i++)
-					{
-						gUI.Demo1_ShowPicID = i;
-						Demo_full();
-						Delay(15);
-					}
-					Delay(500);				
-				}
-			}break;//key2
+				
+			};break;//key2
 
 			case 0x04 : 
 			{
@@ -297,12 +185,9 @@ void KEY_Scan(void)
 			case 0x08 :
 			{
 				Display_State_Line = 0;
-				Demo_full();	
+//				Demo_full();	
 				CMD_Cont = L_REST;
 				CMD_Cont_Trg = L_REST;
-				DW_flag_m1 = TRUE;
-				DW_flag_m2 = TRUE;
-				DW_flag_m3 = TRUE;
 				
 			};break;//key4
 									
@@ -323,7 +208,7 @@ void TS_Scan(void)
 	{
 		if(TOUCH_CheckPressed() == TRUE) 
 		{
-			Temp.Time++;
+	//		Temp.Time++;
 			Temp.CorEn = TRUE;
 		}
 
@@ -335,7 +220,7 @@ void TS_Scan(void)
 		{
 			if(TOUCH_CheckPressed() == TRUE)
 			{
-				Temp.Time++;
+			//	Temp.Time++;
 				Temp.AddEn = TRUE;
 			}
 		}
@@ -344,7 +229,7 @@ void TS_Scan(void)
 		{
 			if(TOUCH_CheckPressed() == TRUE)
 			{
-				Temp.Time++;
+				//Temp.Time++;
 				Temp.SubEn = TRUE;
 			
 			}
@@ -421,7 +306,7 @@ void WIFI_DATA_UPDATA(void)
 
 
 
-
+u8 picnum ;
 /*********************************************************************************************************//**
   * @brief  Main program.
   * @retval None
@@ -456,17 +341,21 @@ int main(void)
 	}	
 	
 	KEY_Configuration();
-	ADC_Configuration();
+	//ADC_Configuration();
 
-	TOUCH_SCREEN_INIT(DISABLE);
+//	TOUCH_SCREEN_INIT(DISABLE);
 //		TOUCH_SCREEN_INIT(ENABLE);
 	
 	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
-	gUI.Demo1_ShowPicID = 10;
-	Demo_full();	
-//	LCD_DrawFillRect(279,0,271,200,White);
-	WIFI_INIT();
+
 	
+	//DISPLAY_full(17);	
+
+	DISPLAY_full(0);	
+	
+//	LCD_DrawFillRect(279,0,271,200,White);
+//	WIFI_INIT();
+
 	Button = TS_SET_RECT(100,0,200,50);
 	ButtonADD = TS_SET_RECT(100,60,150,90);
 	ButtonSUB = TS_SET_RECT(160,60,210,90);
@@ -484,15 +373,24 @@ int main(void)
 		if(TimeSlice._10ms.flag)
 		{
 			TimeSlice._10ms.flag = FALSE;
-			WIFI_CAP();
+			//WIFI_CAP();
+//				if(picnum > 140)
+//							picnum = 0 ; 
+//				else picnum++;
+//				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,picnum);
+//				DISPLAY_full(picnum);
+		
 		}		 
-		 	
+
+
+	
 		if(TimeSlice._20ms.flag)
 		{
 			TimeSlice._20ms.flag = FALSE;
 			KEY_Scan();
 			
-			TOUCH_Logical_Coor_Get(&Tocuh);
+//			TOUCH_Logical_Coor_Get(&Tocuh);
+			
 			if(Tocuh.isPress == TRUE)
 			{
 				LCD_DrawFillRect(Tocuh.x,Tocuh.y,5,5,Red);
@@ -506,7 +404,10 @@ int main(void)
 			
 			Temp.Now = ADC_to_TEMP(ADC_DATA[0]);
 			
-			TS_Scan();
+			//TS_Scan();
+			
+			
+		
 			
 		}
 		
@@ -515,28 +416,70 @@ int main(void)
 		{
 			TimeSlice._500ms.flag = FALSE;
 			
-			TEMP_SET_CONTRONL();
-			Display_Temp();
+		//	DISPLAY(4);
+			Temp.Time++;
+				if(Temp.Time%2 == 0)
+					LCD_Clear(Black);
+				else
+				{
+					DISPLAY_full(picnum);
+				//DISPLAY_full(picnum+10);	
+				//DISPLAY_ADD(picnum);
+				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,picnum);
+				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,picnum+4);
+				if(picnum >= 19)
+							picnum = 0 ; 
+				else picnum++;			
 			
-			WIFI_Control();
-			WIFI_DATA_UPDATA();
-			Display_WIFI();
+			
+			//TEMP_SET_CONTRONL();
+			//Display_Temp();
+			
+			//WIFI_Control();
+			//WIFI_DATA_UPDATA();
+		//	Display_WIFI();
 		}
 		
 		if(TimeSlice._1s.flag )
 		{
 			TimeSlice._1s.flag = FALSE;
-			//Temp.Time++;
 			
+			
+			if(Temp.Time )//> 3Temp.TimeBuf + 
+			{
+				Temp.TimeBuf = Temp.Time;
+				gUI.Demo1_ShowPicID = picnum;
+				
+				
+
+				
+//				if(picnum < 5)
+//					picnum = 5;
+				
+				
+			
+//				if(Temp.Time%2 == 0)
+//					LCD_Clear(Black);
+//				else
+//				{
+//					DISPLAY_full(picnum);
+//				//DISPLAY_full(picnum+10);	
+//				//DISPLAY_ADD(picnum);
+//				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,picnum);
+//				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,picnum+4);
+//				if(picnum >= 19)
+//							picnum = 0 ; 
+//				else picnum++;
+				}
+			
+			}
 		}
-		
-		
-		
 	}	
 
 
 }	
-
+	
+						
 /*********************************************************************************************************//**
   * @brief  Configure the system clocks.
   * @retval None
@@ -839,7 +782,7 @@ void NVIC_Configuration(void)
 //  NVIC_SetPriority(SPI0_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 1, 0));
 //	NVIC_SetPriority(USB_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 0, 0));
   NVIC_SetPriority(PDMACH0_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 0, 0));
-	NVIC_SetPriority(ADC_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 0, 0));
+	NVIC_SetPriority(ADC_IRQn, NVIC_EncodePriority(NVIC_PRIORITY_GROUP_4, 1, 0));
   /* Set pending bits at the same time                                                                      */
   NVIC_SetPendingSystemHandler(SYSTEMHANDLER_NMI | SYSTEMHANDLER_PSV | SYSTEMHANDLER_SYSTICK);
 	

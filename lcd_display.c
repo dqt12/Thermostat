@@ -327,9 +327,14 @@ void LCD_DISPLAY_GetNextDisplayInfo(LCD_DISPLAY_Typedef* pDisplay)
   ***********************************************************************************************************/
 void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
 {
-  u32 picsize;
-  u8* pBuf = (u8*)&LCD_Display_PinponBuffer[pDisplay->AltBufferIndex][0];
-	u16 color; 
+#if  (DISPLAY_MODE == EBI8_RGB888)	
+	u32 picsize  = pDisplay->NextDataLength /3;//a Pixel use a 8bit * 3 =24bit ;
+	u8* pBuf = (u8*)&LCD_Display_PinponBuffer[pDisplay->AltBufferIndex][0];
+#elif (DISPLAY_MODE == EBI16_RGB565)	
+	u32 picsize = pDisplay->NextDataLength /2;//a Pixel use a 8bit * 2 =16bit 
+	u16* pBuf = (u16*)&LCD_Display_PinponBuffer[pDisplay->AltBufferIndex][0];
+#endif
+	
   /* Getting the next SPI Flash Address and Length and the next AltBufferIndex */
   LCD_DISPLAY_GetNextDisplayInfo(pDisplay);
 
@@ -350,8 +355,6 @@ void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
   /* Write part of picture to LCD GRAM.
      The action of read SPI Flash via DMA is process at the same time*/
 #if  (DISPLAY_MODE == EBI8_RGB888)
-	
-		picsize = pDisplay->NextDataLength /3;//a Pixel use a 8bit * 3 =24bit 
 		while(picsize--)
 		{
 			LCD_WriteRAM(*pBuf);//write a 8bit RGB data for EBI8
@@ -363,19 +366,12 @@ void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
 		}
 	
 #elif (DISPLAY_MODE == EBI16_RGB565)
-		
-		picsize = pDisplay->NextDataLength /2;//a Pixel use a 8bit * 2 =14bit 
 		while(picsize--)
-		{
-			color = *pBuf;
-			pBuf++;
-			color += (*pBuf)<<8;
-			pBuf++;
-			LCD_WriteRAM(color);
-		}
-		
+		{	
+			LCD_WriteRAM(*pBuf);
+			pBuf++;	
+		}		
 #endif
-  
 }
 
 /*********************************************************************************************************//**

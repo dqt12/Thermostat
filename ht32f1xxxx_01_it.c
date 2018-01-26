@@ -329,15 +329,7 @@ void ADC_IRQHandler(void)
 }
 
 
-//void PDMA_CH0_IRQHandler(void)
-//{
-//  extern vu32 gIsPDMAFinish;
-//  PDMA_ClearFlag(PDMA_CH0, PDMA_FLAG_TC);
-//  gIsPDMAFinish = TRUE;
 
-//}
-//	
-//	
 
 
 

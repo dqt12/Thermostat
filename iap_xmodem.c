@@ -81,9 +81,12 @@ static void xmodem_stop(void);
   * @retval X_CRC_ERROR: CRC error
   * @retval X_VERIFY_ERROR: Compare error
   ***********************************************************************************************************/
-
+//u32 adr;
 u32 xmodem(u8 *bptr, u32 address, u32 mode)
 {
+	//u8 buf[1024*2];
+	//u8 buf1[128];
+	//u8 buf2[128];
   u32 i = 0;
   #if (USING_CRC == 1)
   u16 crcWord;
@@ -93,12 +96,10 @@ u32 xmodem(u8 *bptr, u32 address, u32 mode)
 
   u8 buffer[128];  /* SPI flash data read buffer                                                            */
   u32 *wptr = NULL;
-// 	u8 *wptr;
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Erase first sector when the start address is unaligned                                                 */
   /*--------------------------------------------------------------------------------------------------------*/
-//  if ((address & (SPI_FLASH_SECTOR_SIZE - 1)) != 0x0 && mode == XMODEM_PROGRAM)
 	if ((address & (SPI_FLASH_SECTOR_SIZE - 1)) != 0x0 && mode == XMODEM_PROGRAM)
   {
     SPI_FLASH_SectorErase(address);
@@ -174,14 +175,30 @@ u32 xmodem(u8 *bptr, u32 address, u32 mode)
         #endif
 
         if (mode == XMODEM_PROGRAM)
-        {
-       //   if ((address & (SPI_FLASH_SECTOR_SIZE - 1)) == 0x0)  /* Sector align                              */
+        {   //   address & 1024 * 4       
 				  if ((address & (SPI_FLASH_SECTOR_SIZE - 1)) == 0x0)  /* Sector align                              */
           {
             /*----------------------------------------------------------------------------------------------*/
             /* Erase necessary sector                                                                       */
-            /*----------------------------------------------------------------------------------------------*/
-            SPI_FLASH_SectorErase(address);
+            /*-------------------	---------------------------------------------------------------------------*/
+//            adr = address;
+
+						SPI_FLASH_SectorErase(address);
+//						SPI_FLASH_BufferRead(buf, address, 2048); //0~2K
+//						for (i = 0; i < 2048; i ++)
+//						{
+//							if(buf[i] != 0xFF)	
+//									buf[0] = 0;
+//						}
+//						
+//						SPI_FLASH_BufferRead(buf, address+2048, 2048); //2~4K
+//						for (i = 0; i < 2048; i ++)
+//						{
+//							if(buf[i] != 0xFF)	
+//									buf[0] = 0;
+//						}					
+
+						
           }
         }
 
@@ -208,7 +225,39 @@ u32 xmodem(u8 *bptr, u32 address, u32 mode)
           /*------------------------------------------------------------------------------------------------*/
           /* Start Flash programming                                                                        */
           /*------------------------------------------------------------------------------------------------*/      
-					SPI_FLASH_BufferWrite((u8 *)wptr, address, 128);//
+					
+//					SPI_FLASH_BufferRead(buf1, address, 128); 
+//					for (i = 0; i < 128; i++)
+//					{
+//						if(buf1[i] != 0xFF)	
+//								buf1[0] = i;
+//					}				
+//					
+					SPI_FLASH_BufferWrite((u8 *)wptr, address, 128);
+							
+					
+//					for (i = 0; i < 128; i += 4)
+//          {
+//						*(u32 *)(buf1 + i) = *wptr;
+//    
+//            wptr++;
+//          }	
+//						
+//					SPI_FLASH_BufferRead(buf2, address, 128); 
+//						
+//		
+//						
+//					for (i = 0; i < 128; i += 4)
+//          {
+//						if (*(u32 *)(buf1 + i) != *(u32 *)(buf2 + i))
+//            {
+//									buf2[0] = 1;
+//            }
+//            wptr++;
+//          }
+//						
+//						
+						
           address += 128;
         }
         else

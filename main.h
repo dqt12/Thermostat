@@ -41,9 +41,24 @@
 //USE FOR DEMO
 extern u16 Display_State_Line ;
  void Display_Temp(void);
+ void Display_WIFI(void);
  void LCD_TEST(void);
  void FLASH_TEST(void);
  void Display_State(char *Str);
+ 
+ 
+ //////////////////////////////////////////////////////////////////////////
+extern const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_WIFI;
+extern const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_ADD ;
+extern const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_SUB;
+/////////////////////////////////////////////////////////////////////////
+ 
+ 
+ 
+void DISPLAY_part(LCD_DISPLAY_FrameInfoTypeDef *qq,u8 PicID);
+void DISPLAY_ADD(u8 PicID);
+void DISPLAY_full(u8 PicID);
+void DISPLAY(u8 PicID);
 /* Setting -----------------------------------------------------------------------------------------------*/
    
 /* Exported constants --------------------------------------------------------------------------------------*/
@@ -115,6 +130,7 @@ struct TEMP
 	u16 Now;
 	u16	Set;
 	u16 Time;
+	u16 TimeBuf;
 };
 
 extern struct TEMP Temp;

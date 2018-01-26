@@ -305,7 +305,7 @@ void WIFI_AUTOLINK(void)
 		
 		if(WIFI_REC.STA != CTIME_OUT)
 		{
-			WIFI_CMDSET(NULL,"WIFI GOT IP" ,20);			
+			WIFI_CMDSET(NULL,"WIFI GOT IP" ,30);			
 			CMD_Cont_Trg = CMD_Cont; 
 			CMD_Cont = CAP_STATUE; 
 		}		 	

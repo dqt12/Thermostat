@@ -162,7 +162,7 @@ bool TOUCH_CheckPressed(void)
 {
 #if (USE_TOUCH_PRESS_INT == TOUCH_NOUSE)
     u16 xPhys;
-    u16 yPhys;
+//    u16 yPhys;
     xPhys = TOUCH_X_MeasureX();
 //    yPhys = TOUCH_X_MeasureY();
 
@@ -330,24 +330,62 @@ bool  TOUCH_Calibration(TOUCH_Calibration_TypeDef *pcal)
 
 void _StoreUnstable(u16 *x, u16 *y)
 {
-    static u16 _xLast = 0;
-    static u16 _yLast = 0;	
-		u16  xDiff, yDiff;
+   static u16 _xLast = 0;
+   static u16 _yLast = 0;	
+	 u16  xDiff, yDiff;
 	
 		xDiff = abs (*x - _xLast);
 		yDiff = abs (*y - _yLast);
-	
+
 		if (xDiff + yDiff > 2) 
 		{
-			_xLast = *x;
-			_yLast = *y;
+			{
+				_xLast = *x;
+				_yLast = *y;
+			}
 		}
-	
 		*x = _xLast;
 		*y = _yLast;
 }
 
+bool _FilerUnstable(u16 *x, u16 *y)
+{
+   static u16 _xLast = 0;
+   static u16 _yLast = 0;	
+	 static u16 Diff = 0;
+	 static u16 slamp = 1;	
+	 u16  xDiff, yDiff;
+	
+	if(slamp == 1) //step 1  remmmber frist data 
+	{
+		slamp++;
+		_xLast = *x;
+		_yLast = *y;	
+	}
+	else if(slamp == 2) //step 2  cmp frist data 
+	{
+		slamp = 1;
+		xDiff = abs (*x - _xLast);
+		yDiff = abs (*y - _yLast);
+		Diff = xDiff + yDiff;
+		
+		if (Diff < 100) 
+		{
 
+			return TRUE;
+			
+		}
+		else 
+		{
+			*x = _xLast;
+		  *y = _yLast;		
+			return FALSE;
+		}	
+		
+	}
+	
+	return FALSE;
+}
 
 /*********************************************************************************************************//**
  * @brief TOUCH_SCREEN_INIT 
@@ -356,28 +394,34 @@ void _StoreUnstable(u16 *x, u16 *y)
  ************************************************************************************************************/
 void TOUCH_Logical_Coor_Get(TOUCH_XY_TypeDef *tocuh)
 {
+//	static u8 slamp;
 	tocuh->isPress = TOUCH_CheckPressed();
 
 	if (tocuh->isPress)
-	{             
+	{   
+		
 		 TOUCH_MeasureXY(&tocuh->xPhys, &tocuh->yPhys);
-		/* Convert values into logical values */
-		 tocuh->x = (u16)((Touch_Cal.cal[0] + Touch_Cal.cal[1] * tocuh->xPhys +
-								 Touch_Cal.cal[2] * tocuh->yPhys) / Touch_Cal.scaling );
+		
+//		if(_FilerUnstable(&tocuh->xPhys, &tocuh->yPhys))
+		{
+			/* Convert values into logical values */
+			 tocuh->x = (u16)((Touch_Cal.cal[0] + Touch_Cal.cal[1] * tocuh->xPhys +
+									 Touch_Cal.cal[2] * tocuh->yPhys) / Touch_Cal.scaling );
 
-		 tocuh->y = (u16)((Touch_Cal.cal[3] + Touch_Cal.cal[4] * tocuh->xPhys +
-								 Touch_Cal.cal[5] * tocuh->yPhys) / Touch_Cal.scaling );
+			 tocuh->y = (u16)((Touch_Cal.cal[3] + Touch_Cal.cal[4] * tocuh->xPhys +
+									 Touch_Cal.cal[5] * tocuh->yPhys) / Touch_Cal.scaling );
 
-			if ((tocuh->x  > LCD_XSIZE) || (tocuh->y > LCD_YSIZE))
-			{
-				tocuh->x = LCD_XSIZE;
-				tocuh->y = LCD_YSIZE;
-			}
-			else 
-			{	
-				//Filer shake
-				 _StoreUnstable(&tocuh->x, &tocuh->y);
-			}
+				if ((tocuh->x  > LCD_XSIZE) || (tocuh->y > LCD_YSIZE))
+				{
+					tocuh->x = LCD_XSIZE;
+					tocuh->y = LCD_YSIZE;
+				}
+				else 
+				{	
+					//Filer shake
+					 _StoreUnstable(&tocuh->x, &tocuh->y);
+				}
+		 }
 			
 	}
 		 

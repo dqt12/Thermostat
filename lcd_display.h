@@ -76,10 +76,11 @@ typedef enum
 #define LCD_DISPLAY_MODE_TRANSPARENT_1    1
 #define LCD_DISPLAY_MODE_TRANSPARENT_2    2
 
-#define  EBI8_RGB888 			(0)
-#define  EBI16_RGB565			(1)
+#define  EBI8_RGB888 			(1)
+#define  EBI16_RGB565			(2)
 
-#define  DISPLAY_MODE			EBI16_RGB565
+#define  DISPLAY_MODE			(1)
+
 extern LCD_DISPLAY_FlagTypedef FLAG_IMG;
 extern LCD_DISPLAY_InfoTypedef gLCD_DISPLAY;
 extern LCD_DISPLAY_ImageInfoTypeDef gLCD_Display_ImageInfo;

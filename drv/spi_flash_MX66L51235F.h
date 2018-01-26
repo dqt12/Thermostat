@@ -35,7 +35,7 @@
 #define SPI_FLASH_CMD_RDSR              0x05  /* Read Status Register instruction  */
 #define SPI_FLASH_CMD_RDID              0x9F  /* Read JEDEC ID instruction  */
 #define SPI_FLASH_CMD_REMS              0x90  /* Read electronic manufacturer & device ID instruction  */
-#define SPI_FLASH_CMD_SE                0x21 /* (4KB SE4B replace)Sector Erase instruction (4 byte Addr. Cmd.) */
+#define SPI_FLASH_CMD_SE                0x21//0xDC /* (4KB SE4B replace)Sector Erase instruction (4 byte Addr. Cmd.) */
 #define SPI_FLASH_CMD_BE                0xDC  /* (64KB BE replace)Block Erase instruction (4 byte Addr. Cmd.) */
 #define SPI_FLASH_CMD_CE                0x60  /* Chip Erase instruction */
 
