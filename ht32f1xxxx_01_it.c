@@ -241,7 +241,7 @@ void BFTM0_IRQHandler(void)
 	TIME_SLICE_CHECK(&TimeSlice._10ms,10);
 	TIME_SLICE_CHECK(&TimeSlice._20ms,20);
 	TIME_SLICE_CHECK(&TimeSlice._100ms,100);
-	TIME_SLICE_CHECK(&TimeSlice._500ms,500);
+	TIME_SLICE_CHECK(&TimeSlice._500ms,300);
 	
 
 }

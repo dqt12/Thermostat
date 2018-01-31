@@ -2,7 +2,6 @@
 ".\ht32\12345\obj\main.o"
 ".\ht32\12345\obj\ht32f1xxxx_01_it.o"
 ".\ht32\12345\obj\ui_demo.o"
-".\ht32\12345\obj\demo.o"
 ".\ht32\12345\obj\esp8266.o"
 ".\ht32\12345\obj\queue.o"
 ".\ht32\12345\obj\ht32_usbd_descriptor.o"

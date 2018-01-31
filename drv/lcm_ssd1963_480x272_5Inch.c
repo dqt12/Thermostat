@@ -589,7 +589,7 @@ void LCD_DrawString(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, char *Sp
   ***********************************************************************************************************/
 void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii)
 {
-	u32 temp=0;
+	u32 temp = 0;
 	u16 x, y;
 
 	if(Xpos > HDP || Ypos > VDP)
@@ -598,7 +598,6 @@ void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii)
   LCD_SetDisplayArea(Xpos, Ypos, Height, Width);
 
 	Ascii = Ascii - 32;	//-' ' 得到偏移后的值
-	
 	
 	LCD_WriteRAMPrior();
 	for(y = 0; y < Height; y++)
@@ -609,9 +608,20 @@ void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii)
 			case 12 : temp = ASCII_1206[Ascii][y];break;//调用1206字体
 			case 16	: temp = ASCII_1608[Ascii][y];break;//调用1608字体
 			case 24 : temp = ASCII_2416[Ascii*24+y];break;//调用2416字体
-			default	: temp = ASCII_1206[Ascii][y];break;
+			case 64 : 
+				
+			if(Ascii == 14 ) 
+			{
+				Ascii = 26;  
+			}
+			else 
+				temp = *((u32*)&ASCII_3264[(Ascii -16)*64 + y][0]);	break;//test
+			
+			
+			
+		  default	: temp = 0;;break;
 		}
-
+		
 		for(x = 0; x < Width; x++)
 		{		
 			if(!Mode)//非叠加方式				 
@@ -638,21 +648,36 @@ void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii)
 
 void LCD_ShowTemp(u16 Xpos, u16 Ypos, u8 Mode, u16 Num)
 {
-		u8 size = 16;
-		LCD_DrawChar(Xpos,Ypos,24,16,Mode,(Num/100)+'0');    
-		LCD_DrawChar(Xpos+size,Ypos,24,16,Mode,(Num/10)%10+'0');      							   
-    LCD_DrawChar(Xpos+2*size,Ypos,24,16,Mode,'.'); 
-    LCD_DrawChar(Xpos+3*size,Ypos,24,16,Mode,Num%10+'0'); 
-		LCD_DrawChar(Xpos+4*size,Ypos,24,16,Mode,'C'); 
+		u8 size = 8;
+		u8 font = 16;
+		LCD_DrawChar(Xpos         ,Ypos,font,size,Mode,(Num/100)+'0');    
+		LCD_DrawChar(Xpos+size		,Ypos,font,size,Mode,(Num/10)%10+'0');      							   
+    LCD_DrawChar(Xpos+2*size	,Ypos,font,size,Mode,'.'); 
+    LCD_DrawChar(Xpos+3*size	,Ypos,font,size,Mode,Num%10+'0'); 
+	//	LCD_DrawChar(Xpos+4*size,Ypos,font,size,Mode,'C'); 
 }
 
-void LCD_ShowNum(u16 Xpos, u16 Ypos,u8 Font_Size,u8 Mode, u16 Num)
+void LCD_ShowNum(u16 Xpos, u16 Ypos,u16 Height, u16 Width,u8 Mode, u16 Num)
 {
-		LCD_DrawChar(Xpos,Ypos,Font_Size,Font_Size/2,Mode,(Num/1000)+'0');    
-		LCD_DrawChar(Xpos+Font_Size/2,Ypos,Font_Size,Font_Size/2,Mode,(Num/100)%10+'0');      							   
-    LCD_DrawChar(Xpos+Font_Size,Ypos,Font_Size,Font_Size/2,Mode,(Num/10)%10+'0'); 
-    LCD_DrawChar(Xpos+Font_Size*3/2,Ypos,Font_Size,Font_Size/2,Mode,Num%10+'0'); 
+		LCD_DrawChar(Xpos							,Ypos,Height,Width,Mode,(Num/1000)+'0');    
+		LCD_DrawChar(Xpos+Height/2		,Ypos,Height,Width,Mode,(Num/100)%10+'0');      							   
+    LCD_DrawChar(Xpos+Height			,Ypos,Height,Width,Mode,(Num/10)%10+'0'); 
+    LCD_DrawChar(Xpos+Height*3/2	,Ypos,Height,Width,Mode,Num%10+'0'); 
 }
+
+void LCD_ShowNumPoint(u16 Xpos, u16 Ypos, u16 Height, u16 Width,u8 Mode, u16 Num)
+{
+		LCD_DrawChar(Xpos							,Ypos,Height,Width,Mode,(Num/100)%10+'0');  
+    LCD_DrawChar(Xpos+Height/2		,Ypos,Height,Width,Mode,(Num/10)%10+'0'); 
+		LCD_DrawChar(Xpos+Height			,Ypos,Height,Width,Mode,'.'); 
+    LCD_DrawChar(Xpos+Height*3/2	,Ypos,Height,Width,Mode,Num%10+'0'); 
+}
+
+/*********************************************************************************************************//**
+  * @brief  Display a Big Size character.
+  * @param  u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii
+  * @retval None
+  ***********************************************************************************************************/
 
 /*********************************************************************************************************//**
   * @brief  LCD_StringDisplay.

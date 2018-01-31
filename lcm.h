@@ -216,7 +216,8 @@ void LCD_DrawChar(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, u8 Ascii);
 void LCD_DrawString(u16 Xpos, u16 Ypos, u16 Height, u16 Width, u8 Mode, char *Sptr);//OK
 
 void LCD_ShowTemp(u16 Xpos, u16 Ypos, u8 Mode, u16 Num);//OK
-void LCD_ShowNum(u16 Xpos, u16 Ypos,u8 Font_Size,u8 Mode, u16 Num);//OK
+void LCD_ShowNum(u16 Xpos, u16 Ypos,u16 Height, u16 Width,u8 Mode, u16 Num);//OK
+void LCD_ShowNumPoint(u16 Xpos, u16 Ypos, u16 Height, u16 Width,u8 Mode, u16 Num);//OK
 
 void LCD_StringDisplay(char *Sptr);
 void LCD_IData_ALL(u16 Xpos, u16 Ypos, u16 XposEnd, u16 YposEnd, u16 Height, u16 Width, u8 Mode);

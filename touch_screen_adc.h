@@ -59,6 +59,12 @@ u16 ADC_Filer(u16 *data,u8 num);
 bool ADC_TS_READ_INT(void);	
 u16 ADC_TS_READ_X(void);
 u16 ADC_TS_READ_Y(void);
+
+
+
+
+
+
 #ifdef __cplusplus
 }
 #endif

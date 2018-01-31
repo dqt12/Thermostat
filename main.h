@@ -40,25 +40,48 @@
 	 
 //USE FOR DEMO
 extern u16 Display_State_Line ;
- void Display_Temp(void);
- void Display_WIFI(void);
- void LCD_TEST(void);
- void FLASH_TEST(void);
- void Display_State(char *Str);
+void Display_Temp(void);
+void Display_WIFI(void);
+void LCD_TEST(void);
+void FLASH_TEST(void);
+void Display_State(char *Str);
  
  
  //////////////////////////////////////////////////////////////////////////
-extern const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_WIFI;
-extern const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_ADD ;
-extern const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_SUB;
-/////////////////////////////////////////////////////////////////////////
+
+typedef struct
+{
+	u8 Now_sta;
+	u8 Set_sta;
+}UI_Sta_TypeDef;
+
  
- 
- 
+ typedef struct
+{
+	bool updata;
+	UI_Sta_TypeDef wifi;
+	UI_Sta_TypeDef page;
+	bool time_updata;
+	bool date_updata;
+	UI_Sta_TypeDef tmpset;
+	UI_Sta_TypeDef tmpsub;
+	UI_Sta_TypeDef tmpadd;
+	bool tempset_updata;
+	bool tempnow_updata;
+	
+}UI_DEMO_TypeDef;
+
+extern UI_DEMO_TypeDef gUI_DataBase;
+
+void DUI_DEMO_INIT(void);
+void DUI_TS_Scan(void);
+void DUI_DISPLAY(void);
+
 void DISPLAY_part(LCD_DISPLAY_FrameInfoTypeDef *qq,u8 PicID);
 void DISPLAY_ADD(u8 PicID);
 void DISPLAY_full(u8 PicID);
-void DISPLAY(u8 PicID);
+ //////////////////////////////////////////////////////////////////////////
+
 /* Setting -----------------------------------------------------------------------------------------------*/
    
 /* Exported constants --------------------------------------------------------------------------------------*/
@@ -67,51 +90,6 @@ extern u8 Thermostat_DATA[12];
 
 /* Exported types ------------------------------------------------------------------------------------------*/
 
-typedef struct 
-{
-  u16 FilterBuffer[18];
-  u8 FilterWriteIndex;
-  u8 FilterReadIndex;
-  u16 DebounceCount;
-  u16 DebounceTime;
-  u16 PreviousTemperture;
-  s16 Temperture;
-  s16 TempertureCompensation;
-  u16 TempertureCompensationTimebaseDivider;
-  vu16 TempertureCompensationTimebaseCount;
-  u16 SetTemperture;
-  u32 SetTempertureTimeoutCount;
-  u16 RangeHigh;
-  u16 RangeLow;  
-  volatile bool IsTempertureChange;
-  volatile bool IsSettingTemperture;
-} TEMPERTURE_TypeDef;
-
-#define UI_STATUS_DEMO1   0
-#define UI_STATUS_DEMO2   1
-
-#define UI_DEMO_STATUS_INIT       0
-#define UI_DEMO_STATUS_PROCESS    1
-
-typedef struct 
-{
-  u8 MachineStatus;
-  u8 Demo1_Status;
-  u8 Demo2_Status;
-  u8 Demo1_ShowPicID;
-	
-	u16 num;
-	u16 num1;
-	char MVC[3];
-	
-  volatile bool IsDemo1Update;
-  volatile bool IsDemo2Update;
-	
-  vu32 Demo1_AutoChangeCounter;
-
-} UI_T;
-
-extern UI_T gUI;
 //typedef struct
 //{
 //  u16 Kold;
@@ -120,10 +98,10 @@ extern UI_T gUI;
 //extern KeyCmd_TypeDef KeyCmd;
 //---------------------------------------------------------------------
 
-struct TEMP
+typedef struct TEMP
 {
 	bool 	En;
-	bool 	CorEn;
+	bool  CorEn;
 	bool 	SetEn;
 	bool 	SubEn;
 	bool 	AddEn;
@@ -131,9 +109,9 @@ struct TEMP
 	u16	Set;
 	u16 Time;
 	u16 TimeBuf;
-};
+}TEMP_TypeDef;
 
-extern struct TEMP Temp;
+extern TEMP_TypeDef Temp;
 
 typedef struct 
 {
@@ -141,35 +119,19 @@ typedef struct
 	u16 cnt;
 }Time_Slice_TypeDef;
 
-struct TIME_SLICE
+typedef struct 
 {
 	Time_Slice_TypeDef _10ms;
 	Time_Slice_TypeDef _20ms;
 	Time_Slice_TypeDef _100ms;
 	Time_Slice_TypeDef _500ms;
 	Time_Slice_TypeDef _1s;
-};
+}TIME_SLICE_TypeDef;
 
-extern struct TIME_SLICE TimeSlice;
+extern TIME_SLICE_TypeDef TimeSlice;
+
 extern u8 KEY_STATE;
 extern vu16 ADC_DATA[3];
-
-/* Exported variables --------------------------------------------------------------------------------------*/
-
-
-/* Exported macro ------------------------------------------------------------------------------------------*/
-
-//#define KEY1_STATE_READ()             IN_BB(GPIOD_ID, 1)//D
-//#define KEY2_STATE_READ()             IN_BB(GPIOD_ID, 2)//D
-
-/* Exported functions --------------------------------------------------------------------------------------*/
-//void TempertureInit(void);
-//void TempertureHandler(u16 adr);
-//void TouchKeyHandler(void);
-//void Demo_part(LCD_DISPLAY_FrameInfoTypeDef* qq);
-//void Demo_full(void);
-//void Demo0(void);
-//void Demo1(void);
 
 
 #ifdef __cplusplus

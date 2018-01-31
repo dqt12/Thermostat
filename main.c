@@ -43,61 +43,10 @@ const u16 NTC_10K_MAP[]={
 u8 Thermostat_DATA[12]={'E','0','S','2','6','0','N','2','6','0','\r','\n'};
 
 
-struct TIME_SLICE TimeSlice;
-struct TEMP Temp;
-
-typedef struct
-{
-	u16 xBg;
-	u16 yBg;
-	u16 xEn;
-	u16 yEn;
-	bool ispress;
-}Touch_Screen_Rect_TypeDef;
-
-
-Touch_Screen_Rect_TypeDef Button;
-Touch_Screen_Rect_TypeDef ButtonADD;
-Touch_Screen_Rect_TypeDef ButtonSUB;
-
-Touch_Screen_Rect_TypeDef TS_SET_RECT(u16 xBg,u16 yBg,u16 xEn,u16 yEn)
-{
-	Touch_Screen_Rect_TypeDef p;
-	p.xBg = xBg;
-	p.xEn = xEn;
-	p.yBg = yBg;
-	p.yEn = yEn;
-	p.ispress = FALSE;	
-	
-//	LCD_DrawRect(xBg,yBg,yEn-yBg,xEn-xBg,Red);
-	
-	return p;
-	
-}
-
-bool TS_Scan_RECT(Touch_Screen_Rect_TypeDef *p,TOUCH_XY_TypeDef *pt)
-{
-	if(pt->isPress == TRUE)
-	{
-		if((pt->x > p->xBg) && (pt->x < p->xEn )) 
-		{	
-			if((pt->y > p->yBg) &&(pt->y < p->yEn))
-			{
-				
-				p->ispress = TRUE;
-				return (TRUE);
-			}
-		}
-	}
-	p->ispress = FALSE;
-	return (FALSE);
-}
-
+TIME_SLICE_TypeDef TimeSlice;
+TEMP_TypeDef Temp;
 
 vu16 ADC_DATA[3];
-
-
-
 
 
 u16 TEMP_LIMIT(u16 data)
@@ -113,7 +62,6 @@ u16 TEMP_LIMIT(u16 data)
 
 void TEMP_SET_CONTRONL(void)
 {
-
 	if(Temp.SetEn) 
 	{
 		if(Temp.AddEn)
@@ -122,6 +70,9 @@ void TEMP_SET_CONTRONL(void)
 			
 			Temp.Set += 5;
 			Temp.Set = TEMP_LIMIT(Temp.Set);
+			
+			gUI_DataBase.tempset_updata = TRUE;
+			gUI_DataBase.updata = TRUE;
 		}
 		
 		if(Temp.SubEn)
@@ -129,6 +80,9 @@ void TEMP_SET_CONTRONL(void)
 			Temp.SubEn = FALSE;
 			Temp.Set -= 5;
 			Temp.Set = TEMP_LIMIT(Temp.Set);
+			
+			gUI_DataBase.tempset_updata = TRUE;
+			gUI_DataBase.updata = TRUE;
 		}
 	}
 	else 
@@ -137,15 +91,31 @@ void TEMP_SET_CONTRONL(void)
 		Temp.AddEn = FALSE;
 	}
 
-		if(Temp.CorEn == TRUE)
-		{
-			Temp.CorEn = FALSE;
-			
-			if(Temp.SetEn == TRUE)
-				Temp.SetEn = FALSE;
-			else 
-				Temp.SetEn = TRUE;
-		}
+	if(TOUCH_CheckPressed() == FALSE)
+	{
+			if(Temp.CorEn == TRUE)
+			{
+				Temp.CorEn = FALSE;
+				
+				if(Temp.SetEn == TRUE)
+				{
+					Temp.SetEn = FALSE;
+					
+					gUI_DataBase.tmpset.Set_sta = 0; // 0:normal ,1:Set
+					gUI_DataBase.updata = TRUE;
+				}
+				else 
+				{
+					Temp.SetEn = TRUE;
+					
+					
+					gUI_DataBase.tmpset.Set_sta = 1; // 0:normal ,1:Set
+					gUI_DataBase.updata = TRUE;
+				}
+
+			}
+	}
+
 }
 
 
@@ -184,7 +154,7 @@ void KEY_Scan(void)
 			
 			case 0x08 :
 			{
-				Display_State_Line = 0;
+//				Display_State_Line = 0;
 //				Demo_full();	
 				CMD_Cont = L_REST;
 				CMD_Cont_Trg = L_REST;
@@ -200,44 +170,44 @@ void KEY_Scan(void)
 
 
 
-void TS_Scan(void)
-{
-	TOUCH_Logical_Coor_Get(&Tocuh);
-		
-	if(TS_Scan_RECT(&Button,&Tocuh))
-	{
-		if(TOUCH_CheckPressed() == TRUE) 
-		{
-	//		Temp.Time++;
-			Temp.CorEn = TRUE;
-		}
+//void TS_Scan(void)
+//{
+//	TOUCH_Logical_Coor_Get(&Tocuh);
+//		
+//	if(TS_Scan_RECT(&Button,&Tocuh))
+//	{
+//		if(TOUCH_CheckPressed() == TRUE) 
+//		{
+//	//		Temp.Time++;
+//			Temp.CorEn = TRUE;
+//		}
 
-	}		
-	
-	if(Temp.SetEn == TRUE)
-	{
-		if(TS_Scan_RECT(&ButtonADD,&Tocuh))
-		{
-			if(TOUCH_CheckPressed() == TRUE)
-			{
-			//	Temp.Time++;
-				Temp.AddEn = TRUE;
-			}
-		}
-		
-		if(TS_Scan_RECT(&ButtonSUB,&Tocuh))
-		{
-			if(TOUCH_CheckPressed() == TRUE)
-			{
-				//Temp.Time++;
-				Temp.SubEn = TRUE;
-			
-			}
-		}
-	
-	}
+//	}		
+//	
+//	if(Temp.SetEn == TRUE)
+//	{
+//		if(TS_Scan_RECT(&ButtonADD,&Tocuh))
+//		{
+//			if(TOUCH_CheckPressed() == TRUE)
+//			{
+//			//	Temp.Time++;
+//				Temp.AddEn = TRUE;
+//			}
+//		}
+//		
+//		if(TS_Scan_RECT(&ButtonSUB,&Tocuh))
+//		{
+//			if(TOUCH_CheckPressed() == TRUE)
+//			{
+//				//Temp.Time++;
+//				Temp.SubEn = TRUE;
+//			
+//			}
+//		}
+//	
+//	}
 
-}
+//}
 
 
 u16 ADC_to_TEMP(u16 NTC_adc)
@@ -306,7 +276,7 @@ void WIFI_DATA_UPDATA(void)
 
 
 
-u8 picnum ;
+
 /*********************************************************************************************************//**
   * @brief  Main program.
   * @retval None
@@ -341,24 +311,23 @@ int main(void)
 	}	
 	
 	KEY_Configuration();
-	//ADC_Configuration();
+	ADC_Configuration();
 
-//	TOUCH_SCREEN_INIT(DISABLE);
+	TOUCH_SCREEN_INIT(DISABLE);
 //		TOUCH_SCREEN_INIT(ENABLE);
 	
 	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
 
-	
 	DISPLAY_full(17);	
-
+	DUI_DEMO_INIT();
 
 	
 //	LCD_DrawFillRect(279,0,271,200,White);
 //	WIFI_INIT();
 
-	Button = TS_SET_RECT(100,0,200,50);
-	ButtonADD = TS_SET_RECT(100,60,150,90);
-	ButtonSUB = TS_SET_RECT(160,60,210,90);
+//	Button = TS_SET_RECT(100,0,200,50);
+//	ButtonADD = TS_SET_RECT(100,60,150,90);
+//	ButtonSUB = TS_SET_RECT(160,60,210,90);
 	
 	KEY_STATE = 0;
 	Temp.En = FALSE;
@@ -374,11 +343,7 @@ int main(void)
 		{
 			TimeSlice._10ms.flag = FALSE;
 			//WIFI_CAP();
-//				if(picnum > 140)
-//							picnum = 0 ; 
-//				else picnum++;
-//				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,picnum);
-//				DISPLAY_full(picnum);
+
 		
 		}		 
 
@@ -389,7 +354,7 @@ int main(void)
 			TimeSlice._20ms.flag = FALSE;
 			KEY_Scan();
 			
-//			TOUCH_Logical_Coor_Get(&Tocuh);
+			TOUCH_Logical_Coor_Get(&Tocuh);
 			
 			if(Tocuh.isPress == TRUE)
 			{
@@ -404,7 +369,7 @@ int main(void)
 			
 			Temp.Now = ADC_to_TEMP(ADC_DATA[0]);
 			
-			//TS_Scan();
+			DUI_TS_Scan();
 			
 			
 		
@@ -416,23 +381,11 @@ int main(void)
 		{
 			TimeSlice._500ms.flag = FALSE;
 			
-		//	DISPLAY(4);
-			Temp.Time++;
-//				if(Temp.Time%2 == 0)
-//					LCD_Clear(Black);
-//				else
-//				{
-//					DISPLAY_full(picnum);
-//				//DISPLAY_full(picnum+10);	
-//				//DISPLAY_ADD(picnum);
-//				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,picnum);
-//				//DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,picnum+4);
-//				if(picnum >= 1)
-//							picnum = 0 ; 
-//				else picnum++;			
-//			}
+			TEMP_SET_CONTRONL();
 			
-			//TEMP_SET_CONTRONL();
+			
+			DUI_DISPLAY();
+		
 			//Display_Temp();
 			
 			//WIFI_Control();
@@ -443,23 +396,13 @@ int main(void)
 		if(TimeSlice._1s.flag )
 		{
 			TimeSlice._1s.flag = FALSE;
+			Temp.Time++;
 			
+						
+			gUI_DataBase.time_updata = TRUE;
+			gUI_DataBase.tempnow_updata = TRUE;
+			gUI_DataBase.updata = TRUE;
 			
-			if(Temp.Time )//> 3Temp.TimeBuf + 
-			{
-				Temp.TimeBuf = Temp.Time;
-
-				
-//				if(picnum < 5)
-//					picnum = 5;
-//				DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,picnum);
-//				DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,picnum+4);
-//				if(picnum >= 7)
-//							picnum = 0 ; 
-//				else picnum++;
-		
-			
-			}
 		}
 	}	
 
