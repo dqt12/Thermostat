@@ -116,7 +116,6 @@ typedef struct
 {
 	u8 PicID[3];
 	Touch_Screen_Rect_TypeDef Button;  
-	const LCD_DISPLAY_FrameInfoTypeDef *PicInfo;
 }	UI_TypeDef;
 
 
@@ -173,38 +172,33 @@ void DUI_DEMO_INIT(void)
 {
 	
 	UI_PAGE1.PicID[0] = 17;
-	UI_PAGE1.PicInfo = &FrameInfo_Full;
   TS_SET_RECT(&UI_PAGE1.Button,97,206,43,50);	
 	
 	UI_PAGE2.PicID[0] = 18;
-	UI_PAGE2.PicInfo = &FrameInfo_Full;
   TS_SET_RECT(&UI_PAGE2.Button,217,206,43,50);	
 	
 	UI_PAGE3.PicID[0] = 19;
-	UI_PAGE3.PicInfo = &FrameInfo_Full;
   TS_SET_RECT(&UI_PAGE3.Button,338,206,43,50);	
 	
 	UI_TEMPSET.PicID[0] = 5;
 	UI_TEMPSET.PicID[1] = 6;
-	UI_TEMPSET.PicInfo = &FrameInfo_TEMPSET;
 	TS_SET_RECT(&UI_TEMPSET.Button,154,86,76,145);
 	
 	UI_TEMPADD.PicID[0] = 7;
 	UI_TEMPADD.PicID[1] = 8;
 	UI_TEMPADD.PicID[2] = 9;
-	UI_TEMPADD.PicInfo = &FrameInfo_ADD;	
 	TS_SET_RECT(&UI_TEMPADD.Button,79,86,42,42);
 	
 		
 	UI_TEMPSUB.PicID[0] = 11;
 	UI_TEMPSUB.PicID[1] = 12;
 	UI_TEMPSUB.PicID[2] = 13;
-	UI_TEMPSUB.PicInfo = &FrameInfo_SUB;	
 	TS_SET_RECT(&UI_TEMPSUB.Button,359,86,41,46);
 
-
-		gUI_DataBase.page.Set_sta= 1;
-		gUI_DataBase.updata = TRUE;
+	
+	gUI_DataBase.page.Set_sta = 1;
+	gUI_DataBase.wifi.Set_sta = FALSE;
+	gUI_DataBase.updata = TRUE;
 }
 
 
@@ -251,7 +245,6 @@ if(gUI_DataBase.page.Now_sta == 1)
 	}
 
 ///////////////////////////////////////////////////////////////////////////	
-	
 	if(TS_Scan_RECT(&UI_TEMPSET.Button,&Tocuh))
 	{
 			
@@ -269,8 +262,7 @@ void DISPALY_WIFI(void);
 
 void DUI_DISPLAY(void)
 {
-	
-	
+
 	if(!gUI_DataBase.updata )
 			return;
 	
@@ -302,8 +294,8 @@ void DUI_DISPLAY(void)
 				LCD_TextColorSet(White);
 				DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_TEMP,10);
 				LCD_ShowNumPoint(170,86,64,32,1,Temp.Set);
-				
 				gUI_DataBase.tempset_updata = FALSE;
+				
 			}
 			
 			if(gUI_DataBase.tempnow_updata == TRUE)	
@@ -327,15 +319,16 @@ void DUI_DISPLAY(void)
 					Temp.SetEn = TRUE;
 					gUI_DataBase.tmpadd.Now_sta = gUI_DataBase.tmpadd.Set_sta = 1;
 					gUI_DataBase.tmpsub.Now_sta = gUI_DataBase.tmpsub.Set_sta = 1;
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPSET.PicInfo,UI_TEMPSET.PicID[1]);
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPADD.PicInfo,UI_TEMPADD.PicID[1]);
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPSUB.PicInfo,UI_TEMPSUB.PicID[1]);
+					
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_TEMPSET,UI_TEMPSET.PicID[1]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,UI_TEMPADD.PicID[1]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,UI_TEMPSUB.PicID[1]);
 				}
 				else //NORMAL
 				{
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPSET.PicInfo,UI_TEMPSET.PicID[0]);
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPADD.PicInfo,UI_TEMPADD.PicID[0]);
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPSUB.PicInfo,UI_TEMPSUB.PicID[0]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_TEMPSET,UI_TEMPSET.PicID[0]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,UI_TEMPADD.PicID[0]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,UI_TEMPSUB.PicID[0]);
 				
 				}
 				gUI_DataBase.tmpset.Now_sta = gUI_DataBase.tmpset.Set_sta;
@@ -348,13 +341,13 @@ void DUI_DISPLAY(void)
 				{
 					//add tempset
 					Temp.AddEn = TRUE;
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPADD.PicInfo,UI_TEMPADD.PicID[2]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,UI_TEMPADD.PicID[2]);
 					gUI_DataBase.tmpadd.Now_sta = gUI_DataBase.tmpadd.Set_sta;
 				}
 				else 
 				{
 					gUI_DataBase.tmpadd.Now_sta = gUI_DataBase.tmpadd.Set_sta = 1;
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPADD.PicInfo,UI_TEMPADD.PicID[1]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,UI_TEMPADD.PicID[1]);
 				}
 				
 				//sub temp set 
@@ -362,20 +355,15 @@ void DUI_DISPLAY(void)
 				{
 					//sub tempset
 					Temp.SubEn = TRUE;
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPSUB.PicInfo,UI_TEMPSUB.PicID[2]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,UI_TEMPSUB.PicID[2]);
 					gUI_DataBase.tmpsub.Now_sta = gUI_DataBase.tmpsub.Set_sta;
 				}
 				else 
 				{
 					gUI_DataBase.tmpsub.Now_sta = gUI_DataBase.tmpsub.Set_sta = 1;
-					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)UI_TEMPSUB.PicInfo,UI_TEMPSUB.PicID[1]);
+					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,UI_TEMPSUB.PicID[1]);
 				}
-				
-				
-			
-			
 			}
-		
 		
 		}
 		
@@ -389,9 +377,7 @@ void DUI_DISPLAY(void)
 			
 		}
 
-	
 
-		
 	if(gUI_DataBase.time_updata == TRUE)
 	{	
 		LCD_TextColorSet(White);
@@ -408,9 +394,7 @@ void DUI_DISPLAY(void)
 		gUI_DataBase.date_updata = FALSE;
 	}
 	
-	
-		
-	if(FLAG_WIFI.APLINK == TRUE)
+	if(gUI_DataBase.wifi_updata == TRUE)
 	{
 		DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_WIFI,3);
 	}
@@ -419,9 +403,9 @@ void DUI_DISPLAY(void)
 		DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_WIFI,4);
 	}
 	
-	
-	
 	gUI_DataBase.updata = FALSE;
+	
+	
 }
 
 

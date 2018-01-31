@@ -276,10 +276,9 @@ int main(void)
 	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
 
 
-//	DISPLAY_full(17);	
+	//DISPLAY_full(16);	
 
 	DUI_DEMO_INIT();
-
 
 	WIFI_INIT();
 
@@ -350,7 +349,17 @@ int main(void)
 			TimeSlice._1s.flag = FALSE;
 			Temp.Time++;
 			
-						
+			if(FLAG_WIFI.APLINK == TRUE)			
+			{
+				gUI_DataBase.wifi_updata = TRUE;
+			//	gUI_DataBase.wifi.Set_sta = 2;
+			}
+			else 
+			{
+				gUI_DataBase.wifi_updata = FALSE;
+			//	gUI_DataBase.wifi.Set_sta = 1;
+			}
+			
 			gUI_DataBase.time_updata = TRUE;
 			gUI_DataBase.tempnow_updata = TRUE;
 			gUI_DataBase.updata = TRUE;

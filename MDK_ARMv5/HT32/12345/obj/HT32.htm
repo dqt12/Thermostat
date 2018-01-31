@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\HT32\12345\obj\HT32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\HT32\12345\obj\HT32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Jan 31 10:45:47 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Jan 31 13:18:10 2018
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -662,15 +662,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DUI_DISPLAY
 </UL>
 
-<P><STRONG><a name="[89]"></a>DUI_DEMO_INIT</STRONG> (Thumb, 220 bytes, Stack size 16 bytes, ui_demo.o(i.DUI_DEMO_INIT))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = DUI_DEMO_INIT &rArr; TS_SET_RECT
+<P><STRONG><a name="[89]"></a>DUI_DEMO_INIT</STRONG> (Thumb, 190 bytes, Stack size 12 bytes, ui_demo.o(i.DUI_DEMO_INIT))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = DUI_DEMO_INIT &rArr; TS_SET_RECT
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TS_SET_RECT
 </UL>
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[8b]"></a>DUI_DISPLAY</STRONG> (Thumb, 524 bytes, Stack size 40 bytes, ui_demo.o(i.DUI_DISPLAY))
+<P><STRONG><a name="[8b]"></a>DUI_DISPLAY</STRONG> (Thumb, 526 bytes, Stack size 40 bytes, ui_demo.o(i.DUI_DISPLAY))
 <BR><BR>[Stack]<UL><LI>Max Depth = 172<LI>Call Chain = DUI_DISPLAY &rArr; DISPALY_WIFI &rArr; LCD_DrawString &rArr; LCD_DrawChar &rArr; LCD_SetDisplayArea
 </UL>
 <BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_TextColorSet
@@ -2247,7 +2247,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TOUCH_Calibration
 </UL>
 
-<P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 316 bytes, Stack size 16 bytes, main.o(i.main))
+<P><STRONG><a name="[49]"></a>main</STRONG> (Thumb, 342 bytes, Stack size 16 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 408<LI>Call Chain = main &rArr; IAP_Handler &rArr; IAP_Download &rArr; xmodem &rArr; SPI_FLASH_BufferWrite &rArr; SPI_FLASH_PageWrite &rArr; SPI_FLASH_WriteEnable &rArr; SPI_FLASH_SendByte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIFI_INIT

@@ -61,13 +61,17 @@ typedef struct
 	bool updata;
 	UI_Sta_TypeDef wifi;
 	UI_Sta_TypeDef page;
-	bool time_updata;
-	bool date_updata;
+
 	UI_Sta_TypeDef tmpset;
 	UI_Sta_TypeDef tmpsub;
 	UI_Sta_TypeDef tmpadd;
+	bool wifi_updata;
 	bool tempset_updata;
 	bool tempnow_updata;
+	bool time_updata;
+	bool date_updata;	
+	
+	
 	
 }UI_DEMO_TypeDef;
 
