@@ -9,13 +9,6 @@ const LCD_DISPLAY_PositionTypeDef PositionTable_Full[] = {
 const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_Full = {
   1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_Full
 };
-///////////////////////////////////////////////////////////////////
-const LCD_DISPLAY_PositionTypeDef PositionTable_pp[] = {
-  {0,190}
-};
-const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_pp = {
-  1, (LCD_DISPLAY_PositionTypeDef*)PositionTable_pp
-};
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -102,26 +95,17 @@ const LCD_DISPLAY_FrameInfoTypeDef FrameInfo_TIME = {
 
 
 
-typedef struct
-{
-	u16 xBg;
-	u16 yBg;
-	u16 xEn;
-	u16 yEn;
-	bool ispress;
-}Touch_Screen_Rect_TypeDef;
+UI_PLUG_TypeDef UI_PAGE1;
+UI_PLUG_TypeDef UI_PAGE2;
+UI_PLUG_TypeDef UI_PAGE3;
+UI_PLUG_TypeDef UI_TEMPSET;
+UI_PLUG_TypeDef UI_TEMPADD;
+UI_PLUG_TypeDef UI_TEMPSUB;
 
 
-typedef struct 
-{
-	u8 PicID[3];
-	Touch_Screen_Rect_TypeDef Button;  
-}	UI_TypeDef;
+UI_DEMO_TypeDef DUI_DataBase;
 
-
-
-UI_DEMO_TypeDef gUI_DataBase;
-
+void DISPALY_WIFI(void);
 
 void TS_SET_RECT(Touch_Screen_Rect_TypeDef *p,u16 XBg,u16 YBg ,u16 Height, u16 Width)
 {
@@ -155,18 +139,11 @@ bool TS_Scan_RECT(Touch_Screen_Rect_TypeDef *p,TOUCH_XY_TypeDef *pt)
 	}
 	p->ispress = FALSE;
 	
-	
 	return (FALSE);
 }
 
 
 
-UI_TypeDef UI_PAGE1;
-UI_TypeDef UI_PAGE2;
-UI_TypeDef UI_PAGE3;
-UI_TypeDef UI_TEMPSET;
-UI_TypeDef UI_TEMPADD;
-UI_TypeDef UI_TEMPSUB;
 
 void DUI_DEMO_INIT(void)
 {
@@ -196,9 +173,9 @@ void DUI_DEMO_INIT(void)
 	TS_SET_RECT(&UI_TEMPSUB.Button,359,86,41,46);
 
 	
-	gUI_DataBase.page.Set_sta = 1;
-	gUI_DataBase.wifi.Set_sta = FALSE;
-	gUI_DataBase.updata = TRUE;
+	DUI_DataBase.page.Set_sta = 1;
+	DUI_DataBase.wifi.Set_sta = FALSE;
+	DUI_DataBase.updata = TRUE;
 }
 
 
@@ -208,97 +185,94 @@ void DUI_TS_Scan(void)
 /////////////////////////////////////////////////////		
 	if(TS_Scan_RECT(&UI_PAGE1.Button,&Tocuh))
 	{
-		gUI_DataBase.page.Set_sta= 1;
-		gUI_DataBase.updata = TRUE;
+		DUI_DataBase.page.Set_sta= 1;
+		DUI_DataBase.updata = TRUE;
 	}		
 	
 	if(TS_Scan_RECT(&UI_PAGE2.Button,&Tocuh))
 	{
-		gUI_DataBase.page.Set_sta = 2;
-		gUI_DataBase.updata = TRUE;
+		DUI_DataBase.page.Set_sta = 2;
+		DUI_DataBase.updata = TRUE;
 	}
 	
 	if(TS_Scan_RECT(&UI_PAGE3.Button,&Tocuh))
 	{	
-			gUI_DataBase.page.Set_sta = 3;
-			gUI_DataBase.updata = TRUE;
+			DUI_DataBase.page.Set_sta = 3;
+			DUI_DataBase.updata = TRUE;
 	}
 	
-///////////////////////////////////////////////////////////////////////////		
-	
-if(gUI_DataBase.page.Now_sta == 1)
-{
-	if(gUI_DataBase.tmpset.Now_sta == 1)
-	{
-		if(TS_Scan_RECT(&UI_TEMPADD.Button,&Tocuh))
-		{
-				gUI_DataBase.tmpadd.Set_sta = 2;
-				gUI_DataBase.updata = TRUE;
-		}
+	///////////////////////////////////////////////////////////////////////////		
 		
-		
-		if(TS_Scan_RECT(&UI_TEMPSUB.Button,&Tocuh))
-		{
-				gUI_DataBase.tmpsub.Set_sta = 2;
-				gUI_DataBase.updata = TRUE;
-		}
-	}
-
-///////////////////////////////////////////////////////////////////////////	
-	if(TS_Scan_RECT(&UI_TEMPSET.Button,&Tocuh))
+	if(DUI_DataBase.page.Now_sta == 1) //page1 use to set temp
 	{
+		if(DUI_DataBase.tmpset.Now_sta == 1)
+		{
+			if(TS_Scan_RECT(&UI_TEMPADD.Button,&Tocuh))
+			{
+					DUI_DataBase.tmpadd.Set_sta = 2;
+					DUI_DataBase.updata = TRUE;
+			}
 			
-		Temp.CorEn = TRUE;
-	
+			
+			if(TS_Scan_RECT(&UI_TEMPSUB.Button,&Tocuh))
+			{
+					DUI_DataBase.tmpsub.Set_sta = 2;
+					DUI_DataBase.updata = TRUE;
+			}
+		}
+
+		if(TS_Scan_RECT(&UI_TEMPSET.Button,&Tocuh))
+		{
+			Temp.CorEn = TRUE;
+		}
+		
 	}
-}
-/////////////////////////////////////////////////////////////////////////////////	
+	/////////////////////////////////////////////////////////////////////////////////	
 	
-	
-	
+
 }
 
-void DISPALY_WIFI(void);
+
 
 void DUI_DISPLAY(void)
 {
 
-	if(!gUI_DataBase.updata )
+	if(!DUI_DataBase.updata )
 			return;
 	
 	
-		if(gUI_DataBase.page.Now_sta != gUI_DataBase.page.Set_sta)
+		if(DUI_DataBase.page.Now_sta != DUI_DataBase.page.Set_sta)
 		{
-			switch(gUI_DataBase.page.Set_sta)
+			switch(DUI_DataBase.page.Set_sta)
 			{
 				case 1 :
 					
 				DISPLAY_full(UI_PAGE1.PicID[0]);				
-				gUI_DataBase.tempset_updata = TRUE;
-				gUI_DataBase.tempnow_updata = TRUE;
+				DUI_DataBase.tempset_updata = TRUE;
+				DUI_DataBase.tempnow_updata = TRUE;
 				break;
 				
 				case 2 :DISPLAY_full(UI_PAGE2.PicID[0]);;break;
 				case 3 :DISPLAY_full(UI_PAGE3.PicID[0]);;break;
 				default :break;
 			}
-			gUI_DataBase.page.Now_sta = gUI_DataBase.page.Set_sta;
-			gUI_DataBase.time_updata = TRUE;
-			gUI_DataBase.date_updata = TRUE;
+			DUI_DataBase.page.Now_sta = DUI_DataBase.page.Set_sta;
+			DUI_DataBase.time_updata = TRUE;
+			DUI_DataBase.date_updata = TRUE;
 		}
 		
-		if(gUI_DataBase.page.Now_sta == 1)
+		if(DUI_DataBase.page.Now_sta == 1)
 		{
-			if(gUI_DataBase.tempset_updata == TRUE)	
+			if(DUI_DataBase.tempset_updata == TRUE)	
 			{
 				LCD_TextColorSet(White);
 				DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_TEMP,10);
 				LCD_ShowNumPoint(170,86,64,32,1,Temp.Set);
-				gUI_DataBase.tempset_updata = FALSE;
+				DUI_DataBase.tempset_updata = FALSE;
 				
 			}
 			
-			if(gUI_DataBase.tempnow_updata == TRUE)	
+			if(DUI_DataBase.tempnow_updata == TRUE)	
 			{
 				
 				LCD_TextColorSet(White);
@@ -307,94 +281,96 @@ void DUI_DISPLAY(void)
 				DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_HUMIDITY,15);
 				LCD_DrawString(305,177,16,8,1,"N/A");
 				
-				gUI_DataBase.tempnow_updata = FALSE;
+				DUI_DataBase.tempnow_updata = FALSE;
 			}		
 			
 			
-			if(gUI_DataBase.tmpset.Now_sta != gUI_DataBase.tmpset.Set_sta)	
+			if(DUI_DataBase.tmpset.Now_sta != DUI_DataBase.tmpset.Set_sta)	
 			{
 				
-				if(gUI_DataBase.tmpset.Set_sta == 1)    //set
+				if(DUI_DataBase.tmpset.Set_sta == 1)    //1£º set state
 				{
 					Temp.SetEn = TRUE;
-					gUI_DataBase.tmpadd.Now_sta = gUI_DataBase.tmpadd.Set_sta = 1;
-					gUI_DataBase.tmpsub.Now_sta = gUI_DataBase.tmpsub.Set_sta = 1;
+					DUI_DataBase.tmpadd.Now_sta = DUI_DataBase.tmpadd.Set_sta = 1;
+					DUI_DataBase.tmpsub.Now_sta = DUI_DataBase.tmpsub.Set_sta = 1;
 					
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_TEMPSET,UI_TEMPSET.PicID[1]);
+					//show the add & sub button
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,UI_TEMPADD.PicID[1]);
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,UI_TEMPSUB.PicID[1]);
 				}
-				else //NORMAL
+				else //0£º normal state 
 				{
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_TEMPSET,UI_TEMPSET.PicID[0]);
+					//dont show the add & sub button
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,UI_TEMPADD.PicID[0]);
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,UI_TEMPSUB.PicID[0]);
 				
 				}
-				gUI_DataBase.tmpset.Now_sta = gUI_DataBase.tmpset.Set_sta;
+				DUI_DataBase.tmpset.Now_sta = DUI_DataBase.tmpset.Set_sta;
 			}
 		
-			if(gUI_DataBase.tmpset.Now_sta == 1)
+			if(DUI_DataBase.tmpset.Now_sta == 1)
 			{
 				//add temp set
-				if(gUI_DataBase.tmpadd.Now_sta != gUI_DataBase.tmpadd.Set_sta)	
+				if(DUI_DataBase.tmpadd.Now_sta != DUI_DataBase.tmpadd.Set_sta)	// 2: add press
 				{
 					//add tempset
 					Temp.AddEn = TRUE;
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,UI_TEMPADD.PicID[2]);
-					gUI_DataBase.tmpadd.Now_sta = gUI_DataBase.tmpadd.Set_sta;
+					DUI_DataBase.tmpadd.Now_sta = DUI_DataBase.tmpadd.Set_sta;
 				}
 				else 
 				{
-					gUI_DataBase.tmpadd.Now_sta = gUI_DataBase.tmpadd.Set_sta = 1;
+					DUI_DataBase.tmpadd.Now_sta = DUI_DataBase.tmpadd.Set_sta = 1; //1:add nopress
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD,UI_TEMPADD.PicID[1]);
 				}
 				
 				//sub temp set 
-				if(gUI_DataBase.tmpsub.Now_sta != gUI_DataBase.tmpsub.Set_sta)	
+				if(DUI_DataBase.tmpsub.Now_sta != DUI_DataBase.tmpsub.Set_sta)	// 2: sub press
 				{
 					//sub tempset
 					Temp.SubEn = TRUE;
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,UI_TEMPSUB.PicID[2]);
-					gUI_DataBase.tmpsub.Now_sta = gUI_DataBase.tmpsub.Set_sta;
+					DUI_DataBase.tmpsub.Now_sta = DUI_DataBase.tmpsub.Set_sta;
 				}
 				else 
 				{
-					gUI_DataBase.tmpsub.Now_sta = gUI_DataBase.tmpsub.Set_sta = 1;
+					DUI_DataBase.tmpsub.Now_sta = DUI_DataBase.tmpsub.Set_sta = 1;//1:sub nopress
 					DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_SUB,UI_TEMPSUB.PicID[1]);
 				}
 			}
 		
 		}
 		
-		if(gUI_DataBase.page.Now_sta == 2)
+		if(DUI_DataBase.page.Now_sta == 2)
 		{
 			DISPALY_WIFI();
 		}	
 		
-		if(gUI_DataBase.page.Now_sta == 3)
+		if(DUI_DataBase.page.Now_sta == 3)
 		{
 			
 		}
 
 
-	if(gUI_DataBase.time_updata == TRUE)
+	if(DUI_DataBase.time_updata == TRUE)
 	{	
 		LCD_TextColorSet(White);
 		DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_TIME,1);
 		LCD_ShowNum(220,2,16, 8,1,Temp.Time);
-		gUI_DataBase.time_updata = FALSE;
+		DUI_DataBase.time_updata = FALSE;
 	}
 	
-	if(gUI_DataBase.date_updata == TRUE)
+	if(DUI_DataBase.date_updata == TRUE)
 	{
 		LCD_TextColorSet(White);
 		DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_DATE,0);
 		LCD_DrawString(2,2, 16, 8, 1,"2018/02/01");
-		gUI_DataBase.date_updata = FALSE;
+		DUI_DataBase.date_updata = FALSE;
 	}
 	
-	if(gUI_DataBase.wifi_updata == TRUE)
+	if(DUI_DataBase.wifi_updata == TRUE)
 	{
 		DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_WIFI,3);
 	}
@@ -403,8 +379,7 @@ void DUI_DISPLAY(void)
 		DISPLAY_part((LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_WIFI,4);
 	}
 	
-	gUI_DataBase.updata = FALSE;
-	
+	DUI_DataBase.updata = FALSE;
 	
 }
 
@@ -454,8 +429,7 @@ void DISPALY_WIFI(void)
 void DISPLAY_part( LCD_DISPLAY_FrameInfoTypeDef* qq,u8 PicID)
 {
     LCD_DISPLAY_InitTypedef init;
-    //gUI.IsDemo1Update = FALSE;
-    
+	
     init.Mode             = LCD_DISPLAY_MODE_NORMAL;
     init.pFrameInfo       = qq;
     init.pImageRemapTable = NULL;
@@ -473,11 +447,9 @@ void DISPLAY_part( LCD_DISPLAY_FrameInfoTypeDef* qq,u8 PicID)
 void DISPLAY_full(u8 PicID)
 {
 	LCD_DISPLAY_InitTypedef init;
-  //gUI.IsDemo1Update = FALSE;
 
   init.Mode             = LCD_DISPLAY_MODE_NORMAL;
   init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_Full;
- //  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_pp;	
   init.pImageRemapTable = NULL;
   init.ImageStartIndex  = PicID;
   init.ImageLength      = 1;
@@ -489,27 +461,6 @@ void DISPLAY_full(u8 PicID)
     LCD_DISPLAY_Process();
   }
 }
-
-
-void DISPLAY_ADD(u8 PicID)
-{
-	LCD_DISPLAY_InitTypedef init;
-  //gUI.IsDemo1Update = FALSE;
-
-  init.Mode             = LCD_DISPLAY_MODE_NORMAL;
-  init.pFrameInfo       = (LCD_DISPLAY_FrameInfoTypeDef*)&FrameInfo_ADD;
-  init.pImageRemapTable = NULL;
-  init.ImageStartIndex  = PicID;
-  init.ImageLength      = 1;
-  init.FrameRate        = 0;
-  LCD_DISPLAY_Init(&init);
-
-	while(gLCD_DISPLAY.ImageCounter < init.ImageLength)
-  {
-    LCD_DISPLAY_Process();
-  }
-}
-
 
 
 

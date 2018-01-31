@@ -81,7 +81,6 @@ typedef enum
 
 #define  DISPLAY_MODE			(1)
 
-extern LCD_DISPLAY_FlagTypedef FLAG_IMG;
 extern LCD_DISPLAY_InfoTypedef gLCD_DISPLAY;
 extern LCD_DISPLAY_ImageInfoTypeDef gLCD_Display_ImageInfo;
 void LCD_DISPLAY_Init(LCD_DISPLAY_InitTypedef* pDisplay);

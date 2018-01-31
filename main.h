@@ -39,15 +39,31 @@
 #include "lcd_display.h"	 
 	 
 //USE FOR DEMO
-extern u16 Display_State_Line ;
-void Display_Temp(void);
-void Display_WIFI(void);
-void LCD_TEST(void);
-void FLASH_TEST(void);
-void Display_State(char *Str);
+//extern u16 Display_State_Line ;
+//void Display_Temp(void);
+//void Display_WIFI(void);
+//void LCD_TEST(void);
+//void FLASH_TEST(void);
+//void Display_State(char *Str);
  
  
- //////////////////////////////////////////////////////////////////////////
+ //////////////////FOR UI DEMO //////////////////////////////////////
+typedef struct
+{
+	u16 xBg;
+	u16 yBg;
+	u16 xEn;
+	u16 yEn;
+	bool ispress;
+}Touch_Screen_Rect_TypeDef;
+
+
+typedef struct 
+{
+	u8 PicID[3];
+	Touch_Screen_Rect_TypeDef Button;  
+}	UI_PLUG_TypeDef;
+
 
 typedef struct
 {
@@ -55,13 +71,11 @@ typedef struct
 	u8 Set_sta;
 }UI_Sta_TypeDef;
 
- 
- typedef struct
+typedef struct
 {
 	bool updata;
 	UI_Sta_TypeDef wifi;
 	UI_Sta_TypeDef page;
-
 	UI_Sta_TypeDef tmpset;
 	UI_Sta_TypeDef tmpsub;
 	UI_Sta_TypeDef tmpadd;
@@ -70,19 +84,15 @@ typedef struct
 	bool tempnow_updata;
 	bool time_updata;
 	bool date_updata;	
-	
-	
-	
 }UI_DEMO_TypeDef;
 
-extern UI_DEMO_TypeDef gUI_DataBase;
+extern UI_DEMO_TypeDef DUI_DataBase;
 
 void DUI_DEMO_INIT(void);
 void DUI_TS_Scan(void);
 void DUI_DISPLAY(void);
 
 void DISPLAY_part(LCD_DISPLAY_FrameInfoTypeDef *qq,u8 PicID);
-void DISPLAY_ADD(u8 PicID);
 void DISPLAY_full(u8 PicID);
  //////////////////////////////////////////////////////////////////////////
 

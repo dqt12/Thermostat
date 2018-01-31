@@ -62,7 +62,6 @@ typedef __PACKED_H struct
 /* Private constants ---------------------------------------------------------------------------------------*/
 /* Global variables ----------------------------------------------------------------------------------------*/
 LCD_DISPLAY_InfoTypedef gLCD_DISPLAY;
-LCD_DISPLAY_FlagTypedef FLAG_IMG;
 /* Private define ------------------------------------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------------------------------------*/
@@ -327,13 +326,23 @@ void LCD_DISPLAY_GetNextDisplayInfo(LCD_DISPLAY_Typedef* pDisplay)
   ***********************************************************************************************************/
 void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
 {
-#if  (DISPLAY_MODE == EBI8_RGB888)	
-	u32 picsize  = pDisplay->NextDataLength /3;//a Pixel use a 8bit * 3 =24bit ;
-	u8* pBuf = (u8*)&LCD_Display_PinponBuffer[pDisplay->AltBufferIndex][0];
-#elif (DISPLAY_MODE == EBI16_RGB565)	
-	u32 picsize = pDisplay->NextDataLength /2;//a Pixel use a 8bit * 2 =16bit 
-	u16* pBuf = (u16*)&LCD_Display_PinponBuffer[pDisplay->AltBufferIndex][0];
-#endif
+	u32 picsize;
+	u8* pBuf_888 ;
+	u16* pBuf_565;
+	
+	if (DISPLAY_MODE == EBI8_RGB888)	
+	{
+			picsize  = pDisplay->NextDataLength /3;//a Pixel use a 8bit * 3 =24bit ;
+			pBuf_888 = (u8*)&LCD_Display_PinponBuffer[pDisplay->AltBufferIndex][0];
+	}
+	else if  (DISPLAY_MODE == EBI16_RGB565)	
+	{
+		picsize = pDisplay->NextDataLength /2;//a Pixel use a 8bit * 2 =16bit 
+		pBuf_565 = (u16*)&LCD_Display_PinponBuffer[pDisplay->AltBufferIndex][0];
+	}
+	else 
+		return;
+	
 	
   /* Getting the next SPI Flash Address and Length and the next AltBufferIndex */
   LCD_DISPLAY_GetNextDisplayInfo(pDisplay);
@@ -354,24 +363,28 @@ void LCD_DISPLAY_Process_Normal(LCD_DISPLAY_Typedef* pDisplay)
     
   /* Write part of picture to LCD GRAM.
      The action of read SPI Flash via DMA is process at the same time*/
-#if  (DISPLAY_MODE == EBI8_RGB888)
-		while(picsize--)
+		if (DISPLAY_MODE == EBI8_RGB888)
 		{
-			LCD_WriteRAM(*pBuf);//write a 8bit RGB data for EBI8
-			pBuf++;
-			LCD_WriteRAM(*pBuf);
-			pBuf++;
-			LCD_WriteRAM(*pBuf);
-			pBuf++;		
+				while(picsize--)
+				{
+					LCD_WriteRAM(*pBuf_888);//write a 8bit RGB data for EBI8
+					pBuf_888++;
+					LCD_WriteRAM(*pBuf_888);
+					pBuf_888++;
+					LCD_WriteRAM(*pBuf_888);
+					pBuf_888++;		
+				}
 		}
-	
-#elif (DISPLAY_MODE == EBI16_RGB565)
-		while(picsize--)
-		{	
-			LCD_WriteRAM(*pBuf);
-			pBuf++;	
-		}		
-#endif
+		else if (DISPLAY_MODE == EBI16_RGB565)
+		{
+				while(picsize--)
+				{	
+					LCD_WriteRAM(*pBuf_565);
+					pBuf_565++;	
+				}		
+		}
+
+
 }
 
 /*********************************************************************************************************//**

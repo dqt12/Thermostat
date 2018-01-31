@@ -255,7 +255,6 @@ void RTC_IRQHandler(void)
   RTC_GetFlagStatus();
 	TIME_SLICE_CHECK(&TimeSlice._1s,1);
 	
-	
 	WIFI_WAIT_FUNC();
 }
 
@@ -321,8 +320,6 @@ void ADC_IRQHandler(void)
 	ADC_DATA[0] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA0);
 	ADC_DATA[1] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA1);
 	ADC_DATA[2] = ADC_GetConversionData(HT_ADC,ADC_REGULAR_DATA2);
-	
-	
 	
 	ADC_TS_Conversion(ADC_REGULAR_DATA4,ADC_REGULAR_DATA3);
 

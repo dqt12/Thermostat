@@ -6,10 +6,9 @@ __ALIGN4 USBDCore_TypeDef gUSBCore;
 USBD_Driver_TypeDef gUSBDriver;
 u32 gIsLowPowerAllowed = TRUE;
 
-//u16 RemapTable[178];
-
 /* Private function prototypes -----------------------------------------------------------------------------*/
 void USB_Configuration(void);
+void IAP_Configuration(void);
 
 void CKCU_Configuration(void);
 void GPIO_Configuration(void);
@@ -48,7 +47,6 @@ TEMP_TypeDef Temp;
 
 vu16 ADC_DATA[3];
 
-
 u16 TEMP_LIMIT(u16 data)
 {
 	//32~21C
@@ -71,8 +69,8 @@ void TEMP_SET_CONTRONL(void)
 			Temp.Set += 5;
 			Temp.Set = TEMP_LIMIT(Temp.Set);
 			
-			gUI_DataBase.tempset_updata = TRUE;
-			gUI_DataBase.updata = TRUE;
+			DUI_DataBase.tempset_updata = TRUE;
+			DUI_DataBase.updata = TRUE;
 		}
 		
 		if(Temp.SubEn)
@@ -81,8 +79,8 @@ void TEMP_SET_CONTRONL(void)
 			Temp.Set -= 5;
 			Temp.Set = TEMP_LIMIT(Temp.Set);
 			
-			gUI_DataBase.tempset_updata = TRUE;
-			gUI_DataBase.updata = TRUE;
+			DUI_DataBase.tempset_updata = TRUE;
+			DUI_DataBase.updata = TRUE;
 		}
 	}
 	else 
@@ -101,16 +99,16 @@ void TEMP_SET_CONTRONL(void)
 				{
 					Temp.SetEn = FALSE;
 					 
-					gUI_DataBase.tmpset.Set_sta = 0; // 0:normal ,1:Set
-					gUI_DataBase.updata = TRUE;
+					DUI_DataBase.tmpset.Set_sta = 0; // 0:normal ,1:Set
+					DUI_DataBase.updata = TRUE;
 				}
 				else 
 				{
 					Temp.SetEn = TRUE;
 					
 					
-					gUI_DataBase.tmpset.Set_sta = 1; // 0:normal ,1:Set
-					gUI_DataBase.updata = TRUE;
+					DUI_DataBase.tmpset.Set_sta = 1; // 0:normal ,1:Set
+					DUI_DataBase.updata = TRUE;
 				}
 
 			}
@@ -124,7 +122,6 @@ void TEMP_SET_CONTRONL(void)
 u8 KEY_STATE;
 void KEY_Scan(void)
 {
-//	u8 i = 0;
 		switch(KEY_STATE)
 		{
 			case 0x01 : 
@@ -252,37 +249,19 @@ int main(void)
 //// LCD driver configuration
   LCD_Config();	
 //	LCD_TEST();
-
-	HT32F_DVB_PBInit(BUTTON_KEY1,BUTTON_MODE_GPIO);
-	Delay(100);
-	KEY_STATE = HT32F_DVB_PBGetState(BUTTON_KEY1);
-	if(KEY_STATE == 0x00)
-	{
-		LCD_Clear(White);
-	  LCD_BackColorSet(White);
-	  LCD_TextColorSet(Red);
-		LCD_DrawString(50, 100, 24, 16, 0, "USB_IVP DownLoad Bin...");
-		LCD_DrawString(50, 140, 24, 16, 0, "MCU Reset to Ese");
-		USB_Configuration();	
-		IAP_Handler();	
-	}	
-	
+  IAP_Configuration();
 	KEY_Configuration();
 	ADC_Configuration();
 
 	TOUCH_SCREEN_INIT(DISABLE);
 //		TOUCH_SCREEN_INIT(ENABLE);
-	
-	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
 
-
+	while(LCD_DISPLAY_GetImageInfo() != PICOK);
 	//DISPLAY_full(16);	
 
 	DUI_DEMO_INIT();
-
 	WIFI_INIT();
 
-	
 	KEY_STATE = 0;
 	Temp.En = FALSE;
 	Temp.SetEn = FALSE;
@@ -297,12 +276,8 @@ int main(void)
 		{
 			TimeSlice._10ms.flag = FALSE;
 			WIFI_CAP();
-
-		
 		}		 
 
-
-	
 		if(TimeSlice._20ms.flag)
 		{
 			TimeSlice._20ms.flag = FALSE;
@@ -324,10 +299,6 @@ int main(void)
 			Temp.Now = ADC_to_TEMP(ADC_DATA[0]);
 			
 			DUI_TS_Scan();
-			
-			
-		
-			
 		}
 		
 		
@@ -351,18 +322,16 @@ int main(void)
 			
 			if(FLAG_WIFI.APLINK == TRUE)			
 			{
-				gUI_DataBase.wifi_updata = TRUE;
-			//	gUI_DataBase.wifi.Set_sta = 2;
+				DUI_DataBase.wifi_updata = TRUE;
 			}
 			else 
 			{
-				gUI_DataBase.wifi_updata = FALSE;
-			//	gUI_DataBase.wifi.Set_sta = 1;
+				DUI_DataBase.wifi_updata = FALSE;
 			}
 			
-			gUI_DataBase.time_updata = TRUE;
-			gUI_DataBase.tempnow_updata = TRUE;
-			gUI_DataBase.updata = TRUE;
+			DUI_DataBase.time_updata = TRUE;
+			DUI_DataBase.tempnow_updata = TRUE;
+			DUI_DataBase.updata = TRUE;
 			
 		}
 	}	
@@ -439,13 +408,27 @@ void USB_Configuration(void)
   USBDCore_MainRoutine(&gUSBCore);
 }
 
-/* Function Configuration-----------------------------------------------------------------------------*/
+void IAP_Configuration(void)
+{
+	HT32F_DVB_PBInit(BUTTON_KEY1,BUTTON_MODE_GPIO);
+	Delay(100);
+	KEY_STATE = HT32F_DVB_PBGetState(BUTTON_KEY1);
+	if(KEY_STATE == 0x00)
+	{
+		LCD_Clear(White);
+	  LCD_BackColorSet(White);
+	  LCD_TextColorSet(Red);
+		LCD_DrawString(50, 100, 24, 16, 0, "USB_IVP DownLoad Bin...");
+		LCD_DrawString(50, 140, 24, 16, 0, "MCU Reset to Ese");
+		USB_Configuration();	
+		IAP_Handler();	
+	}	
+	
+}
 
 void GPIO_Configuration(void)
 {
-	
-
-
+	;
 }
 
 void KEY_Configuration(void)
@@ -507,7 +490,6 @@ void ADC_Configuration(void)
   /* Software trigger to start continuous mode                                                              */
   ADC_SoftwareStartConvCmd(HT_ADC, ENABLE);
 
-	
 }
 
 
