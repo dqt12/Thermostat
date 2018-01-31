@@ -145,70 +145,22 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN2 -FF0HT32F -FS00 -FL0100000 -FF1HT32F_OPT -FS11FF00000 -FL11000 -FP0($$Device:HT32F12345$ARM\Flash\HT32F.FLM) -FP1($$Device:HT32F12345$ARM\Flash\HT32F_OPT.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>389</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>4126</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\UI_DEMO.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../UI_DEMO.c\389</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>402</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>4160</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\UI_DEMO.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\HT32\../UI_DEMO.c\402</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>p</ItemText>
+          <ItemText>FLAG_WIFI</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>temp</ItemText>
+          <ItemText>CMD_Cont</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>x,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>y,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>buf,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>Ascii</ItemText>
+          <ItemText>CMD_Cont_Trg</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

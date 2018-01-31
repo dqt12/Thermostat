@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\HT32\12345\obj\HT32.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\HT32\12345\obj\HT32.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Jan 31 15:44:03 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Jan 31 16:20:48 2018
 <BR><P>
 <H3>Maximum Stack Usage =        416 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -914,7 +914,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[14e]"></a>KEY_Scan</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, main.o(i.KEY_Scan))
+<P><STRONG><a name="[14e]"></a>KEY_Scan</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, main.o(i.KEY_Scan))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = KEY_Scan
 </UL>
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -2095,8 +2095,8 @@ Global Symbols
 <LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIFI_AUTOLINK
 </UL>
 
-<P><STRONG><a name="[13c]"></a>WIFI_Control</STRONG> (Thumb, 228 bytes, Stack size 8 bytes, esp8266.o(i.WIFI_Control))
-<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = WIFI_Control &rArr; WIFI_READY &rArr; WIFI_CMDSET &rArr; strstr
+<P><STRONG><a name="[13c]"></a>WIFI_Control</STRONG> (Thumb, 236 bytes, Stack size 16 bytes, esp8266.o(i.WIFI_Control))
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = WIFI_Control &rArr; WIFI_READY &rArr; WIFI_CMDSET &rArr; strstr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIFI_READY
 <LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIFI_LIST_POINT
@@ -2108,7 +2108,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[150]"></a>WIFI_DATA_UPDATA</STRONG> (Thumb, 178 bytes, Stack size 12 bytes, main.o(i.WIFI_DATA_UPDATA))
+<P><STRONG><a name="[150]"></a>WIFI_DATA_UPDATA</STRONG> (Thumb, 186 bytes, Stack size 12 bytes, main.o(i.WIFI_DATA_UPDATA))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = WIFI_DATA_UPDATA
 </UL>
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -2143,7 +2143,7 @@ Global Symbols
 <LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WIFI_READY
 </UL>
 
-<P><STRONG><a name="[144]"></a>WIFI_INIT</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, esp8266.o(i.WIFI_INIT))
+<P><STRONG><a name="[144]"></a>WIFI_INIT</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, esp8266.o(i.WIFI_INIT))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = WIFI_INIT &rArr; USART_Configuration &rArr; USART_Init &rArr; CKCU_GetPeripFrequency &rArr; CKCU_GetClocksFrequency
 </UL>
 <BR>[Calls]<UL><LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitQueue

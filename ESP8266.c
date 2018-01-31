@@ -88,6 +88,11 @@ void WIFI_INIT(void)
 	WIFI_HW_STA(RESET);	
 	InitQueue(&WIFI_FRAM,REC_BUF_SIZE,URRxBuf);
 	
+	FLAG_WIFI.SMARTLINK = FALSE;
+	FLAG_WIFI.APLINK = FALSE;
+	FLAG_WIFI.DEVLINK = FALSE;
+	FLAG_WIFI.UPDATA = FALSE;
+
 	#ifdef USE_WIFI_AUTOLINK
 		FLAG_WIFI.AUTOLINK = TRUE;
 	#else 
@@ -305,7 +310,7 @@ void WIFI_AUTOLINK(void)
 		
 		if(WIFI_REC.STA != CTIME_OUT)
 		{
-			WIFI_CMDSET(NULL,"WIFI GOT IP" ,30);			
+			WIFI_CMDSET(NULL,"WIFI GOT IP" ,60);			
 			CMD_Cont_Trg = CMD_Cont; 
 			CMD_Cont = CAP_STATUE; 
 		}		 	
@@ -405,7 +410,14 @@ void WIFI_Control(void)
 		case L_CHECK_LINK_2	:		CMD_Cont = L_LINKED; 	;break;			
 		
 		///////////////////////////////		
-		case L_REST	:	WIFI_CMDSET("AT+RESTORE\r\n","ready",5);	WIFI_LIST_POINT(CAP_STATUE);;break;
+		case L_REST	:	
+									FLAG_WIFI.SMARTLINK = FALSE;
+									FLAG_WIFI.APLINK = FALSE;
+									FLAG_WIFI.DEVLINK = FALSE;
+									FLAG_WIFI.UPDATA = FALSE;
+									WIFI_CMDSET("AT+RESTORE\r\n","ready",5);	
+									WIFI_LIST_POINT(CAP_STATUE);
+									;break;
 		case L_5	:		WIFI_CMDSET("ATE0\r\n","OK" ,5);					WIFI_LIST_POINT(CAP_STATUE);;break;
 		case L_6	:		WIFI_CMDSET("AT+CWMODE=1\r\n","OK",5);	  WIFI_LIST_POINT(CAP_STATUE);;break;
 		case L_7	:		WIFI_CMDSET("AT+RST\r\n","ready" ,5);			WIFI_LIST_POINT(CAP_STATUE);;break;

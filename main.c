@@ -151,9 +151,13 @@ void KEY_Scan(void)
 			
 			case 0x08 :
 			{
+		
 				CMD_Cont = L_REST;
 				CMD_Cont_Trg = L_REST;
 				
+				DUI_DataBase.page.Set_sta = 1;
+				DUI_DataBase.updata = TRUE;		
+	
 			};break;//key4
 									
 			default : break;
@@ -207,6 +211,11 @@ void WIFI_DATA_UPDATA(void)
 			Temp.Set += (Thermostat_DATA[4]-'0')*10; 
 			Temp.Set += (Thermostat_DATA[5]-'0'); 	
 		}
+		
+		DUI_DataBase.tempset_updata = TRUE;
+		DUI_DataBase.updata = TRUE;		
+		
+		
 	}	
 	else 
 	{
