@@ -100,7 +100,7 @@ void TEMP_SET_CONTRONL(void)
 				if(Temp.SetEn == TRUE)
 				{
 					Temp.SetEn = FALSE;
-					
+					 
 					gUI_DataBase.tmpset.Set_sta = 0; // 0:normal ,1:Set
 					gUI_DataBase.updata = TRUE;
 				}
@@ -154,8 +154,6 @@ void KEY_Scan(void)
 			
 			case 0x08 :
 			{
-//				Display_State_Line = 0;
-//				Demo_full();	
 				CMD_Cont = L_REST;
 				CMD_Cont_Trg = L_REST;
 				
@@ -167,47 +165,6 @@ void KEY_Scan(void)
 				KEY_STATE = 0;
 		
 }
-
-
-
-//void TS_Scan(void)
-//{
-//	TOUCH_Logical_Coor_Get(&Tocuh);
-//		
-//	if(TS_Scan_RECT(&Button,&Tocuh))
-//	{
-//		if(TOUCH_CheckPressed() == TRUE) 
-//		{
-//	//		Temp.Time++;
-//			Temp.CorEn = TRUE;
-//		}
-
-//	}		
-//	
-//	if(Temp.SetEn == TRUE)
-//	{
-//		if(TS_Scan_RECT(&ButtonADD,&Tocuh))
-//		{
-//			if(TOUCH_CheckPressed() == TRUE)
-//			{
-//			//	Temp.Time++;
-//				Temp.AddEn = TRUE;
-//			}
-//		}
-//		
-//		if(TS_Scan_RECT(&ButtonSUB,&Tocuh))
-//		{
-//			if(TOUCH_CheckPressed() == TRUE)
-//			{
-//				//Temp.Time++;
-//				Temp.SubEn = TRUE;
-//			
-//			}
-//		}
-//	
-//	}
-
-//}
 
 
 u16 ADC_to_TEMP(u16 NTC_adc)
@@ -318,16 +275,14 @@ int main(void)
 	
 	FLAG_IMG = LCD_DISPLAY_GetImageInfo();	
 
-	DISPLAY_full(17);	
+
+//	DISPLAY_full(17);	
+
 	DUI_DEMO_INIT();
 
-	
-//	LCD_DrawFillRect(279,0,271,200,White);
-//	WIFI_INIT();
 
-//	Button = TS_SET_RECT(100,0,200,50);
-//	ButtonADD = TS_SET_RECT(100,60,150,90);
-//	ButtonSUB = TS_SET_RECT(160,60,210,90);
+	WIFI_INIT();
+
 	
 	KEY_STATE = 0;
 	Temp.En = FALSE;
@@ -342,7 +297,7 @@ int main(void)
 		if(TimeSlice._10ms.flag)
 		{
 			TimeSlice._10ms.flag = FALSE;
-			//WIFI_CAP();
+			WIFI_CAP();
 
 		
 		}		 
@@ -383,14 +338,11 @@ int main(void)
 			
 			TEMP_SET_CONTRONL();
 			
-			
 			DUI_DISPLAY();
-		
-			//Display_Temp();
 			
-			//WIFI_Control();
-			//WIFI_DATA_UPDATA();
-		//	Display_WIFI();
+			WIFI_Control();
+			WIFI_DATA_UPDATA();
+
 		}
 		
 		if(TimeSlice._1s.flag )

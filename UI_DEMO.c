@@ -133,7 +133,7 @@ void TS_SET_RECT(Touch_Screen_Rect_TypeDef *p,u16 XBg,u16 YBg ,u16 Height, u16 W
 	p->yEn = YBg+Height;
 	p->ispress = FALSE;	
 	
-	LCD_DrawRect(XBg,YBg,Height,Width,Red);
+//	LCD_DrawRect(XBg,YBg,Height,Width,Red);
 }
 
 bool TS_Scan_RECT(Touch_Screen_Rect_TypeDef *p,TOUCH_XY_TypeDef *pt)
@@ -202,6 +202,9 @@ void DUI_DEMO_INIT(void)
 	UI_TEMPSUB.PicInfo = &FrameInfo_SUB;	
 	TS_SET_RECT(&UI_TEMPSUB.Button,359,86,41,46);
 
+
+		gUI_DataBase.page.Set_sta= 1;
+		gUI_DataBase.updata = TRUE;
 }
 
 
