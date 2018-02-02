@@ -273,7 +273,10 @@ int main(void)
 
 	KEY_STATE = 0;
 	Temp.En = FALSE;
-	Temp.SetEn = FALSE;
+	Temp.CorEn = FALSE;
+	Temp.SetEn = FALSE ;
+	Temp.SubEn = FALSE;
+	Temp.AddEn = FALSE;
 	Temp.Now = 260;
 	Temp.Set = 260;
 	Temp.Time = 0;

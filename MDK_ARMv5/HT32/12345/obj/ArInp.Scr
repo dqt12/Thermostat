@@ -1,0 +1,2 @@
+--create .\HT32\12345\obj\lcd_display.lib
+.\ht32\12345\obj\lcd_display.o
